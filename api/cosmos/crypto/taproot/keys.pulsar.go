@@ -871,6 +871,8 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+// PubKey defines a secp256k1 public key.
+// It shares the same with the Cosmos implementation of secp256k1.
 // But, the key must be derived from a 32-byte x-only public key as specified in BIP-340.
 // This is the compressed form of the pubkey containing only the x-coordinate.
 // The y-coordinate is implicitly even as per BIP-340 specification.
