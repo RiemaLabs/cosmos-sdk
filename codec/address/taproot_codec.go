@@ -10,6 +10,10 @@ import (
 	"github.com/btcsuite/btcd/chaincfg"
 )
 
+var (
+	BitcoinNetParams = &chaincfg.MainNetParams
+)
+
 type TaprootCodec struct {
 	btcNetworkParams *chaincfg.Params
 }
@@ -46,6 +50,10 @@ func (bc TaprootCodec) StringToBytes(text string) ([]byte, error) {
 func (bc TaprootCodec) BytesToString(bz []byte) (string, error) {
 	if len(bz) == 0 {
 		return "", nil
+	}
+
+	if len(bz) != 32 {
+		return "", errors.New("invalid taproot address")
 	}
 
 	addr, err := originBtcutil.NewAddressTaproot(bz, bc.btcNetworkParams)
