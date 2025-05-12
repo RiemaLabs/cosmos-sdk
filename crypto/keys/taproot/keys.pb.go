@@ -30,7 +30,6 @@ const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
 // This is the compressed form of the pubkey containing only the x-coordinate.
 // The y-coordinate is implicitly even as per BIP-340 specification.
 type PubKey struct {
-	// key is the 32-byte x-only public key as specified in BIP-340
 	Key []byte `protobuf:"bytes,1,opt,name=key,proto3" json:"key,omitempty"`
 }
 

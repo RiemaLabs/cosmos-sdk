@@ -8,6 +8,7 @@ import (
 	"io"
 	"math/big"
 
+	"github.com/btcsuite/btcd/chaincfg"
 	"github.com/cometbft/cometbft/crypto"
 	secp256k1 "github.com/decred/dcrd/dcrec/secp256k1/v4"
 
@@ -22,6 +23,8 @@ import (
 var (
 	_ cryptotypes.PrivKey  = &PrivKey{}
 	_ codec.AminoMarshaler = &PrivKey{}
+
+	BitcoinNetParams = &chaincfg.MainNetParams
 )
 
 const (

@@ -15,7 +15,7 @@ func TestSign(t *testing.T) {
 	}
 	msg := []byte("test")
 	net := &chaincfg.MainNetParams
-	signature, err := Sign(msg, privKey, net)
+	signature, err := Bip322Sign(msg, privKey, net)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -29,7 +29,7 @@ func TestSignAndVerify(t *testing.T) {
 	}
 	msg := []byte("test")
 	net := &chaincfg.MainNetParams
-	signature, err := Sign(msg, privKey, net)
+	signature, err := Bip322Sign(msg, privKey, net)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -37,7 +37,7 @@ func TestSignAndVerify(t *testing.T) {
 		Key: privKey.Serialize(),
 	}
 	pubKey := cosmosPrivKey.PubKey()
-	verified, err := Verify(msg, signature, pubKey.(*PubKey), net)
+	verified, err := Bip322Verify(msg, signature, pubKey.(*PubKey), net)
 	if err != nil {
 		fmt.Println("error", err)
 		t.Fatal(err)

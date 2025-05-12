@@ -1,7 +1,6 @@
 package taproot
 
 import (
-	"encoding/base64"
 	fmt "fmt"
 
 	"github.com/babylonlabs-io/babylon/crypto/bip322"
@@ -11,9 +10,9 @@ import (
 	secp256k1 "github.com/decred/dcrd/dcrec/secp256k1/v4"
 )
 
-func Verify(
+func Bip322Verify(
 	msg []byte,
-	signature string,
+	signature []byte,
 	pubKey *PubKey,
 	net *chaincfg.Params) (bool, error) {
 
@@ -22,12 +21,7 @@ func Verify(
 		return false, err
 	}
 
-	signatureBytes, err := base64.StdEncoding.DecodeString(signature)
-	if err != nil {
-		return false, err
-	}
-
-	witness, err := bip322.SimpleSigToWitness(signatureBytes)
+	witness, err := bip322.SimpleSigToWitness(signature)
 	if err != nil {
 		return false, err
 	}
@@ -41,20 +35,21 @@ func Verify(
 	return true, nil
 }
 
-func Sign(msg []byte, privKey *secp256k1.PrivateKey, net *chaincfg.Params) (string, error) {
+func Bip322Sign(msg []byte, privKey *secp256k1.PrivateKey, net *chaincfg.Params) ([]byte, error) {
+	emptySignature := []byte{}
 	address, err := PubKeyToP2trAddress(privKey.PubKey(), net)
 	if err != nil {
-		return "", err
+		return emptySignature, err
 	}
 
 	pkScript, err := TweakedPubKeyToTaprootScript(address.WitnessProgram())
 	if err != nil {
-		return "", err
+		return emptySignature, err
 	}
 
 	toSpend, err := bip322.GetToSpendTx(msg, address)
 	if err != nil {
-		return "", err
+		return emptySignature, err
 	}
 
 	toSign := bip322.GetToSignTx(toSpend)
@@ -69,13 +64,13 @@ func Sign(msg []byte, privKey *secp256k1.PrivateKey, net *chaincfg.Params) (stri
 		txscript.SigHashDefault, privKey,
 	)
 	if err != nil {
-		return "", err
+		return emptySignature, err
 	}
 
 	signature, err := bip322.SerializeWitness(witness)
 	if err != nil {
-		return "", err
+		return emptySignature, err
 	}
 
-	return base64.StdEncoding.EncodeToString(signature), nil
+	return signature, nil
 }
