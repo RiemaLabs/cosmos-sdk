@@ -1,0 +1,40 @@
+syntax = "proto3";
+package cosmos.crypto.taproot;
+
+import "amino/amino.proto";
+import "gogoproto/gogo.proto";
+
+option go_package = "github.com/cosmos/cosmos-sdk/crypto/keys/taproot";
+
+// PubKey defines a secp256k1 public key.
+// It shares the same with the Cosmos implementation of secp256k1.
+// But, the key must be derived from a 32-byte x-only public key as specified in BIP-340.
+// This is the compressed form of the pubkey containing only the x-coordinate.
+// The y-coordinate is implicitly even as per BIP-340 specification.
+message PubKey {
+  option (amino.name) = "tendermint/PubKeySecp256k1";
+  // The Amino encoding is simply the inner bytes field, and not the Amino
+  // encoding of the whole PubKey struct.
+  //
+  // Example (JSON):
+  // s := PubKey{Key: []byte{0x01}}
+  // out := AminoJSONEncoder(s)
+  //
+  // Then we have:
+  // out == `"MQ=="`
+  // out != `{"key":"MQ=="}`
+  option (amino.message_encoding)     = "key_field";
+  option (gogoproto.goproto_stringer) = false;
+
+  // key is the 32-byte x-only public key as specified in BIP-340
+  bytes key = 1;
+}
+
+// PrivKey defines a secp256k1 private key.
+// It shares the same with the Cosmos implementation of secp256k1.
+message PrivKey {
+  option (amino.name)             = "tendermint/PrivKeySecp256k1";
+  option (amino.message_encoding) = "key_field";
+
+  bytes key = 1;
+}
