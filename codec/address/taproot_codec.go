@@ -10,10 +10,6 @@ import (
 	"github.com/btcsuite/btcd/chaincfg"
 )
 
-var (
-	BitcoinNetParams = &chaincfg.MainNetParams
-)
-
 type TaprootCodec struct {
 	btcNetworkParams *chaincfg.Params
 }

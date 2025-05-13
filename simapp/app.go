@@ -108,7 +108,7 @@ import (
 	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
 )
 
-const appName = "SimApp"
+const appName = "Thunderbolt"
 
 var (
 	// DefaultNodeHome default home directories for the application daemon
@@ -197,9 +197,7 @@ func NewSimApp(
 	interfaceRegistry, _ := types.NewInterfaceRegistryWithOptions(types.InterfaceRegistryOptions{
 		ProtoFiles: proto.HybridResolver,
 		SigningOptions: signing.Options{
-			AddressCodec: address.Bech32Codec{
-				Bech32Prefix: sdk.GetConfig().GetBech32AccountAddrPrefix(),
-			},
+			AddressCodec: address.NewTaprootCodec(&sdk.BitcoinNetParams),
 			ValidatorAddressCodec: address.Bech32Codec{
 				Bech32Prefix: sdk.GetConfig().GetBech32ValidatorAddrPrefix(),
 			},
@@ -289,11 +287,15 @@ func NewSimApp(
 		keys:              keys,
 	}
 
+	govAddr := authtypes.NewModuleAddress(govtypes.ModuleName).String()
+
+	fmt.Println("govAddr", govAddr)
+
 	// set the BaseApp's parameter store
 	app.ConsensusParamsKeeper = consensusparamkeeper.NewKeeper(
 		appCodec,
 		runtime.NewKVStoreService(keys[consensusparamtypes.StoreKey]),
-		authtypes.NewModuleAddress(govtypes.ModuleName).String(),
+		govAddr,
 		runtime.EventService{},
 	)
 	bApp.SetParamStore(app.ConsensusParamsKeeper.ParamsStore)
@@ -304,9 +306,9 @@ func NewSimApp(
 		runtime.NewKVStoreService(keys[authtypes.StoreKey]),
 		authtypes.ProtoBaseAccount,
 		maccPerms,
-		authcodec.NewBech32Codec(sdk.Bech32MainPrefix),
-		sdk.Bech32MainPrefix,
-		authtypes.NewModuleAddress(govtypes.ModuleName).String(),
+		address.NewTaprootCodec(&sdk.BitcoinNetParams),
+		"",
+		govAddr,
 		authkeeper.WithUnorderedTransactions(true),
 	)
 
@@ -315,7 +317,7 @@ func NewSimApp(
 		runtime.NewKVStoreService(keys[banktypes.StoreKey]),
 		app.AccountKeeper,
 		BlockedAddresses(),
-		authtypes.NewModuleAddress(govtypes.ModuleName).String(),
+		govAddr,
 		logger,
 	)
 
@@ -339,7 +341,7 @@ func NewSimApp(
 		runtime.NewKVStoreService(keys[stakingtypes.StoreKey]),
 		app.AccountKeeper,
 		app.BankKeeper,
-		authtypes.NewModuleAddress(govtypes.ModuleName).String(),
+		govAddr,
 		authcodec.NewBech32Codec(sdk.Bech32PrefixValAddr),
 		authcodec.NewBech32Codec(sdk.Bech32PrefixConsAddr),
 	)
@@ -350,7 +352,7 @@ func NewSimApp(
 		app.AccountKeeper,
 		app.BankKeeper,
 		authtypes.FeeCollectorName,
-		authtypes.NewModuleAddress(govtypes.ModuleName).String(),
+		govAddr,
 		// mintkeeper.WithMintFn(mintkeeper.DefaultMintFn(minttypes.DefaultInflationCalculationFn)), custom mintFn can be added here
 	)
 
@@ -359,7 +361,7 @@ func NewSimApp(
 		runtime.NewKVStoreService(keys[protocolpooltypes.StoreKey]),
 		app.AccountKeeper,
 		app.BankKeeper,
-		authtypes.NewModuleAddress(govtypes.ModuleName).String(),
+		govAddr,
 	)
 
 	app.DistrKeeper = distrkeeper.NewKeeper(
@@ -369,7 +371,7 @@ func NewSimApp(
 		app.BankKeeper,
 		app.StakingKeeper,
 		authtypes.FeeCollectorName,
-		authtypes.NewModuleAddress(govtypes.ModuleName).String(),
+		govAddr,
 		distrkeeper.WithExternalCommunityPool(app.ProtocolPoolKeeper),
 	)
 
@@ -378,7 +380,7 @@ func NewSimApp(
 		legacyAmino,
 		runtime.NewKVStoreService(keys[slashingtypes.StoreKey]),
 		app.StakingKeeper,
-		authtypes.NewModuleAddress(govtypes.ModuleName).String(),
+		govAddr,
 	)
 
 	app.FeeGrantKeeper = feegrantkeeper.NewKeeper(
@@ -399,7 +401,7 @@ func NewSimApp(
 	app.CircuitKeeper = circuitkeeper.NewKeeper(
 		appCodec,
 		runtime.NewKVStoreService(keys[circuittypes.StoreKey]),
-		authtypes.NewModuleAddress(govtypes.ModuleName).String(),
+		govAddr,
 		app.AccountKeeper.AddressCodec(),
 	)
 	app.BaseApp.SetCircuitBreaker(&app.CircuitKeeper)
@@ -437,7 +439,7 @@ func NewSimApp(
 		appCodec,
 		homePath,
 		app.BaseApp,
-		authtypes.NewModuleAddress(govtypes.ModuleName).String(),
+		govAddr,
 	)
 
 	// Register the proposal types
@@ -460,7 +462,7 @@ func NewSimApp(
 		app.DistrKeeper,
 		app.MsgServiceRouter(),
 		govConfig,
-		authtypes.NewModuleAddress(govtypes.ModuleName).String(),
+		govAddr,
 		// govkeeper.WithCustomCalculateVoteResultsAndVotingPowerFn(...), // Add if you want to use a custom vote calculation function.
 	)
 
@@ -810,7 +812,7 @@ func (app *SimApp) AutoCliOpts() autocli.AppOptions {
 	return autocli.AppOptions{
 		Modules:               modules,
 		ModuleOptions:         runtimeservices.ExtractAutoCLIOptions(app.ModuleManager.Modules),
-		AddressCodec:          authcodec.NewBech32Codec(sdk.GetConfig().GetBech32AccountAddrPrefix()),
+		AddressCodec:          address.NewTaprootCodec(&sdk.BitcoinNetParams),
 		ValidatorAddressCodec: authcodec.NewBech32Codec(sdk.GetConfig().GetBech32ValidatorAddrPrefix()),
 		ConsensusAddressCodec: authcodec.NewBech32Codec(sdk.GetConfig().GetBech32ConsensusAddrPrefix()),
 	}

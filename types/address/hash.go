@@ -85,6 +85,21 @@ func Module(moduleName string, derivationKeys ...[]byte) []byte {
 	return addr
 }
 
+func ModuleTaproot(moduleName string, derivationKeys ...[]byte) []byte {
+	mKey := []byte(moduleName)
+	if len(derivationKeys) == 0 { // fallback to the "traditional" ModuleAddress
+		return Hash("module", mKey)
+	}
+	// need to append zero byte to avoid potential clash between the module name and the first
+	// derivation key
+	mKey = append(mKey, 0)
+	addr := Hash("module", append(mKey, derivationKeys[0]...))
+	for _, k := range derivationKeys[1:] {
+		addr = Derive(addr, k)
+	}
+	return addr
+}
+
 // Derive derives a new address from the main `address` and a derivation `key`.
 // This function is used to create a sub accounts. To create a module accounts use the
 // `Module` function.

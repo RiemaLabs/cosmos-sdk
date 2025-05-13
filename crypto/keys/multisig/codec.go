@@ -6,6 +6,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/codec"
 	"github.com/cosmos/cosmos-sdk/crypto/keys/ed25519"
 	"github.com/cosmos/cosmos-sdk/crypto/keys/secp256k1"
+	"github.com/cosmos/cosmos-sdk/crypto/keys/taproot"
 	cryptotypes "github.com/cosmos/cosmos-sdk/crypto/types"
 )
 
@@ -29,4 +30,6 @@ func init() {
 		secp256k1.PubKeyName, nil)
 	AminoCdc.RegisterConcrete(&LegacyAminoPubKey{},
 		PubKeyAminoRoute, nil)
+	AminoCdc.RegisterConcrete(&taproot.PubKey{},
+		taproot.PubKeyName, nil)
 }

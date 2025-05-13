@@ -156,7 +156,11 @@ func NewModuleAddressOrBech32Address(input string) sdk.AccAddress {
 
 // NewModuleAddress creates an AccAddress from the hash of the module's name
 func NewModuleAddress(name string) sdk.AccAddress {
-	return address.Module(name)
+	return newModuleAddressTaproot(name)
+}
+
+func newModuleAddressTaproot(name string) sdk.AccAddress {
+	return address.ModuleTaproot(name)
 }
 
 // NewEmptyModuleAccount creates a empty ModuleAccount from a string
