@@ -6,8 +6,8 @@ import (
 	"gotest.tools/v3/assert"
 	"pgregory.net/rapid"
 
-	"github.com/cosmos/cosmos-sdk/crypto/keys/secp256k1"
 	"github.com/cosmos/cosmos-sdk/crypto/keys/secp256r1"
+	"github.com/cosmos/cosmos-sdk/crypto/keys/taproot"
 	cryptotypes "github.com/cosmos/cosmos-sdk/crypto/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
@@ -35,9 +35,9 @@ func PaginationGenerator(t *rapid.T, maxLimit uint64) *rapid.Generator[*query.Pa
 	})
 }
 
-// KeyTestPubAddr generates a new secp256k1 keypair.
+// KeyTestPubAddr generates a new secp256k1 keypair but with the taproot address.
 func KeyTestPubAddr() (cryptotypes.PrivKey, cryptotypes.PubKey, sdk.AccAddress) {
-	key := secp256k1.GenPrivKey()
+	key := taproot.GenPrivKey()
 	pub := key.PubKey()
 	addr := sdk.AccAddress(pub.Address())
 	return key, pub, addr

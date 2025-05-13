@@ -307,6 +307,12 @@ func (aa AccAddress) Bytes() []byte {
 
 // String implements the Stringer interface.
 func (aa AccAddress) String() string {
+	if aa.Empty() {
+		return ""
+	}
+	if len(aa.Bytes()) != 32 {
+		panic(fmt.Errorf("invalid address length: %d", len(aa.Bytes())))
+	}
 	return aa.stringTaproot()
 }
 

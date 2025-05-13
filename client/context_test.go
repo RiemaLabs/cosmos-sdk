@@ -180,8 +180,8 @@ func TestGetFromFields(t *testing.T) {
 			keyring: func() keyring.Keyring {
 				return keyring.NewInMemory(cfg.Codec)
 			},
-			from:        "cosmos139f7kncmglres2nf3h4hc4tade85ekfr8sulz5",
-			expectedErr: "key with address cosmos139f7kncmglres2nf3h4hc4tade85ekfr8sulz5 not found: key not found",
+			from:        "bc1p0xlxvlhemja6c4dqv22uapctqupfhlxm9h8z3k2e72q4k9hcz7vqzk5jj0",
+			expectedErr: "key with address bc1p0xlxvlhemja6c4dqv22uapctqupfhlxm9h8z3k2e72q4k9hcz7vqzk5jj0 not found: key not found",
 		},
 		{
 			keyring: func() keyring.Keyring {
@@ -196,7 +196,7 @@ func TestGetFromFields(t *testing.T) {
 			keyring: func() keyring.Keyring {
 				return keyring.NewInMemory(cfg.Codec)
 			},
-			from:      "cosmos139f7kncmglres2nf3h4hc4tade85ekfr8sulz5",
+			from:      "bc1p0xlxvlhemja6c4dqv22uapctqupfhlxm9h8z3k2e72q4k9hcz7vqzk5jj0",
 			clientCtx: client.Context{}.WithSimulation(true),
 		},
 		{
@@ -211,7 +211,7 @@ func TestGetFromFields(t *testing.T) {
 			keyring: func() keyring.Keyring {
 				return keyring.NewInMemory(cfg.Codec)
 			},
-			from:      "cosmos139f7kncmglres2nf3h4hc4tade85ekfr8sulz5",
+			from:      "bc1p0xlxvlhemja6c4dqv22uapctqupfhlxm9h8z3k2e72q4k9hcz7vqzk5jj0",
 			clientCtx: client.Context{}.WithGenerateOnly(true),
 		},
 		{

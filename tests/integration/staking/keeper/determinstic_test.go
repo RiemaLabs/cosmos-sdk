@@ -44,7 +44,7 @@ var (
 	validatorAddr2, _ = sdk.ValAddressFromBech32(validator2)
 	delegator1        = "cosmos1nph3cfzk6trsmfxkeu943nvach5qw4vwstnvkl"
 	delegatorAddr1    = sdk.MustAccAddressFromBech32(delegator1)
-	delegator2        = "cosmos139f7kncmglres2nf3h4hc4tade85ekfr8sulz5"
+	delegator2        = "bc1p0xlxvlhemja6c4dqv22uapctqupfhlxm9h8z3k2e72q4k9hcz7vqzk5jj0"
 	delegatorAddr2    = sdk.MustAccAddressFromBech32(delegator2)
 )
 

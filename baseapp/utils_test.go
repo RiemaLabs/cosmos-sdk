@@ -37,6 +37,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/testutil/mock"
 	simtestutil "github.com/cosmos/cosmos-sdk/testutil/sims"
 	"github.com/cosmos/cosmos-sdk/testutil/testdata"
+	"github.com/cosmos/cosmos-sdk/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/cosmos/cosmos-sdk/types/mempool"
@@ -89,7 +90,7 @@ func GenesisStateWithSingleValidator(t *testing.T, codec codec.Codec, builder *r
 func makeMinimalConfig() depinject.Config {
 	var (
 		mempoolOpt            = baseapp.SetMempool(mempool.NewSenderNonceMempool())
-		addressCodec          = func() address.Codec { return addresscodec.NewBech32Codec("cosmos") }
+		addressCodec          = func() address.Codec { return addresscodec.NewTaprootCodec(&types.BitcoinNetParams) }
 		validatorAddressCodec = func() runtime.ValidatorAddressCodec { return addresscodec.NewBech32Codec("cosmosvaloper") }
 		consensusAddressCodec = func() runtime.ConsensusAddressCodec { return addresscodec.NewBech32Codec("cosmosvalcons") }
 	)

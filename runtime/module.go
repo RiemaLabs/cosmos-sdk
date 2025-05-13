@@ -30,6 +30,7 @@ import (
 	addresscodec "github.com/cosmos/cosmos-sdk/codec/address"
 	codectypes "github.com/cosmos/cosmos-sdk/codec/types"
 	"github.com/cosmos/cosmos-sdk/std"
+	"github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/module"
 	"github.com/cosmos/cosmos-sdk/types/msgservice"
 )
@@ -315,7 +316,8 @@ func ProvideAddressCodec(in AddressCodecInputs) (address.Codec, ValidatorAddress
 		in.StakingConfig.Bech32PrefixConsensus = fmt.Sprintf("%svalcons", in.AuthConfig.Bech32Prefix)
 	}
 
-	return addresscodec.NewBech32Codec(in.AuthConfig.Bech32Prefix),
+	// @nubit: change the default codec to taproot.
+	return addresscodec.NewTaprootCodec(&types.BitcoinNetParams),
 		addresscodec.NewBech32Codec(in.StakingConfig.Bech32PrefixValidator),
 		addresscodec.NewBech32Codec(in.StakingConfig.Bech32PrefixConsensus)
 }

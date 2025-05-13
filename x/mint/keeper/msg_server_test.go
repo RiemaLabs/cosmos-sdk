@@ -23,7 +23,7 @@ func (s *IntegrationTestSuite) TestUpdateParams() {
 		{
 			name: "set invalid authority (not defined authority)",
 			request: &types.MsgUpdateParams{
-				Authority: "cosmos139f7kncmglres2nf3h4hc4tade85ekfr8sulz5",
+				Authority: "bc1p0xlxvlhemja6c4dqv22uapctqupfhlxm9h8z3k2e72q4k9hcz7vqzk5jj0",
 			},
 			expectErr: true,
 		},

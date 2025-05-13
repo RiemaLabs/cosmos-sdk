@@ -124,7 +124,9 @@ func TestAddressCodecFactory(t *testing.T) {
 		&addrCodec, &valAddressCodec, &consAddressCodec)
 	require.NoError(t, err)
 	require.NotNil(t, addrCodec)
-	_, ok := addrCodec.(customAddressCodec)
+	_, ok := addrCodec.(codecAddress.TaprootCodec)
+	require.True(t, ok)
+	_, ok = addrCodec.(customAddressCodec)
 	require.False(t, ok)
 	require.NotNil(t, valAddressCodec)
 	_, ok = valAddressCodec.(customAddressCodec)
@@ -139,7 +141,7 @@ func TestAddressCodecFactory(t *testing.T) {
 			network.MinimumAppConfig(),
 			depinject.Supply(
 				log.NewNopLogger(),
-				func() address.Codec { return codecAddress.NewTaprootCodec(&sdk.BitcoinNetParams) },
+				func() address.Codec { return customAddressCodec{} },
 				func() runtime.ValidatorAddressCodec { return customAddressCodec{} },
 				func() runtime.ConsensusAddressCodec { return customAddressCodec{} },
 			),

@@ -289,8 +289,6 @@ func NewSimApp(
 
 	govAddr := authtypes.NewModuleAddress(govtypes.ModuleName).String()
 
-	fmt.Println("govAddr", govAddr)
-
 	// set the BaseApp's parameter store
 	app.ConsensusParamsKeeper = consensusparamkeeper.NewKeeper(
 		appCodec,
