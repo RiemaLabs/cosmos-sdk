@@ -2,7 +2,6 @@ package simulation
 
 import (
 	"context"
-	"fmt"
 	"slices"
 	"time"
 
@@ -195,7 +194,6 @@ func MsgBeginRedelegateFactory(k *keeper.Keeper) simsx.SimMsgFactoryFn[*types.Ms
 
 		// pick a random delegator
 		delAddr := delegation.GetDelegatorAddr()
-		fmt.Printf("delAddr: %s\n", delAddr)
 		delAddrBz := must(testData.AddressCodec().StringToBytes(delAddr))
 		if hasRecRedel := must(k.HasReceivingRedelegation(ctx, delAddrBz, srcValOpAddrBz)); hasRecRedel {
 			reporter.Skip("receiving redelegation is not allowed")

@@ -8,8 +8,6 @@ import (
 	"slices"
 	"strings"
 
-	"github.com/cometbft/cometbft/crypto"
-
 	codectypes "github.com/cosmos/cosmos-sdk/codec/types"
 	cryptotypes "github.com/cosmos/cosmos-sdk/crypto/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -160,7 +158,7 @@ func NewModuleAddress(name string) sdk.AccAddress {
 }
 
 func newModuleAddressTaproot(name string) sdk.AccAddress {
-	return address.ModuleTaproot(name)
+	return address.Module(name)
 }
 
 // NewEmptyModuleAccount creates a empty ModuleAccount from a string
@@ -222,7 +220,12 @@ func (ma ModuleAccount) Validate() error {
 		return errors.New("uninitialized ModuleAccount: BaseAccount is nil")
 	}
 
-	if ma.Address != sdk.AccAddress(crypto.AddressHash([]byte(ma.Name))).String() {
+	// @nubit: We change here
+	// if ma.Address != sdk.AccAddress(crypto.AddressHash([]byte(ma.Name))).String() {
+	// 	return fmt.Errorf("address %s cannot be derived from the module name '%s'", ma.Address, ma.Name)
+	// }
+
+	if ma.Address != NewModuleAddress(ma.Name).String() {
 		return fmt.Errorf("address %s cannot be derived from the module name '%s'", ma.Address, ma.Name)
 	}
 
