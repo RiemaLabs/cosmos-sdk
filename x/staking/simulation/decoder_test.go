@@ -10,7 +10,7 @@ import (
 	"cosmossdk.io/math"
 
 	"github.com/cosmos/cosmos-sdk/codec/address"
-	"github.com/cosmos/cosmos-sdk/crypto/keys/ed25519"
+	"github.com/cosmos/cosmos-sdk/crypto/keys/taproot"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/kv"
 	"github.com/cosmos/cosmos-sdk/types/module/testutil"
@@ -19,7 +19,7 @@ import (
 )
 
 var (
-	delPk1   = ed25519.GenPrivKey().PubKey()
+	delPk1   = taproot.GenPrivKey().PubKey()
 	delAddr1 = sdk.AccAddress(delPk1.Address())
 	valAddr1 = sdk.ValAddress(delPk1.Address())
 )

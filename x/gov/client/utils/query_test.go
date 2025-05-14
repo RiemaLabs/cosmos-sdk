@@ -62,9 +62,9 @@ func TestGetPaginatedVotes(t *testing.T) {
 		msgs        [][]sdk.Msg
 		votes       []v1.Vote
 	}
-	acc1 := make(sdk.AccAddress, 20)
+	acc1 := make(sdk.AccAddress, 32)
 	acc1[0] = 1
-	acc2 := make(sdk.AccAddress, 20)
+	acc2 := make(sdk.AccAddress, 32)
 	acc2[0] = 2
 	acc1Msgs := []sdk.Msg{
 		v1.NewMsgVote(acc1, 0, v1.OptionYes, ""),

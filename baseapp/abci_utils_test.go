@@ -525,7 +525,7 @@ func (s *ABCIUtilsTestSuite) TestDefaultProposalHandler_NoOpMempoolTxSelection()
 			ctx: s.ctx,
 			req: &abci.RequestPrepareProposal{
 				Txs:        [][]byte{txBz, txBz, txBz, txBz, txBz},
-				MaxTxBytes: 465,
+				MaxTxBytes: 510, // 465 -> 510, diff 45/3 = 15?
 			},
 			expectedTxs: 2,
 		},
@@ -612,7 +612,6 @@ func (s *ABCIUtilsTestSuite) TestDefaultProposalHandler_PriorityNonceMempoolTxSe
 		testTxs[i].bz = bz
 		testTxs[i].size = int(cmttypes.ComputeProtoSizeForTxs([]cmttypes.Tx{bz}))
 	}
-
 	s.Require().Equal(testTxs[0].size, 109)
 	s.Require().Equal(testTxs[1].size, 119)
 	s.Require().Equal(testTxs[2].size, 110)

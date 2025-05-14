@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/cosmos/cosmos-sdk/crypto/keys/taproot"
 	"github.com/cosmos/cosmos-sdk/testutil/testdata"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/query"
@@ -591,8 +592,8 @@ func (suite *KeeperTestSuite) TestGRPCDenomOwners() {
 	suite.mockMintCoins(mintAcc)
 	suite.Require().NoError(keeper.MintCoins(ctx, minttypes.ModuleName, initCoins))
 
-	for i := range 10 {
-		addr := sdk.AccAddress(fmt.Sprintf("account-%d", i))
+	for range 10 {
+		addr := sdk.AccAddress(taproot.GenPrivKey().PubKey().Address().Bytes())
 
 		bal := sdk.NewCoins(sdk.NewCoin(
 			sdk.DefaultBondDenom,
@@ -816,8 +817,8 @@ func (suite *KeeperTestSuite) TestGRPCDenomOwnersByQuery() {
 	suite.mockMintCoins(mintAcc)
 	suite.Require().NoError(keeper.MintCoins(ctx, minttypes.ModuleName, newCoins))
 
-	for i := range 10 {
-		addr := sdk.AccAddress(fmt.Sprintf("account-%d", i))
+	for range 10 {
+		addr := sdk.AccAddress(taproot.GenPrivKey().PubKey().Address().Bytes())
 
 		bal := sdk.NewCoins(sdk.NewCoin(
 			sdk.DefaultBondDenom,

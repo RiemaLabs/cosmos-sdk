@@ -28,7 +28,7 @@ import (
 var (
 	bondedAcc    = authtypes.NewEmptyModuleAccount(stakingtypes.BondedPoolName)
 	notBondedAcc = authtypes.NewEmptyModuleAccount(stakingtypes.NotBondedPoolName)
-	PKs          = simtestutil.CreateTestPubKeys(500)
+	PKs          = simtestutil.CreateTestPubKeysEd25519(500)
 )
 
 type KeeperTestSuite struct {

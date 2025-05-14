@@ -17,8 +17,8 @@ var (
 	coinsPos   = sdk.NewCoins(sdk.NewInt64Coin(sdk.DefaultBondDenom, 1000))
 	coinsMulti = sdk.NewCoins(sdk.NewInt64Coin(sdk.DefaultBondDenom, 1000), sdk.NewInt64Coin("foo", 10000))
 	addrs      = []sdk.AccAddress{
-		sdk.AccAddress("test1"),
-		sdk.AccAddress("test2"),
+		sdk.AccAddress([]byte{0xdd, 0x74, 0x7d, 0x28, 0xa0, 0x3f, 0xe2, 0x3c, 0xdd, 0xed, 0x64, 0x97, 0x6c, 0xc1, 0xf5, 0x32, 0x6b, 0x19, 0x8f, 0x20, 0xc2, 0x1c, 0x30, 0x9c, 0x3c, 0x5b, 0x8e, 0x62, 0x7c, 0xc5, 0x99, 0x69}),
+		sdk.AccAddress([]byte{0x6c, 0x6a, 0x7f, 0x10, 0xe0, 0x67, 0xe, 0xd5, 0x6f, 0x1a, 0x4a, 0xf2, 0xc, 0x8a, 0xcb, 0xf6, 0xf4, 0x8a, 0x35, 0xb2, 0xe0, 0x5d, 0x96, 0x1d, 0xf6, 0x6b, 0x18, 0x2a, 0xd, 0xba, 0xf6, 0xad}),
 	}
 )
 
@@ -27,12 +27,12 @@ func init() {
 }
 
 func TestMsgDepositGetSignBytes(t *testing.T) {
-	addr := sdk.AccAddress("addr1")
+	addr := sdk.AccAddress([]byte{0xdd, 0x74, 0x7d, 0x28, 0xa0, 0x3f, 0xe2, 0x3c, 0xdd, 0xed, 0x64, 0x97, 0x6c, 0xc1, 0xf5, 0x32, 0x6b, 0x19, 0x8f, 0x20, 0xc2, 0x1c, 0x30, 0x9c, 0x3c, 0x5b, 0x8e, 0x62, 0x7c, 0xc5, 0x99, 0x69})
 	msg := v1.NewMsgDeposit(addr, 0, coinsPos)
 	pc := codec.NewProtoCodec(types.NewInterfaceRegistry())
 	res, err := pc.MarshalAminoJSON(msg)
 	require.NoError(t, err)
-	expected := `{"type":"cosmos-sdk/v1/MsgDeposit","value":{"amount":[{"amount":"1000","denom":"stake"}],"depositor":"cosmos1v9jxgu33kfsgr5","proposal_id":"0"}}`
+	expected := `{"type":"cosmos-sdk/v1/MsgDeposit","value":{"amount":[{"amount":"1000","denom":"stake"}],"depositor":"bc1pm468629q8l3reh0dvjtkes04xf43nreqcgwrp8putw8xylx9n95s0alkjs","proposal_id":"0"}}`
 	require.Equal(t, expected, string(res))
 }
 
@@ -53,7 +53,7 @@ func TestMsgSubmitProposal_GetSignBytes(t *testing.T) {
 			"gov/MsgVote",
 			"Proposal for a governance vote msg",
 			false,
-			`{"type":"cosmos-sdk/v1/MsgSubmitProposal","value":{"initial_deposit":[],"messages":[{"type":"cosmos-sdk/v1/MsgVote","value":{"option":1,"proposal_id":"1","voter":"cosmos1w3jhxap3gempvr"}}],"summary":"Proposal for a governance vote msg","title":"gov/MsgVote"}}`,
+			`{"type":"cosmos-sdk/v1/MsgSubmitProposal","value":{"initial_deposit":[],"messages":[{"type":"cosmos-sdk/v1/MsgVote","value":{"option":1,"proposal_id":"1","voter":"bc1pm468629q8l3reh0dvjtkes04xf43nreqcgwrp8putw8xylx9n95s0alkjs"}}],"summary":"Proposal for a governance vote msg","title":"gov/MsgVote"}}`,
 		},
 		{
 			"MsgSend",

@@ -22,7 +22,7 @@ type CodecOptions struct {
 func (o CodecOptions) NewInterfaceRegistry() codectypes.InterfaceRegistry {
 	accAddressPrefix := o.AccAddressPrefix
 	if accAddressPrefix == "" {
-		accAddressPrefix = "cosmos"
+		accAddressPrefix = "bc"
 	}
 
 	valAddressPrefix := o.ValAddressPrefix

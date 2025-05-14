@@ -296,7 +296,7 @@ func (suite *KeeperTestSuite) TestCancelProposal() {
 
 func TestMigrateProposalMessages(t *testing.T) {
 	content := v1beta1.NewTextProposal("Test", "description")
-	contentMsg, err := v1.NewLegacyContent(content, sdk.AccAddress("test1").String())
+	contentMsg, err := v1.NewLegacyContent(content, sdk.AccAddress([]byte{0x6c, 0x6a, 0x7f, 0x10, 0xe0, 0x67, 0xe, 0xd5, 0x6f, 0x1a, 0x4a, 0xf2, 0xc, 0x8a, 0xcb, 0xf6, 0xf4, 0x8a, 0x35, 0xb2, 0xe0, 0x5d, 0x96, 0x1d, 0xf6, 0x6b, 0x18, 0x2a, 0xd, 0xba, 0xf6, 0xad}).String())
 	require.NoError(t, err)
 	content, err = v1.LegacyContentFromMessage(contentMsg)
 	require.NoError(t, err)

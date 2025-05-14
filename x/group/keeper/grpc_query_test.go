@@ -17,6 +17,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/testutil"
 	simtestutil "github.com/cosmos/cosmos-sdk/testutil/sims"
 	"github.com/cosmos/cosmos-sdk/types"
+	sdk "github.com/cosmos/cosmos-sdk/types"
 	moduletestutil "github.com/cosmos/cosmos-sdk/types/module/testutil"
 	"github.com/cosmos/cosmos-sdk/types/query"
 	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
@@ -154,7 +155,7 @@ func TestQueryGroupPolicyInfo(t *testing.T) {
 		{
 			name:      "invalid address",
 			req:       group.QueryGroupPolicyInfoRequest{Address: "invalid address"},
-			expErrMsg: "decoding bech32 failed",
+			expErrMsg: "decoded address is of unknown format",
 		},
 	}
 
@@ -239,7 +240,7 @@ func TestQueryGroupsByAdmin(t *testing.T) {
 		{
 			name:      "invalid address",
 			req:       group.QueryGroupsByAdminRequest{Admin: "invalid address"},
-			expErrMsg: "decoding bech32 failed",
+			expErrMsg: "decoded address is of unknown format",
 		},
 	}
 
@@ -324,7 +325,7 @@ func TestQueryGroupPoliciesByAdmin(t *testing.T) {
 		{
 			name:      "invalid address",
 			req:       group.QueryGroupPoliciesByAdminRequest{Admin: "invalid address"},
-			expErrMsg: "decoding bech32 failed",
+			expErrMsg: "decoded address is of unknown format",
 		},
 	}
 

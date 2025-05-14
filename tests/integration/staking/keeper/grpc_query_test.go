@@ -565,7 +565,7 @@ func TestGRPCQueryUnbondingDelegation(t *testing.T) {
 			"invalid validator address",
 			func() {
 				req = &types.QueryUnbondingDelegationRequest{
-					DelegatorAddr: addrAcc2.String(), ValidatorAddr: sdk.AccAddress([]byte("invalid")).String(),
+					DelegatorAddr: addrAcc2.String(), ValidatorAddr: sdk.ConsAddress([]byte("invalid")).String(),
 				}
 			},
 			false,

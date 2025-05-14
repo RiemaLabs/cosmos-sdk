@@ -130,7 +130,7 @@ func (suite *KeeperTestSuite) TestCommunityPoolSpend() {
 					Return(address.NewTaprootCodec(&sdk.BitcoinNetParams)).AnyTimes()
 			},
 			expErr:    true,
-			expErrMsg: "decoding bech32 failed",
+			expErrMsg: "decoded address is of unknown format",
 		},
 		{
 			name: "valid community pool spend",
@@ -204,7 +204,7 @@ func (suite *KeeperTestSuite) TestCreateContinuousFund() {
 					Return(address.NewTaprootCodec(&sdk.BitcoinNetParams)).AnyTimes()
 			},
 			expErr:    true,
-			expErrMsg: "decoding bech32 failed",
+			expErrMsg: "decoded address is of unknown format",
 		},
 		{
 			name: "continuous fund already exists",
@@ -363,7 +363,7 @@ func (suite *KeeperTestSuite) TestCancelContinuousFund() {
 					Return(address.NewTaprootCodec(&sdk.BitcoinNetParams)).AnyTimes()
 			},
 			expErr:    true,
-			expErrMsg: "decoding bech32 failed:",
+			expErrMsg: "decoded address is of unknown format",
 		},
 		{
 			name: "remove a continuous fund that already was removed - error does not exist",

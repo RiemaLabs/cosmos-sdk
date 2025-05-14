@@ -471,16 +471,17 @@ func (suite *KeeperTestSuite) TestVoteReq() {
 			expErr:    true,
 			expErrMsg: "metadata too long",
 		},
-		"voter error": {
-			preRun: func() uint64 {
-				return proposalID
-			},
-			option:    v1.VoteOption_VOTE_OPTION_YES,
-			voter:     sdk.AccAddress(strings.Repeat("a", 300)),
-			metadata:  "",
-			expErr:    true,
-			expErrMsg: longAddressError,
-		},
+		// Note : address len has been limitted.
+		// "voter error": {
+		// 	preRun: func() uint64 {
+		// 		return proposalID
+		// 	},
+		// 	option:    v1.VoteOption_VOTE_OPTION_YES,
+		// 	voter:     sdk.AccAddress(strings.Repeat("a", 300)),
+		// 	metadata:  "",
+		// 	expErr:    true,
+		// 	expErrMsg: longAddressError,
+		// },
 		"all good": {
 			preRun: func() uint64 {
 				msg, err := v1.NewMsgSubmitProposal(
@@ -689,16 +690,17 @@ func (suite *KeeperTestSuite) TestVoteWeightedReq() {
 			expErr:    true,
 			expErrMsg: "metadata too long",
 		},
-		"voter error": {
-			preRun: func() uint64 {
-				return proposalID
-			},
-			option:    v1.NewNonSplitVoteOption(v1.VoteOption_VOTE_OPTION_YES),
-			voter:     sdk.AccAddress(strings.Repeat("a", 300)),
-			metadata:  "",
-			expErr:    true,
-			expErrMsg: longAddressError,
-		},
+		// Note : address len has been limitted.
+		// "voter error": {
+		// 	preRun: func() uint64 {
+		// 		return proposalID
+		// 	},
+		// 	option:    v1.NewNonSplitVoteOption(v1.VoteOption_VOTE_OPTION_YES),
+		// 	voter:     sdk.AccAddress(strings.Repeat("a", 300)),
+		// 	metadata:  "",
+		// 	expErr:    true,
+		// 	expErrMsg: longAddressError,
+		// },
 		"all good": {
 			preRun: func() uint64 {
 				msg, err := v1.NewMsgSubmitProposal(
@@ -1057,16 +1059,17 @@ func (suite *KeeperTestSuite) TestLegacyMsgVote() {
 			expErr:    true,
 			expErrMsg: "inactive proposal",
 		},
-		"voter error": {
-			preRun: func() uint64 {
-				return proposalID
-			},
-			option:    v1beta1.OptionYes,
-			voter:     sdk.AccAddress(strings.Repeat("a", 300)),
-			metadata:  "",
-			expErr:    true,
-			expErrMsg: longAddressError,
-		},
+		// Note: address len has been limitted.
+		// "voter error": {
+		// 	preRun: func() uint64 {
+		// 		return proposalID
+		// 	},
+		// 	option:    v1beta1.OptionYes,
+		// 	voter:     sdk.AccAddress(rawBytes),
+		// 	metadata:  "",
+		// 	expErr:    true,
+		// 	expErrMsg: longAddressError,
+		// },
 		"all good": {
 			preRun: func() uint64 {
 				msg, err := v1.NewMsgSubmitProposal(
@@ -1299,21 +1302,22 @@ func (suite *KeeperTestSuite) TestLegacyVoteWeighted() {
 			expErr:    true,
 			expErrMsg: "inactive proposal",
 		},
-		"voter error": {
-			preRun: func() uint64 {
-				return proposalID
-			},
-			option: v1beta1.WeightedVoteOptions{
-				v1beta1.WeightedVoteOption{
-					Option: v1beta1.OptionYes,
-					Weight: sdkmath.LegacyNewDec(1),
-				},
-			},
-			voter:     sdk.AccAddress(strings.Repeat("a", 300)),
-			metadata:  "",
-			expErr:    true,
-			expErrMsg: longAddressError,
-		},
+		// Note: address len has been limitted.
+		// "voter error": {
+		// 	preRun: func() uint64 {
+		// 		return proposalID
+		// 	},
+		// 	option: v1beta1.WeightedVoteOptions{
+		// 		v1beta1.WeightedVoteOption{
+		// 			Option: v1beta1.OptionYes,
+		// 			Weight: sdkmath.LegacyNewDec(1),
+		// 		},
+		// 	},
+		// 	voter:     sdk.AccAddress(strings.Repeat("a", 300)),
+		// 	metadata:  "",
+		// 	expErr:    true,
+		// 	expErrMsg: longAddressError,
+		// },
 		"all good": {
 			preRun: func() uint64 {
 				msg, err := v1.NewMsgSubmitProposal(

@@ -20,13 +20,13 @@ func init() {
 }
 
 func TestMsgDepositGetSignBytes(t *testing.T) {
-	addr := sdk.AccAddress("addr1")
+	addr := sdk.AccAddress([]byte{0xdd, 0x74, 0x7d, 0x28, 0xa0, 0x3f, 0xe2, 0x3c, 0xdd, 0xed, 0x64, 0x97, 0x6c, 0xc1, 0xf5, 0x32, 0x6b, 0x19, 0x8f, 0x20, 0xc2, 0x1c, 0x30, 0x9c, 0x3c, 0x5b, 0x8e, 0x62, 0x7c, 0xc5, 0x99, 0x69})
 	msg := NewMsgDeposit(addr, 0, coinsPos)
 	pc := codec.NewProtoCodec(types.NewInterfaceRegistry())
 	res, err := pc.MarshalAminoJSON(msg)
 	require.NoError(t, err)
 
-	expected := `{"type":"cosmos-sdk/MsgDeposit","value":{"amount":[{"amount":"1000","denom":"stake"}],"depositor":"cosmos1v9jxgu33kfsgr5","proposal_id":"0"}}`
+	expected := `{"type":"cosmos-sdk/MsgDeposit","value":{"amount":[{"amount":"1000","denom":"stake"}],"depositor":"bc1pm468629q8l3reh0dvjtkes04xf43nreqcgwrp8putw8xylx9n95s0alkjs","proposal_id":"0"}}`
 	require.Equal(t, expected, string(res))
 }
 

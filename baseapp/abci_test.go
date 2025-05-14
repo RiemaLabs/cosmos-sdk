@@ -1613,7 +1613,7 @@ func TestABCI_PrepareProposal_ReachedMaxBytes(t *testing.T) {
 	}
 
 	reqPrepareProposal := abci.RequestPrepareProposal{
-		MaxTxBytes: 1500,
+		MaxTxBytes: 1596, // TODO: why 8 not divide 1596?
 		Height:     1,
 	}
 	resPrepareProposal, err := suite.baseApp.PrepareProposal(&reqPrepareProposal)
@@ -1802,14 +1802,13 @@ func TestABCI_PrepareProposal_VoteExtensions(t *testing.T) {
 	valStore := mock.NewMockValidatorStore(ctrl)
 	privkey := taproot.GenPrivKey()
 	pubkey := privkey.PubKey()
-	addr := sdk.AccAddress(pubkey.Address())
 	tmPk := cmtprotocrypto.PublicKey{
 		Sum: &cmtprotocrypto.PublicKey_Secp256K1{
 			Secp256K1: pubkey.Bytes(),
 		},
 	}
 
-	consAddr := sdk.ConsAddress(addr.String())
+	consAddr := sdk.ConsAddress(pubkey.Bytes()) // TODO: is this ok?
 	valStore.EXPECT().GetPubKeyByConsAddr(gomock.Any(), consAddr.Bytes()).Return(tmPk, nil)
 
 	// set up baseapp

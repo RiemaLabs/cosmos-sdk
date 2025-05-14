@@ -25,14 +25,14 @@ func TestStoreMigration(t *testing.T) {
 	ctx := sdktestuil.DefaultContext(stakingKey, tStakingKey)
 	store := ctx.KVStore(stakingKey)
 
-	_, pk1, addr1 := testdata.KeyTestPubAddr()
+	_, pk1, addr1 := testdata.KeyTestPubAddrSecp256R1(t)
 	valAddr1 := sdk.ValAddress(addr1)
 	val := testutil.NewValidator(t, valAddr1, pk1)
-	_, _, addr2 := testdata.KeyTestPubAddr()
+	_, _, addr2 := testdata.KeyTestPubAddrSecp256R1(t)
 	valAddr2 := sdk.ValAddress(addr2)
-	_, _, addr3 := testdata.KeyTestPubAddr()
+	_, _, addr3 := testdata.KeyTestPubAddrSecp256R1(t)
 	consAddr := sdk.ConsAddress(addr3.String())
-	_, _, addr4 := testdata.KeyTestPubAddr()
+	_, _, addr4 := testdata.KeyTestPubAddrSecp256R1(t)
 	now := time.Now()
 	// Use dummy value for all keys.
 	value := []byte("foo")
