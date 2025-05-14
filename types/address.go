@@ -45,7 +45,8 @@ const (
 	Purpose = 44
 
 	// CoinType is the ATOM coin type as defined in SLIP44 (https://github.com/satoshilabs/slips/blob/master/slip-0044.md)
-	CoinType = 118
+	// @nubit: We use 0 as the coin type for Taproot addresses.
+	CoinType = 0
 
 	// FullFundraiserPath is the parts of the BIP44 HD path that are fixed by
 	// what we used during the ATOM fundraiser.
