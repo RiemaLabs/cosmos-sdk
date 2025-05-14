@@ -120,7 +120,7 @@ func TestBuildSimTx(t *testing.T) {
 	require.NoError(t, err)
 
 	path := hd.CreateHDPath(118, 0, 0).String()
-	_, _, err = kb.NewMnemonic("test_key1", keyring.English, path, keyring.DefaultBIP39Passphrase, hd.Secp256k1)
+	_, _, err = kb.NewMnemonic("test_key1", keyring.English, path, keyring.DefaultBIP39Passphrase, hd.Taproot)
 	require.NoError(t, err)
 
 	txf := mockTxFactory(txCfg).WithSignMode(defaultSignMode).WithKeybase(kb)

@@ -39,7 +39,7 @@ func (suite *KeeperTestSuite) TestGrantAllowance() {
 				}
 			},
 			true,
-			"decoding bech32 failed",
+			"decoded address is of unknown format",
 		},
 		{
 			"invalid grantee address",
@@ -54,7 +54,7 @@ func (suite *KeeperTestSuite) TestGrantAllowance() {
 				}
 			},
 			true,
-			"decoding bech32 failed",
+			"decoded address is of unknown format",
 		},
 		{
 			"valid: grantee account doesn't exist",
@@ -208,7 +208,7 @@ func (suite *KeeperTestSuite) TestRevokeAllowance() {
 			},
 			func() {},
 			true,
-			"decoding bech32 failed",
+			"decoded address is of unknown format",
 		},
 		{
 			"error: invalid grantee",
@@ -218,7 +218,7 @@ func (suite *KeeperTestSuite) TestRevokeAllowance() {
 			},
 			func() {},
 			true,
-			"decoding bech32 failed",
+			"decoded address is of unknown format",
 		},
 		{
 			"error: fee allowance not found",

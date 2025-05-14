@@ -6,14 +6,14 @@ import (
 
 	"github.com/stretchr/testify/require"
 
-	"github.com/cosmos/cosmos-sdk/crypto/keys/secp256k1"
+	"github.com/cosmos/cosmos-sdk/crypto/keys/taproot"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
 )
 
 var (
-	memberPub  = secp256k1.GenPrivKey().PubKey()
-	accPub     = secp256k1.GenPrivKey().PubKey()
+	memberPub  = taproot.GenPrivKey().PubKey()
+	accPub     = taproot.GenPrivKey().PubKey()
 	accAddr    = sdk.AccAddress(accPub.Address())
 	memberAddr = sdk.AccAddress(memberPub.Address())
 )

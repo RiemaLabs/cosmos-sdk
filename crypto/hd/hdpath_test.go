@@ -20,13 +20,13 @@ func mnemonicToSeed(mnemonic string) []byte {
 
 func TestStringifyFundraiserPathParams(t *testing.T) {
 	path := hd.NewFundraiserParams(4, types.CoinType, 22)
-	require.Equal(t, "m/44'/118'/4'/0/22", path.String())
+	require.Equal(t, "m/86'/0'/4'/0/22", path.String())
 
 	path = hd.NewFundraiserParams(4, types.CoinType, 57)
-	require.Equal(t, "m/44'/118'/4'/0/57", path.String())
+	require.Equal(t, "m/86'/0'/4'/0/57", path.String())
 
 	path = hd.NewFundraiserParams(4, 12345, 57)
-	require.Equal(t, "m/44'/12345'/4'/0/57", path.String())
+	require.Equal(t, "m/86'/12345'/4'/0/57", path.String())
 }
 
 func TestPathToArray(t *testing.T) {
@@ -101,9 +101,9 @@ func TestCreateHDPath(t *testing.T) {
 		args args
 		want hd.BIP44Params
 	}{
-		{"m/44'/0'/0'/0/0", args{0, 0, 0}, hd.BIP44Params{Purpose: 44}},
-		{"m/44'/114'/0'/0/0", args{114, 0, 0}, hd.BIP44Params{Purpose: 44, CoinType: 114, Account: 0, AddressIndex: 0}},
-		{"m/44'/114'/1'/1/0", args{114, 1, 1}, hd.BIP44Params{Purpose: 44, CoinType: 114, Account: 1, AddressIndex: 1}},
+		{"m/86'/0'/0'/0/0", args{0, 0, 0}, hd.BIP44Params{Purpose: 86}},
+		{"m/86'/114'/0'/0/0", args{114, 0, 0}, hd.BIP44Params{Purpose: 86, CoinType: 114, Account: 0, AddressIndex: 0}},
+		{"m/86'/114'/1'/1/0", args{114, 1, 1}, hd.BIP44Params{Purpose: 86, CoinType: 114, Account: 1, AddressIndex: 1}},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {

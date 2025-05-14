@@ -78,7 +78,7 @@ func (s *CLITestSuite) SetupSuite() {
 	s.clientCtx = ctxGen()
 
 	// create a new account
-	info, _, err := s.clientCtx.Keyring.NewMnemonic("NewValidator", keyring.English, sdk.FullFundraiserPath, keyring.DefaultBIP39Passphrase, hd.Secp256k1)
+	info, _, err := s.clientCtx.Keyring.NewMnemonic("NewValidator", keyring.English, sdk.FullFundraiserPath, keyring.DefaultBIP39Passphrase, hd.Taproot)
 	s.Require().NoError(err)
 
 	pk, err := info.GetPubKey()
@@ -988,7 +988,7 @@ func (s *CLITestSuite) TestTxUpdateGroupPolicyDecisionPolicy() {
 				commonFlags...,
 			),
 			fmt.Sprintf("%s %s %s", newAdmin.Address.String(), "invalid", thresholdDecisionPolicy.Name()),
-			"decoding bech32 failed",
+			"decoded address is of unknown format",
 		},
 	}
 

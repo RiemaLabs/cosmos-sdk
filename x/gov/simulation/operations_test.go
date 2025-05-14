@@ -161,7 +161,7 @@ func TestSimulateMsgSubmitProposal(t *testing.T) {
 	err = proto.Unmarshal(operationMsg.Msg, &msg)
 	require.NoError(t, err)
 	require.True(t, operationMsg.OK)
-	require.Equal(t, "cosmos1ghekyjucln7y67ntx7cf27m9dpuxxemn4c8g4r", msg.Proposer)
+	require.Equal(t, "bc1p5k733426s65ndryk4u3mxrt727s8dax0mmkf5q63xpyj8x0tdn4qctjjsu", msg.Proposer)
 	require.NotEqual(t, len(msg.InitialDeposit), 0)
 	require.Equal(t, "47841094stake", msg.InitialDeposit[0].String())
 	require.Equal(t, simulation.TypeMsgSubmitProposal, sdk.MsgTypeURL(&msg))
@@ -199,7 +199,7 @@ func TestSimulateMsgSubmitLegacyProposal(t *testing.T) {
 	require.NoError(t, err)
 
 	require.True(t, operationMsg.OK)
-	require.Equal(t, "cosmos1p8wcgrjr4pjju90xg6u9cgq55dxwq8j7u4x9a0", msg.Proposer)
+	require.Equal(t, "bc1ptv9830e5ecllsn4u9h5mkd37u47zjsqswt75lf3jtsxr3mgkcucqd7gw3j", msg.Proposer)
 	require.NotEqual(t, len(msg.InitialDeposit), 0)
 	require.Equal(t, "25166256stake", msg.InitialDeposit[0].String())
 	require.Equal(t, "title-3: ZBSpYuLyYggwexjxusrBqDOTtGTOWeLrQKjLxzIivHSlcxgdXhhuTSkuxKGLwQvuyNhYFmBZHeAerqyNEUzXPFGkqEGqiQWIXnku",
@@ -279,7 +279,7 @@ func TestSimulateMsgDeposit(t *testing.T) {
 	params, _ := suite.GovKeeper.Params.Get(ctx)
 	depositPeriod := params.MaxDepositPeriod
 
-	proposal, err := v1.NewProposal([]sdk.Msg{contentMsg}, 1, submitTime, submitTime.Add(*depositPeriod), "", "text proposal", "description", sdk.AccAddress("cosmos1ghekyjucln7y67ntx7cf27m9dpuxxemn4c8g4r"), false)
+	proposal, err := v1.NewProposal([]sdk.Msg{contentMsg}, 1, submitTime, submitTime.Add(*depositPeriod), "", "text proposal", "description", sdk.AccAddress([]byte{0xdd, 0x74, 0x7d, 0x28, 0xa0, 0x3f, 0xe2, 0x3c, 0xdd, 0xed, 0x64, 0x97, 0x6c, 0xc1, 0xf5, 0x32, 0x6b, 0x19, 0x8f, 0x20, 0xc2, 0x1c, 0x30, 0x9c, 0x3c, 0x5b, 0x8e, 0x62, 0x7c, 0xc5, 0x99, 0x69}), false)
 	require.NoError(t, err)
 
 	require.NoError(t, suite.GovKeeper.SetProposal(ctx, proposal))
@@ -300,7 +300,7 @@ func TestSimulateMsgDeposit(t *testing.T) {
 	require.NoError(t, err)
 	require.True(t, operationMsg.OK)
 	require.Equal(t, uint64(1), msg.ProposalId)
-	require.Equal(t, "cosmos1ghekyjucln7y67ntx7cf27m9dpuxxemn4c8g4r", msg.Depositor)
+	require.Equal(t, "bc1p5k733426s65ndryk4u3mxrt727s8dax0mmkf5q63xpyj8x0tdn4qctjjsu", msg.Depositor)
 	require.NotEqual(t, len(msg.Amount), 0)
 	require.Equal(t, "560969stake", msg.Amount[0].String())
 	require.Equal(t, simulation.TypeMsgDeposit, sdk.MsgTypeURL(&msg))

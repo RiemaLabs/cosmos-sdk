@@ -8,6 +8,7 @@ import (
 	storetypes "cosmossdk.io/store/types"
 
 	"github.com/cosmos/cosmos-sdk/codec"
+	"github.com/cosmos/cosmos-sdk/crypto/keys/taproot"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/address"
 	"github.com/cosmos/cosmos-sdk/types/query"
@@ -15,7 +16,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/x/bank/types"
 )
 
-var addr1 = sdk.AccAddress([]byte("addr1"))
+var addr1 = sdk.AccAddress(taproot.GenPrivKey().PubKey().Address().Bytes())
 
 func (s *paginationTestSuite) TestFilteredPaginations() {
 	var balances sdk.Coins
@@ -30,7 +31,7 @@ func (s *paginationTestSuite) TestFilteredPaginations() {
 	}
 
 	balances = balances.Sort()
-	addr1 := sdk.AccAddress([]byte("addr1"))
+	addr1 := sdk.AccAddress(taproot.GenPrivKey().PubKey().Address().Bytes())
 	acc1 := s.accountKeeper.NewAccountWithAddress(s.ctx, addr1)
 	s.accountKeeper.SetAccount(s.ctx, acc1)
 	s.Require().NoError(testutil.FundAccount(s.ctx, s.bankKeeper, addr1, balances))
@@ -103,7 +104,7 @@ func (s *paginationTestSuite) TestReverseFilteredPaginations() {
 	}
 
 	balances = balances.Sort()
-	addr1 := sdk.AccAddress([]byte("addr1"))
+	addr1 := sdk.AccAddress(taproot.GenPrivKey().PubKey().Address().Bytes())
 	acc1 := s.accountKeeper.NewAccountWithAddress(s.ctx, addr1)
 	s.accountKeeper.SetAccount(s.ctx, acc1)
 	s.Require().NoError(testutil.FundAccount(s.ctx, s.bankKeeper, addr1, balances))
@@ -181,7 +182,7 @@ func (s *paginationTestSuite) TestFilteredPaginate() {
 	}
 
 	balances = balances.Sort()
-	addr1 := sdk.AccAddress([]byte("addr1"))
+	addr1 := sdk.AccAddress(taproot.GenPrivKey().PubKey().Address().Bytes())
 	acc1 := s.accountKeeper.NewAccountWithAddress(s.ctx, addr1)
 	s.accountKeeper.SetAccount(s.ctx, acc1)
 	err := testutil.FundAccount(s.ctx, s.bankKeeper, addr1, balances)
@@ -257,7 +258,7 @@ func (s *paginationTestSuite) TestFilteredPaginationsNextKey() {
 	}
 
 	balances = balances.Sort()
-	addr1 := sdk.AccAddress([]byte("addr1"))
+	addr1 := sdk.AccAddress(taproot.GenPrivKey().PubKey().Address().Bytes())
 	acc1 := s.accountKeeper.NewAccountWithAddress(s.ctx, addr1)
 	s.accountKeeper.SetAccount(s.ctx, acc1)
 	s.Require().NoError(testutil.FundAccount(s.ctx, s.bankKeeper, addr1, balances))

@@ -23,6 +23,7 @@ import (
 
 	"github.com/cosmos/cosmos-sdk/baseapp"
 	"github.com/cosmos/cosmos-sdk/codec/address"
+	"github.com/cosmos/cosmos-sdk/crypto/keys/taproot"
 	"github.com/cosmos/cosmos-sdk/runtime"
 	"github.com/cosmos/cosmos-sdk/testutil"
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -58,14 +59,14 @@ var (
 	mintAcc      = authtypes.NewEmptyModuleAccount(minttypes.ModuleName, authtypes.Minter)
 	multiPermAcc = authtypes.NewEmptyModuleAccount(multiPerm, authtypes.Burner, authtypes.Minter, authtypes.Staking)
 
-	baseAcc = authtypes.NewBaseAccountWithAddress(sdk.AccAddress([]byte("baseAcc")))
+	baseAcc = authtypes.NewBaseAccountWithAddress(sdk.AccAddress([]byte{0x6c, 0x6a, 0x7f, 0x10, 0xe0, 0x67, 0xe, 0xd5, 0x6f, 0x1a, 0x4a, 0xf2, 0xc, 0x8a, 0xcb, 0xf6, 0xf4, 0x8a, 0x35, 0xb2, 0xe0, 0x5d, 0x96, 0x1d, 0xf6, 0x6b, 0x18, 0x2a, 0xd, 0xba, 0xf6, 0xad}))
 
 	accAddrs = []sdk.AccAddress{
-		sdk.AccAddress([]byte("addr1_______________")),
-		sdk.AccAddress([]byte("addr2_______________")),
-		sdk.AccAddress([]byte("addr3_______________")),
-		sdk.AccAddress([]byte("addr4_______________")),
-		sdk.AccAddress([]byte("addr5_______________")),
+		sdk.AccAddress(taproot.GenPrivKey().PubKey().Address().Bytes()),
+		sdk.AccAddress(taproot.GenPrivKey().PubKey().Address().Bytes()),
+		sdk.AccAddress(taproot.GenPrivKey().PubKey().Address().Bytes()),
+		sdk.AccAddress(taproot.GenPrivKey().PubKey().Address().Bytes()),
+		sdk.AccAddress(taproot.GenPrivKey().PubKey().Address().Bytes()),
 	}
 
 	// The default power validators are initialized to have within tests

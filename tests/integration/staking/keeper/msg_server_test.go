@@ -124,7 +124,7 @@ func TestCancelUnbondingDelegation(t *testing.T) {
 				Amount:           unbondingAmount,
 				CreationHeight:   0,
 			},
-			expErrMsg: "decoding bech32 failed",
+			expErrMsg: "decoded address is of unknown format",
 		},
 		{
 			name:      "invalid amount",

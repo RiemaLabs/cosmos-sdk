@@ -49,8 +49,8 @@ func (suite *KeeperTestSuite) TestExportGenesis() {
 }
 
 func (suite *KeeperTestSuite) getTestBalancesAndSupply() ([]types.Balance, sdk.Coins) {
-	addr2, _ := sdk.AccAddressFromBech32("cosmos1f9xjhxm0plzrh9cskf4qee4pc2xwp0n0556gh0")
-	addr1, _ := sdk.AccAddressFromBech32("cosmos1t5u0jfg3ljsjrh2m9e47d4ny2hea7eehxrzdgd")
+	addr2, _ := sdk.AccAddressFromBech32("bc1ptz04djc70vnrny90h6cnw5zh2tagj6slwecrlfmnu3wz39833yesdd4fv8")
+	addr1, _ := sdk.AccAddressFromBech32("bc1pu7mcrmkf0j8g8tvy04f8pg9ehsn2jsmxjc0gmmuleqd36mpdy58q0fejl7")
 	addr1Balance := sdk.Coins{sdk.NewInt64Coin("testcoin3", 10)}
 	addr2Balance := sdk.Coins{sdk.NewInt64Coin("testcoin1", 32), sdk.NewInt64Coin("testcoin2", 34)}
 
@@ -79,9 +79,9 @@ func (suite *KeeperTestSuite) TestTotalSupply() {
 	// Prepare some test data.
 	defaultGenesis := types.DefaultGenesisState()
 	balances := []types.Balance{
-		{Coins: sdk.NewCoins(sdk.NewCoin("foocoin", sdkmath.NewInt(1))), Address: "cosmos1f9xjhxm0plzrh9cskf4qee4pc2xwp0n0556gh0"},
-		{Coins: sdk.NewCoins(sdk.NewCoin("barcoin", sdkmath.NewInt(1))), Address: "cosmos1t5u0jfg3ljsjrh2m9e47d4ny2hea7eehxrzdgd"},
-		{Coins: sdk.NewCoins(sdk.NewCoin("foocoin", sdkmath.NewInt(10)), sdk.NewCoin("barcoin", sdkmath.NewInt(20))), Address: "cosmos1m3h30wlvsf8llruxtpukdvsy0km2kum8g38c8q"},
+		{Coins: sdk.NewCoins(sdk.NewCoin("foocoin", sdkmath.NewInt(1))), Address: "bc1phanqsmw54zx0mek25huzh0fymmjguccre876zxuqc4mp4g6fpdmq2atkay"},
+		{Coins: sdk.NewCoins(sdk.NewCoin("barcoin", sdkmath.NewInt(1))), Address: "bc1pds678v6ej9ksqvnzcfalfmzyys97nwzksa489e7ksk8ew9867lqqhhp76x"},
+		{Coins: sdk.NewCoins(sdk.NewCoin("foocoin", sdkmath.NewInt(10)), sdk.NewCoin("barcoin", sdkmath.NewInt(20))), Address: "bc1pf9wet3sqq7y2tgsn7tpaw9eecs5086n9nhe8egumajhefv64cw8qv5m33m"},
 	}
 	totalSupply := sdk.NewCoins(sdk.NewCoin("foocoin", sdkmath.NewInt(11)), sdk.NewCoin("barcoin", sdkmath.NewInt(21)))
 

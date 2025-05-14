@@ -138,7 +138,7 @@ func TestInitGenesis(t *testing.T) {
 				err := f.feegrantKeeper.InitGenesis(f.ctx, &feegrant.GenesisState{Allowances: tc.feeAllowances})
 				assert.ErrorContains(t, err, "failed to get allowance: no allowance")
 			} else {
-				expectedErr := errors.New("decoding bech32 failed")
+				expectedErr := errors.New("decoded address is of unknown format")
 				err := f.feegrantKeeper.InitGenesis(f.ctx, &feegrant.GenesisState{Allowances: tc.feeAllowances})
 				assert.ErrorContains(t, err, expectedErr.Error())
 			}

@@ -16,7 +16,7 @@ import (
 
 	"github.com/cosmos/cosmos-sdk/baseapp"
 	codectypes "github.com/cosmos/cosmos-sdk/codec/types"
-	"github.com/cosmos/cosmos-sdk/crypto/keys/ed25519"
+	"github.com/cosmos/cosmos-sdk/crypto/keys/taproot"
 	"github.com/cosmos/cosmos-sdk/runtime"
 	"github.com/cosmos/cosmos-sdk/testutil"
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -73,7 +73,7 @@ func (suite *KeeperTestSuite) SetupTest() {
 		storeService,
 		types.ProtoBaseAccount,
 		getMaccPerms(),
-		authcodec.NewBech32Codec("cosmos"),
+		authcodec.NewTaprootCodec(&sdk.BitcoinNetParams),
 		"cosmos",
 		types.NewModuleAddress("gov").String(),
 	)
@@ -127,8 +127,8 @@ func (suite *KeeperTestSuite) TestInitGenesis() {
 	suite.SetupTest() // reset
 	ctx = suite.ctx
 	// Fix duplicate account numbers
-	pubKey1 := ed25519.GenPrivKey().PubKey()
-	pubKey2 := ed25519.GenPrivKey().PubKey()
+	pubKey1 := taproot.GenPrivKey().PubKey()
+	pubKey2 := taproot.GenPrivKey().PubKey()
 	accts := []sdk.AccountI{
 		&types.BaseAccount{
 			Address:       sdk.AccAddress(pubKey1.Address()).String(),

@@ -75,7 +75,7 @@ func (s *KeeperTestSuite) TestMsgCreateValidator() {
 				},
 				MinSelfDelegation: math.NewInt(1),
 				DelegatorAddress:  Addr.String(),
-				ValidatorAddress:  sdk.AccAddress([]byte("invalid")).String(),
+				ValidatorAddress:  sdk.ConsAddress([]byte("invalid")).String(),
 				Pubkey:            pubkey,
 				Value:             sdk.NewInt64Coin("stake", 10000),
 			},
@@ -280,7 +280,7 @@ func (s *KeeperTestSuite) TestMsgEditValidator() {
 				Description: stakingtypes.Description{
 					Moniker: "TestValidator",
 				},
-				ValidatorAddress:  sdk.AccAddress([]byte("invalid")).String(),
+				ValidatorAddress:  sdk.ConsAddress([]byte("invalid")).String(),
 				CommissionRate:    &newRate,
 				MinSelfDelegation: &newSelfDel,
 			},
@@ -441,7 +441,7 @@ func (s *KeeperTestSuite) TestMsgDelegate() {
 			name: "invalid validator",
 			input: &stakingtypes.MsgDelegate{
 				DelegatorAddress: Addr.String(),
-				ValidatorAddress: sdk.AccAddress([]byte("invalid")).String(),
+				ValidatorAddress: sdk.ConsAddress([]byte("invalid")).String(),
 				Amount:           sdk.Coin{Denom: sdk.DefaultBondDenom, Amount: keeper.TokensFromConsensusPower(s.ctx, int64(100))},
 			},
 			expErr:    true,
@@ -465,7 +465,7 @@ func (s *KeeperTestSuite) TestMsgDelegate() {
 				Amount:           sdk.Coin{Denom: sdk.DefaultBondDenom, Amount: keeper.TokensFromConsensusPower(s.ctx, int64(100))},
 			},
 			expErr:    true,
-			expErrMsg: "invalid delegator address: decoding bech32 failed",
+			expErrMsg: "invalid delegator address: decoded address is of unknown format",
 		},
 		{
 			name: "validator does not exist",
@@ -578,7 +578,7 @@ func (s *KeeperTestSuite) TestMsgBeginRedelegate() {
 			name: "invalid source validator",
 			input: &stakingtypes.MsgBeginRedelegate{
 				DelegatorAddress:    Addr.String(),
-				ValidatorSrcAddress: sdk.AccAddress([]byte("invalid")).String(),
+				ValidatorSrcAddress: sdk.ConsAddress([]byte("invalid")).String(),
 				ValidatorDstAddress: dstValAddr.String(),
 				Amount:              sdk.NewCoin(sdk.DefaultBondDenom, shares.RoundInt()),
 			},
@@ -605,14 +605,14 @@ func (s *KeeperTestSuite) TestMsgBeginRedelegate() {
 				Amount:              sdk.Coin{Denom: sdk.DefaultBondDenom, Amount: keeper.TokensFromConsensusPower(s.ctx, int64(100))},
 			},
 			expErr:    true,
-			expErrMsg: "invalid delegator address: decoding bech32 failed: invalid bech32 string length 7",
+			expErrMsg: "invalid delegator address: decoded address is of unknown format",
 		},
 		{
 			name: "invalid destination validator",
 			input: &stakingtypes.MsgBeginRedelegate{
 				DelegatorAddress:    Addr.String(),
 				ValidatorSrcAddress: srcValAddr.String(),
-				ValidatorDstAddress: sdk.AccAddress([]byte("invalid")).String(),
+				ValidatorDstAddress: sdk.ConsAddress([]byte("invalid")).String(),
 				Amount:              sdk.NewCoin(sdk.DefaultBondDenom, shares.RoundInt()),
 			},
 			expErr:    true,
@@ -731,7 +731,7 @@ func (s *KeeperTestSuite) TestMsgUndelegate() {
 			name: "invalid validator",
 			input: &stakingtypes.MsgUndelegate{
 				DelegatorAddress: Addr.String(),
-				ValidatorAddress: sdk.AccAddress([]byte("invalid")).String(),
+				ValidatorAddress: sdk.ConsAddress([]byte("invalid")).String(),
 				Amount:           sdk.NewCoin(sdk.DefaultBondDenom, shares.RoundInt()),
 			},
 			expErr:    true,
@@ -755,7 +755,7 @@ func (s *KeeperTestSuite) TestMsgUndelegate() {
 				Amount:           sdk.Coin{Denom: sdk.DefaultBondDenom, Amount: shares.RoundInt()},
 			},
 			expErr:    true,
-			expErrMsg: "invalid delegator address: decoding bech32 failed",
+			expErrMsg: "invalid delegator address: decoded address is of unknown format",
 		},
 		{
 			name: "validator does not exist",
@@ -862,7 +862,7 @@ func (s *KeeperTestSuite) TestMsgCancelUnbondingDelegation() {
 			name: "invalid validator",
 			input: &stakingtypes.MsgCancelUnbondingDelegation{
 				DelegatorAddress: Addr.String(),
-				ValidatorAddress: sdk.AccAddress([]byte("invalid")).String(),
+				ValidatorAddress: sdk.ConsAddress([]byte("invalid")).String(),
 				Amount:           sdk.NewCoin(sdk.DefaultBondDenom, shares.RoundInt()),
 				CreationHeight:   10,
 			},
@@ -889,7 +889,7 @@ func (s *KeeperTestSuite) TestMsgCancelUnbondingDelegation() {
 				CreationHeight:   10,
 			},
 			expErr:    true,
-			expErrMsg: "invalid delegator address: decoding bech32 failed",
+			expErrMsg: "invalid delegator address: decoded address is of unknown format",
 		},
 		{
 			name: "entry not found at height",

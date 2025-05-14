@@ -111,7 +111,7 @@ func TestNewMnemonic(t *testing.T) {
 			reader:        strings.NewReader(""),
 			userInput:     "password\npassword\n",
 			path:          sdk.FullFundraiserPath,
-			algo:          hd.Secp256k1,
+			algo:          hd.Taproot,
 			uid:           "foo",
 			language:      English,
 			expectedError: nil,
@@ -133,7 +133,7 @@ func TestNewMnemonic(t *testing.T) {
 			reader:        strings.NewReader(""),
 			userInput:     "password\npassword\n",
 			path:          sdk.FullFundraiserPath,
-			algo:          hd.Secp256k1,
+			algo:          hd.Taproot,
 			uid:           "foo",
 			language:      Spanish,
 			expectedError: ErrUnsupportedLanguage,
@@ -172,7 +172,7 @@ func TestKeyringDirectory(t *testing.T) {
 	require.NoError(t, err)
 	require.Empty(t, keys)
 
-	_, _, err = kb.NewMnemonic("uid", English, sdk.FullFundraiserPath, DefaultBIP39Passphrase, hd.Secp256k1)
+	_, _, err = kb.NewMnemonic("uid", English, sdk.FullFundraiserPath, DefaultBIP39Passphrase, hd.Taproot)
 	require.NoError(t, err)
 
 	items, err = os.ReadDir(dir)
@@ -211,7 +211,7 @@ func TestNewKey(t *testing.T) {
 			_, err = kb.Key(tt.uid)
 			require.Error(t, err)
 
-			r, _, err := kb.NewMnemonic(tt.uid, English, sdk.FullFundraiserPath, DefaultBIP39Passphrase, hd.Secp256k1)
+			r, _, err := kb.NewMnemonic(tt.uid, English, sdk.FullFundraiserPath, DefaultBIP39Passphrase, hd.Taproot)
 			require.NoError(t, err)
 			require.Equal(t, tt.uid, r.Name)
 
@@ -223,7 +223,7 @@ func TestNewKey(t *testing.T) {
 			_, err = kb.KeyByAddress(addr)
 			require.NoError(t, err)
 
-			addr, err = sdk.AccAddressFromBech32("cosmos1yq8lgssgxlx9smjhes6ryjasmqmd3ts2559g0t")
+			addr, err = sdk.AccAddressFromBech32("bc1pzdzsc3zejcnczdudp7ynacx2stkfr9lng66jxhyqtux0wsyeglfsssueuk")
 			require.NoError(t, err)
 			_, err = kb.KeyByAddress(addr)
 			require.NotNil(t, err)
@@ -260,7 +260,7 @@ func TestGetPub(t *testing.T) {
 			kb, err := New("keybasename", tt.backend, t.TempDir(), nil, cdc)
 			require.NoError(t, err)
 
-			r, _, err := kb.NewMnemonic(tt.uid, English, sdk.FullFundraiserPath, DefaultBIP39Passphrase, hd.Secp256k1)
+			r, _, err := kb.NewMnemonic(tt.uid, English, sdk.FullFundraiserPath, DefaultBIP39Passphrase, hd.Taproot)
 			require.NoError(t, err)
 			require.Equal(t, tt.uid, r.Name)
 
@@ -299,7 +299,7 @@ func TestDeleteKey(t *testing.T) {
 			kb, err := New("keybasename", tt.backend, t.TempDir(), nil, cdc)
 			require.NoError(t, err)
 
-			r, _, err := kb.NewMnemonic(tt.uid, English, sdk.FullFundraiserPath, DefaultBIP39Passphrase, hd.Secp256k1)
+			r, _, err := kb.NewMnemonic(tt.uid, English, sdk.FullFundraiserPath, DefaultBIP39Passphrase, hd.Taproot)
 			require.NoError(t, err)
 			require.Equal(t, tt.uid, r.Name)
 
@@ -365,7 +365,7 @@ func TestSignVerifyKeyRing(t *testing.T) {
 
 	kb, err := New("keybasename", "test", dir, nil, cdc)
 	require.NoError(t, err)
-	algo := hd.Secp256k1
+	algo := hd.Taproot
 
 	n1, n2, n3 := "some dude", "a dudette", "dude-ish"
 

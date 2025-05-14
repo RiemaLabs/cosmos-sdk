@@ -32,7 +32,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/codec"
 	addresscodec "github.com/cosmos/cosmos-sdk/codec/address"
-	"github.com/cosmos/cosmos-sdk/crypto/keys/secp256k1"
+	"github.com/cosmos/cosmos-sdk/crypto/keys/taproot"
 	"github.com/cosmos/cosmos-sdk/runtime"
 	"github.com/cosmos/cosmos-sdk/testutil/mock"
 	simtestutil "github.com/cosmos/cosmos-sdk/testutil/sims"
@@ -70,7 +70,7 @@ func GenesisStateWithSingleValidator(t *testing.T, codec codec.Codec, builder *r
 	valSet := cmttypes.NewValidatorSet([]*cmttypes.Validator{validator})
 
 	// generate genesis account
-	senderPrivKey := secp256k1.GenPrivKey()
+	senderPrivKey := taproot.GenPrivKey()
 	acc := authtypes.NewBaseAccount(senderPrivKey.PubKey().Address().Bytes(), senderPrivKey.PubKey(), 0, 0)
 	balances := []banktypes.Balance{
 		{
@@ -303,7 +303,7 @@ func (ps paramStore) Get(_ context.Context) (cmtproto.ConsensusParams, error) {
 func setTxSignature(t *testing.T, builder client.TxBuilder, nonce uint64) {
 	t.Helper()
 
-	privKey := secp256k1.GenPrivKeyFromSecret([]byte("test"))
+	privKey := taproot.GenPrivKeyFromSecret([]byte("test"))
 	pubKey := privKey.PubKey()
 	err := builder.SetSignatures(
 		signingtypes.SignatureV2{

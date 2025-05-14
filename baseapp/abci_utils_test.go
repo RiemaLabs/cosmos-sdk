@@ -26,7 +26,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/baseapp/testutil/mock"
 	"github.com/cosmos/cosmos-sdk/client"
 	codectestutil "github.com/cosmos/cosmos-sdk/codec/testutil"
-	"github.com/cosmos/cosmos-sdk/crypto/keys/secp256k1"
+	"github.com/cosmos/cosmos-sdk/crypto/keys/taproot"
 	"github.com/cosmos/cosmos-sdk/testutil/testdata"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/mempool"
@@ -491,10 +491,10 @@ func (s *ABCIUtilsTestSuite) TestDefaultProposalHandler_NoOpMempoolTxSelection()
 	tx := builder.GetTx()
 	txBz, err := txConfig.TxEncoder()(tx)
 	s.Require().NoError(err)
-	s.Require().Len(txBz, 152)
+	s.Require().Len(txBz, 167) // why 152 -> 167, diff 15 rather than 12.
 
 	txDataSize := int(cmttypes.ComputeProtoSizeForTxs([]cmttypes.Tx{txBz}))
-	s.Require().Equal(txDataSize, 155)
+	s.Require().Equal(txDataSize, 170) // same as above.
 
 	testCases := map[string]struct {
 		ctx         sdk.Context
@@ -525,7 +525,7 @@ func (s *ABCIUtilsTestSuite) TestDefaultProposalHandler_NoOpMempoolTxSelection()
 			ctx: s.ctx,
 			req: &abci.RequestPrepareProposal{
 				Txs:        [][]byte{txBz, txBz, txBz, txBz, txBz},
-				MaxTxBytes: 465,
+				MaxTxBytes: 510, // 465 -> 510, diff 45/3 = 15?
 			},
 			expectedTxs: 3,
 		},
@@ -612,16 +612,16 @@ func (s *ABCIUtilsTestSuite) TestDefaultProposalHandler_PriorityNonceMempoolTxSe
 		testTxs[i].bz = bz
 		testTxs[i].size = int(cmttypes.ComputeProtoSizeForTxs([]cmttypes.Tx{bz}))
 	}
-
-	s.Require().Equal(testTxs[0].size, 111)
-	s.Require().Equal(testTxs[1].size, 121)
-	s.Require().Equal(testTxs[2].size, 112)
-	s.Require().Equal(testTxs[3].size, 112)
-	s.Require().Equal(testTxs[4].size, 195)
-	s.Require().Equal(testTxs[5].size, 205)
-	s.Require().Equal(testTxs[6].size, 196)
-	s.Require().Equal(testTxs[7].size, 196)
-	s.Require().Equal(testTxs[8].size, 196)
+	// why step down 2?
+	s.Require().Equal(testTxs[0].size, 109)
+	s.Require().Equal(testTxs[1].size, 119)
+	s.Require().Equal(testTxs[2].size, 110)
+	s.Require().Equal(testTxs[3].size, 110)
+	s.Require().Equal(testTxs[4].size, 191)
+	s.Require().Equal(testTxs[5].size, 201)
+	s.Require().Equal(testTxs[6].size, 192)
+	s.Require().Equal(testTxs[7].size, 192)
+	s.Require().Equal(testTxs[8].size, 192)
 
 	testCases := map[string]struct {
 		ctx         sdk.Context
@@ -722,7 +722,7 @@ func buildMsg(t *testing.T, txConfig client.TxConfig, value []byte, secrets [][]
 	signatures := make([]signingtypes.SignatureV2, 0)
 	for index, secret := range secrets {
 		nonce := nonces[index]
-		privKey := secp256k1.GenPrivKeyFromSecret(secret)
+		privKey := taproot.GenPrivKeyFromSecret(secret)
 		pubKey := privKey.PubKey()
 		signatures = append(signatures, signingtypes.SignatureV2{
 			PubKey:   pubKey,

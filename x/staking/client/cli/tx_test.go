@@ -62,7 +62,7 @@ func (s *CLITestSuite) SetupSuite() {
 
 	s.addrs = make([]sdk.AccAddress, 0)
 	for range 3 {
-		k, _, err := s.clientCtx.Keyring.NewMnemonic("NewValidator", keyring.English, sdk.FullFundraiserPath, keyring.DefaultBIP39Passphrase, hd.Secp256k1)
+		k, _, err := s.clientCtx.Keyring.NewMnemonic("NewValidator", keyring.English, sdk.FullFundraiserPath, keyring.DefaultBIP39Passphrase, hd.Taproot)
 		s.Require().NoError(err)
 
 		pub, err := k.GetPubKey()

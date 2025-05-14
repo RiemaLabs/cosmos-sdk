@@ -29,7 +29,7 @@ type addrData struct {
 }
 
 func TestFullFundraiserPath(t *testing.T) {
-	require.Equal(t, "m/44'/118'/0'/0/0", hd.NewFundraiserParams(0, 118, 0).String())
+	require.Equal(t, "m/86'/118'/0'/0/0", hd.NewFundraiserParams(0, 118, 0).String())
 }
 
 func initFundraiserTestVectors(t *testing.T) []addrData {

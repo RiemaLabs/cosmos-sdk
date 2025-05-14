@@ -87,7 +87,7 @@ func TestAddGenesisAccountCmd(t *testing.T) {
 				path := hd.CreateHDPath(118, 0, 0).String()
 				kr, err := keyring.New(sdk.KeyringServiceName(), keyring.BackendMemory, home, nil, appCodec)
 				require.NoError(t, err)
-				_, _, err = kr.NewMnemonic(tc.addr, keyring.English, path, keyring.DefaultBIP39Passphrase, hd.Secp256k1)
+				_, _, err = kr.NewMnemonic(tc.addr, keyring.English, path, keyring.DefaultBIP39Passphrase, hd.Taproot)
 				require.NoError(t, err)
 				clientCtx = clientCtx.WithKeyring(kr)
 			}
@@ -96,7 +96,7 @@ func TestAddGenesisAccountCmd(t *testing.T) {
 			ctx = context.WithValue(ctx, client.ClientContextKey, &clientCtx)
 			ctx = context.WithValue(ctx, server.ServerContextKey, serverCtx)
 
-			cmd := genutilcli.AddGenesisAccountCmd(home, addresscodec.NewBech32Codec("cosmos"))
+			cmd := genutilcli.AddGenesisAccountCmd(home, addresscodec.NewTaprootCodec(&sdk.BitcoinNetParams))
 			cmd.SetArgs([]string{
 				tc.addr,
 				tc.denom,
@@ -228,7 +228,7 @@ func TestBulkAddGenesisAccountCmd(t *testing.T) {
 				err = os.WriteFile(filePath, bz, 0o600)
 				require.NoError(t, err)
 
-				cmd := genutilcli.AddBulkGenesisAccountCmd(home, addresscodec.NewBech32Codec("cosmos"))
+				cmd := genutilcli.AddBulkGenesisAccountCmd(home, addresscodec.NewTaprootCodec(&sdk.BitcoinNetParams))
 				args := []string{filePath}
 				if tc.appendFlag {
 					args = append(args, "--append")

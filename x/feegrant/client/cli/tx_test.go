@@ -587,7 +587,7 @@ func (s *CLITestSuite) TestFilteredFeeAllowance() {
 				},
 				commonFlags...,
 			),
-			"decoding bech32 failed",
+			"decoded address is of unknown format",
 		},
 		{
 			"valid filter fee grant",

@@ -94,7 +94,7 @@ func TestArmorUnarmorPubKey(t *testing.T) {
 	cstore := keyring.NewInMemory(cdc)
 
 	// Add keys and see they return in alphabetical order
-	k, _, err := cstore.NewMnemonic("Bob", keyring.English, types.FullFundraiserPath, keyring.DefaultBIP39Passphrase, hd.Secp256k1)
+	k, _, err := cstore.NewMnemonic("Bob", keyring.English, types.FullFundraiserPath, keyring.DefaultBIP39Passphrase, hd.Taproot)
 	require.NoError(t, err)
 	key, err := k.GetPubKey()
 	require.NoError(t, err)
@@ -129,7 +129,7 @@ func TestArmorUnarmorPubKey(t *testing.T) {
 	_, algo, err = crypto.UnarmorPubKeyBytes(armored)
 	require.NoError(t, err)
 	// return secp256k1 if version is 0.0.0
-	require.Equal(t, "secp256k1", algo)
+	require.Equal(t, "taproot", algo)
 
 	// missing version header
 	header = map[string]string{

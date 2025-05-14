@@ -15,7 +15,7 @@ import (
 	"cosmossdk.io/math"
 	storetypes "cosmossdk.io/store/types"
 
-	"github.com/cosmos/cosmos-sdk/crypto/keys/secp256k1"
+	"github.com/cosmos/cosmos-sdk/crypto/keys/taproot"
 	"github.com/cosmos/cosmos-sdk/testutil"
 	simtestutil "github.com/cosmos/cosmos-sdk/testutil/sims"
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -28,8 +28,8 @@ import (
 )
 
 var (
-	priv1 = secp256k1.GenPrivKey()
-	priv2 = secp256k1.GenPrivKey()
+	priv1 = taproot.GenPrivKey()
+	priv2 = taproot.GenPrivKey()
 	pk1   = priv1.PubKey()
 	pk2   = priv2.PubKey()
 	addr1 = sdk.AccAddress(pk1.Address())

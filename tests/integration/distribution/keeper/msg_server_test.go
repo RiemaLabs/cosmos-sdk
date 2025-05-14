@@ -251,7 +251,7 @@ func TestMsgWithdrawDelegatorReward(t *testing.T) {
 		{
 			name: "delegator with no delegations",
 			msg: &distrtypes.MsgWithdrawDelegatorReward{
-				DelegatorAddress: sdk.AccAddress([]byte("invalid")).String(),
+				DelegatorAddress: sdk.ConsAddress([]byte("invalid")).String(),
 				ValidatorAddress: f.valAddr.String(),
 			},
 			expErr:    true,
@@ -829,7 +829,7 @@ func TestMsgCommunityPoolSpend(t *testing.T) {
 				Amount:    sdk.NewCoins(sdk.NewCoin("stake", math.NewInt(100))),
 			},
 			expErr:    true,
-			expErrMsg: "decoding bech32 failed",
+			expErrMsg: "decoded address is of unknown format",
 		},
 		{
 			name: "valid message",

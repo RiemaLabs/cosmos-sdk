@@ -41,7 +41,7 @@ type DeterministicTestSuite struct {
 }
 
 var (
-	addr        = sdk.MustAccAddressFromBech32("cosmos1j364pjm8jkxxmujj0vp2xjg0y7w8tyveuamfm6")
+	addr        = sdk.MustAccAddressFromBech32("bc1pu7mcrmkf0j8g8tvy04f8pg9ehsn2jsmxjc0gmmuleqd36mpdy58q0fejl7")
 	pub, _      = hex.DecodeString("01090C02812F010C25200ED40E004105160196E801F70005070EA21603FF06001E")
 	permissions = []string{"burner", "minter", "staking", "random"}
 )

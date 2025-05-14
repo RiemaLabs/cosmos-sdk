@@ -5,6 +5,7 @@ import (
 
 	codectypes "github.com/cosmos/cosmos-sdk/codec/types"
 	"github.com/cosmos/cosmos-sdk/crypto/keys/ed25519"
+	"github.com/cosmos/cosmos-sdk/crypto/keys/taproot"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
@@ -13,6 +14,8 @@ var (
 	pk1Any   *codectypes.Any
 	pk2      = ed25519.GenPrivKey().PubKey()
 	pk3      = ed25519.GenPrivKey().PubKey()
+	accAddr1 = sdk.AccAddress(taproot.GenPrivKey().PubKey().Address())
+	accAddr2 = sdk.AccAddress(taproot.GenPrivKey().PubKey().Address())
 	valAddr1 = sdk.ValAddress(pk1.Address())
 	valAddr2 = sdk.ValAddress(pk2.Address())
 	valAddr3 = sdk.ValAddress(pk3.Address())

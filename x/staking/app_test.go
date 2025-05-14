@@ -12,7 +12,7 @@ import (
 	"cosmossdk.io/math"
 
 	"github.com/cosmos/cosmos-sdk/crypto/keys/ed25519"
-	"github.com/cosmos/cosmos-sdk/crypto/keys/secp256k1"
+	"github.com/cosmos/cosmos-sdk/crypto/keys/taproot"
 	simtestutil "github.com/cosmos/cosmos-sdk/testutil/sims"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	moduletestutil "github.com/cosmos/cosmos-sdk/types/module/testutil"
@@ -24,9 +24,9 @@ import (
 )
 
 var (
-	priv1 = secp256k1.GenPrivKey()
+	priv1 = taproot.GenPrivKey()
 	addr1 = sdk.AccAddress(priv1.PubKey().Address())
-	priv2 = secp256k1.GenPrivKey()
+	priv2 = taproot.GenPrivKey()
 	addr2 = sdk.AccAddress(priv2.PubKey().Address())
 
 	valKey          = ed25519.GenPrivKey()

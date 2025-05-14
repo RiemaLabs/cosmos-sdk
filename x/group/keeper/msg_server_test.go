@@ -880,7 +880,7 @@ func (s *TestSuite) TestCreateGroupWithPolicy() {
 				0,
 			),
 			expErr:    true,
-			expErrMsg: "decoding bech32 failed",
+			expErrMsg: "decoded address is of unknown format",
 		},
 		"decision policy threshold > total group weight": {
 			req: &group.MsgCreateGroupWithPolicy{
@@ -3082,7 +3082,7 @@ func (s *TestSuite) TestLeaveGroup() {
 				Address: "invalid",
 			},
 			true,
-			"decoding bech32 failed",
+			"decoded address is of unknown format",
 			0,
 			math.NewDecFromInt64(0),
 		},

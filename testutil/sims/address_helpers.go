@@ -5,12 +5,14 @@ import (
 	"context"
 	"encoding/hex"
 	"fmt"
+	"sort"
 	"strconv"
 
 	errorsmod "cosmossdk.io/errors"
 	"cosmossdk.io/math"
 
 	"github.com/cosmos/cosmos-sdk/crypto/keys/ed25519"
+	"github.com/cosmos/cosmos-sdk/crypto/keys/taproot"
 	cryptotypes "github.com/cosmos/cosmos-sdk/crypto/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
@@ -77,7 +79,7 @@ func initAccountWithCoins(bankKeeper bankkeeper.Keeper, ctx sdk.Context, addr sd
 }
 
 // CreateIncrementalAccounts is a strategy used by addTestAddrs() in order to generated addresses in ascending order.
-func CreateIncrementalAccounts(accNum int) []sdk.AccAddress {
+func CreateIncrementalAccountsManual(accNum int) []sdk.AccAddress {
 	var addresses []sdk.AccAddress
 	var buffer bytes.Buffer
 
@@ -100,11 +102,29 @@ func CreateIncrementalAccounts(accNum int) []sdk.AccAddress {
 	return addresses
 }
 
+// CreateIncrementalAccounts generates accNum random taproot-based addresses and returns them in ascending order.
+func CreateIncrementalAccounts(accNum int) []sdk.AccAddress {
+	addresses := make([]sdk.AccAddress, accNum)
+
+	for i := 0; i < accNum; i++ {
+		privKey := taproot.GenPrivKey()
+		pubKey := privKey.PubKey()
+		addresses[i] = sdk.AccAddress(pubKey.Address())
+	}
+
+	// Sort addresses in ascending lexicographic byte order
+	sort.Slice(addresses, func(i, j int) bool {
+		return bytes.Compare(addresses[i], addresses[j]) < 0
+	})
+
+	return addresses
+}
+
 // CreateRandomAccounts is a strategy used by addTestAddrs() in order to generated addresses in random order.
 func CreateRandomAccounts(accNum int) []sdk.AccAddress {
 	testAddrs := make([]sdk.AccAddress, accNum)
 	for i := range accNum {
-		pk := ed25519.GenPrivKey().PubKey()
+		pk := taproot.GenPrivKey().PubKey()
 		testAddrs[i] = sdk.AccAddress(pk.Address())
 	}
 
@@ -143,8 +163,18 @@ func ConvertAddrsToValAddrs(addrs []sdk.AccAddress) []sdk.ValAddress {
 	return valAddrs
 }
 
-// CreateTestPubKeys returns a total of numPubKeys public keys in ascending order.
+// CreateTestTaprootPubKeys returns a total of numPubKeys randomly generated Taproot public keys.
 func CreateTestPubKeys(numPubKeys int) []cryptotypes.PubKey {
+	pubKeys := make([]cryptotypes.PubKey, 0, numPubKeys)
+	for range numPubKeys {
+		priv := taproot.GenPrivKey()
+		pubKeys = append(pubKeys, priv.PubKey())
+	}
+	return pubKeys
+}
+
+// CreateTestPubKeys returns a total of numPubKeys public keys in ascending order.
+func CreateTestPubKeysEd25519(numPubKeys int) []cryptotypes.PubKey {
 	var publicKeys []cryptotypes.PubKey
 	var buffer bytes.Buffer
 

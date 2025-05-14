@@ -14,6 +14,7 @@ import (
 
 	"github.com/cosmos/cosmos-sdk/baseapp"
 	"github.com/cosmos/cosmos-sdk/codec/address"
+	"github.com/cosmos/cosmos-sdk/crypto/keys/taproot"
 	"github.com/cosmos/cosmos-sdk/runtime"
 	"github.com/cosmos/cosmos-sdk/testutil"
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -30,8 +31,8 @@ var (
 	poolAcc      = authtypes.NewEmptyModuleAccount(types.ModuleName)
 	poolDistrAcc = authtypes.NewEmptyModuleAccount(types.ProtocolPoolEscrowAccount)
 
-	recipientAddr  = sdk.AccAddress("to1__________________")
-	recipientAddr2 = sdk.AccAddress("to2__________________")
+	recipientAddr  = sdk.AccAddress([]byte{0x96, 0xe4, 0x5, 0x9a, 0x75, 0x44, 0x83, 0xcc, 0xac, 0x72, 0x77, 0x74, 0x57, 0x50, 0x8a, 0x2a, 0xf, 0xb, 0xd0, 0x92, 0x5c, 0x39, 0x82, 0xed, 0xac, 0x41, 0x85, 0xd1, 0x83, 0x5d, 0x34, 0xa2})
+	recipientAddr2 = sdk.AccAddress([]byte{0x6c, 0x6a, 0x7f, 0x10, 0xe0, 0x67, 0xe, 0xd5, 0x6f, 0x1a, 0x4a, 0xf2, 0xc, 0x8a, 0xcb, 0xf6, 0xf4, 0x8a, 0x35, 0xb2, 0xe0, 0x5d, 0x96, 0x1d, 0xf6, 0x6b, 0x18, 0x2a, 0xd, 0xba, 0xf6, 0xad})
 
 	fooCoin = sdk.NewInt64Coin("foo", 100)
 )
@@ -147,8 +148,8 @@ func (suite *KeeperTestSuite) TestGetAllContinuousFunds() {
 		totalFunds := 10
 
 		// Insert a number of funds.
-		for i := range totalFunds {
-			accAddr := sdk.AccAddress(fmt.Sprintf("ao%d__________________", i))
+		for range totalFunds {
+			accAddr := sdk.AccAddress(taproot.GenPrivKey().PubKey().Address().Bytes())
 
 			fund := types.ContinuousFund{
 				Recipient:  accAddr.String(),

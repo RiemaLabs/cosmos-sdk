@@ -15,6 +15,7 @@ import (
 	kmultisig "github.com/cosmos/cosmos-sdk/crypto/keys/multisig"
 	"github.com/cosmos/cosmos-sdk/crypto/keys/secp256k1"
 	"github.com/cosmos/cosmos-sdk/crypto/keys/secp256r1"
+	"github.com/cosmos/cosmos-sdk/crypto/keys/taproot"
 	cryptotypes "github.com/cosmos/cosmos-sdk/crypto/types"
 	"github.com/cosmos/cosmos-sdk/crypto/types/multisig"
 	"github.com/cosmos/cosmos-sdk/testutil/testdata"
@@ -280,9 +281,9 @@ func TestSigVerification(t *testing.T) {
 func TestSigIntegration(t *testing.T) {
 	// generate private keys
 	privs := []cryptotypes.PrivKey{
-		secp256k1.GenPrivKey(),
-		secp256k1.GenPrivKey(),
-		secp256k1.GenPrivKey(),
+		taproot.GenPrivKey(),
+		taproot.GenPrivKey(),
+		taproot.GenPrivKey(),
 	}
 
 	params := types.DefaultParams()

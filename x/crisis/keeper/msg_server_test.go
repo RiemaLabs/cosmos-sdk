@@ -9,7 +9,7 @@ import (
 	sdkmath "cosmossdk.io/math"
 	storetypes "cosmossdk.io/store/types"
 
-	addresscodec "github.com/cosmos/cosmos-sdk/codec/address"
+	"github.com/cosmos/cosmos-sdk/codec/address"
 	"github.com/cosmos/cosmos-sdk/crypto/keyring"
 	"github.com/cosmos/cosmos-sdk/runtime"
 	"github.com/cosmos/cosmos-sdk/testutil"
@@ -38,7 +38,7 @@ func (s *KeeperTestSuite) SetupTest() {
 	storeService := runtime.NewKVStoreService(key)
 	testCtx := testutil.DefaultContextWithDB(s.T(), key, storetypes.NewTransientStoreKey("transient_test"))
 	encCfg := moduletestutil.MakeTestEncodingConfig(crisis.AppModuleBasic{})
-	keeper := keeper.NewKeeper(encCfg.Codec, storeService, 5, supplyKeeper, "", sdk.AccAddress([]byte("addr1_______________")).String(), addresscodec.NewBech32Codec("cosmos"))
+	keeper := keeper.NewKeeper(encCfg.Codec, storeService, 5, supplyKeeper, "", sdk.AccAddress([]byte{0x6c, 0x6a, 0x7f, 0x10, 0xe0, 0x67, 0xe, 0xd5, 0x6f, 0x1a, 0x4a, 0xf2, 0xc, 0x8a, 0xcb, 0xf6, 0xf4, 0x8a, 0x35, 0xb2, 0xe0, 0x5d, 0x96, 0x1d, 0xf6, 0x6b, 0x18, 0x2a, 0xd, 0xba, 0xf6, 0xad}).String(), address.NewTaprootCodec(&sdk.BitcoinNetParams))
 
 	s.ctx = testCtx.Ctx
 	s.keeper = keeper
@@ -84,7 +84,7 @@ func (s *KeeperTestSuite) TestMsgVerifyInvariant() {
 				InvariantRoute:      "total-supply",
 			},
 			expErr:    true,
-			expErrMsg: "decoding bech32 failed",
+			expErrMsg: "decoded address is of unknown format",
 		},
 		{
 			name: "unregistered invariant route",
