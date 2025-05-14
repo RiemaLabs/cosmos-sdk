@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
+	"strings"
 	"testing"
 
 	"github.com/cometbft/cometbft/crypto"
@@ -13,6 +14,9 @@ import (
 
 	"github.com/cosmos/cosmos-sdk/crypto/hd"
 	"github.com/cosmos/cosmos-sdk/crypto/keys/secp256k1"
+	"github.com/cosmos/cosmos-sdk/crypto/keys/taproot"
+
+	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
 type addrData struct {
@@ -85,6 +89,30 @@ func TestFundraiserCompatibility(t *testing.T) {
 		addr := pub.Address()
 		t.Logf("ADDR  \t%X %X\n", addrB, addr)
 		require.Equal(t, addr, crypto.Address(addrB), fmt.Sprintf("Expected addresses to match %d", i))
-
 	}
+}
+
+func TestBitcoinWalletCompatibility(t *testing.T) {
+
+	testMnemonics := []string{
+		"episode", "tip", "cereal", "rice", "subway", "pelican",
+		"family", "advice", "profit", "pretty", "cigar", "artist",
+		"rough", "broken", "gorilla", "desk", "curtain", "draw",
+		"bracket", "pumpkin", "family", "faculty", "snack", "laptop",
+	}
+
+	mnemonic := strings.Join(testMnemonics, " ")
+	seed := bip39.NewSeed(mnemonic, "")
+
+	master, ch := hd.ComputeMastersFromSeed(seed)
+	priv, err := hd.DerivePrivateKeyForPath(master, ch, "m/86'/0'/0'/0/0")
+	require.NoError(t, err)
+
+	privKey := &taproot.PrivKey{Key: priv}
+	pub := privKey.PubKey()
+
+	accAddr := sdk.AccAddress(pub.Address()).String()
+
+	// Bitcoin wallet generated address.
+	require.Equal(t, "bc1pyxl5d7d6ejk7k3ufgnlpd4yrq939kexq4zl9yz47jw756lcjd28qa4gzrz", accAddr)
 }

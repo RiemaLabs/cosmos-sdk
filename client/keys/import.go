@@ -77,6 +77,6 @@ func ImportKeyHexCommand() *cobra.Command {
 			return clientCtx.Keyring.ImportPrivKeyHex(name, hexKey, keyType)
 		},
 	}
-	cmd.Flags().String(flags.FlagKeyType, string(hd.Secp256k1Type), "private key signing algorithm kind")
+	cmd.Flags().String(flags.FlagKeyType, string(hd.TaprootType), "private key signing algorithm kind")
 	return cmd
 }

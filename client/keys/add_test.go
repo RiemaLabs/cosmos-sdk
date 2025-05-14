@@ -44,7 +44,7 @@ func Test_runAddCmdBasic(t *testing.T) {
 		"",
 		fmt.Sprintf("--%s=%s", flags.FlagKeyringDir, kbHome),
 		fmt.Sprintf("--%s=%s", flags.FlagOutput, flags.OutputFormatText),
-		fmt.Sprintf("--%s=%s", flags.FlagKeyType, hd.Secp256k1Type),
+		fmt.Sprintf("--%s=%s", flags.FlagKeyType, hd.TaprootType),
 		fmt.Sprintf("--%s=%s", flags.FlagKeyringBackend, keyring.BackendTest),
 	})
 	mockIn.Reset("y\n")
@@ -54,7 +54,7 @@ func Test_runAddCmdBasic(t *testing.T) {
 		"keyname1",
 		fmt.Sprintf("--%s=%s", flags.FlagKeyringDir, kbHome),
 		fmt.Sprintf("--%s=%s", flags.FlagOutput, flags.OutputFormatText),
-		fmt.Sprintf("--%s=%s", flags.FlagKeyType, hd.Secp256k1Type),
+		fmt.Sprintf("--%s=%s", flags.FlagKeyType, hd.TaprootType),
 		fmt.Sprintf("--%s=%s", flags.FlagKeyringBackend, keyring.BackendTest),
 	})
 	mockIn.Reset("y\n")
@@ -67,7 +67,7 @@ func Test_runAddCmdBasic(t *testing.T) {
 		"keyname2",
 		fmt.Sprintf("--%s=%s", flags.FlagKeyringDir, kbHome),
 		fmt.Sprintf("--%s=%s", flags.FlagOutput, flags.OutputFormatText),
-		fmt.Sprintf("--%s=%s", flags.FlagKeyType, hd.Secp256k1Type),
+		fmt.Sprintf("--%s=%s", flags.FlagKeyType, hd.TaprootType),
 		fmt.Sprintf("--%s=%s", flags.FlagKeyringBackend, keyring.BackendTest),
 	})
 
@@ -81,7 +81,7 @@ func Test_runAddCmdBasic(t *testing.T) {
 		"keyname4",
 		fmt.Sprintf("--%s=%s", flags.FlagKeyringDir, kbHome),
 		fmt.Sprintf("--%s=%s", flags.FlagOutput, flags.OutputFormatText),
-		fmt.Sprintf("--%s=%s", flags.FlagKeyType, hd.Secp256k1Type),
+		fmt.Sprintf("--%s=%s", flags.FlagKeyType, hd.TaprootType),
 		fmt.Sprintf("--%s=%s", flags.FlagKeyringBackend, keyring.BackendTest),
 	})
 
@@ -93,7 +93,7 @@ func Test_runAddCmdBasic(t *testing.T) {
 		fmt.Sprintf("--%s=%s", flags.FlagKeyringDir, kbHome),
 		fmt.Sprintf("--%s=true", flags.FlagDryRun),
 		fmt.Sprintf("--%s=%s", flags.FlagOutput, flags.OutputFormatText),
-		fmt.Sprintf("--%s=%s", flags.FlagKeyType, hd.Secp256k1Type),
+		fmt.Sprintf("--%s=%s", flags.FlagKeyType, hd.TaprootType),
 	})
 
 	require.NoError(t, cmd.ExecuteContext(ctx))
@@ -158,7 +158,7 @@ func Test_runAddCmdMultisigDupKeys(t *testing.T) {
 		"keyname1",
 		fmt.Sprintf("--%s=%s", flags.FlagKeyringDir, kbHome),
 		fmt.Sprintf("--%s=%s", flags.FlagOutput, flags.OutputFormatText),
-		fmt.Sprintf("--%s=%s", flags.FlagKeyType, hd.Secp256k1Type),
+		fmt.Sprintf("--%s=%s", flags.FlagKeyType, hd.TaprootType),
 		fmt.Sprintf("--%s=%s", flags.FlagKeyringBackend, keyring.BackendTest),
 	})
 	require.NoError(t, cmd.ExecuteContext(ctx))
@@ -167,7 +167,7 @@ func Test_runAddCmdMultisigDupKeys(t *testing.T) {
 		"keyname2",
 		fmt.Sprintf("--%s=%s", flags.FlagKeyringDir, kbHome),
 		fmt.Sprintf("--%s=%s", flags.FlagOutput, flags.OutputFormatText),
-		fmt.Sprintf("--%s=%s", flags.FlagKeyType, hd.Secp256k1Type),
+		fmt.Sprintf("--%s=%s", flags.FlagKeyType, hd.TaprootType),
 		fmt.Sprintf("--%s=%s", flags.FlagKeyringBackend, keyring.BackendTest),
 	})
 	require.NoError(t, cmd.ExecuteContext(ctx))
@@ -176,7 +176,7 @@ func Test_runAddCmdMultisigDupKeys(t *testing.T) {
 		"multisigname",
 		fmt.Sprintf("--%s=%s", flags.FlagKeyringDir, kbHome),
 		fmt.Sprintf("--%s=%s", flags.FlagOutput, flags.OutputFormatText),
-		fmt.Sprintf("--%s=%s", flags.FlagKeyType, hd.Secp256k1Type),
+		fmt.Sprintf("--%s=%s", flags.FlagKeyType, hd.TaprootType),
 		fmt.Sprintf("--%s=%s", flags.FlagKeyringBackend, keyring.BackendTest),
 		fmt.Sprintf("--%s=%s", flagMultisig, "keyname1,keyname2"),
 		fmt.Sprintf("--%s=%s", flagMultiSigThreshold, "2"),
@@ -187,7 +187,7 @@ func Test_runAddCmdMultisigDupKeys(t *testing.T) {
 		"multisigname",
 		fmt.Sprintf("--%s=%s", flags.FlagKeyringDir, kbHome),
 		fmt.Sprintf("--%s=%s", flags.FlagOutput, flags.OutputFormatText),
-		fmt.Sprintf("--%s=%s", flags.FlagKeyType, hd.Secp256k1Type),
+		fmt.Sprintf("--%s=%s", flags.FlagKeyType, hd.TaprootType),
 		fmt.Sprintf("--%s=%s", flags.FlagKeyringBackend, keyring.BackendTest),
 		fmt.Sprintf("--%s=%s", flagMultisig, "keyname1,keyname1"),
 		fmt.Sprintf("--%s=%s", flagMultiSigThreshold, "2"),
@@ -342,7 +342,7 @@ func TestAddRecoverFileBackend(t *testing.T) {
 		"keyname1",
 		fmt.Sprintf("--%s=%s", flags.FlagKeyringDir, kbHome),
 		fmt.Sprintf("--%s=%s", flags.FlagOutput, flags.OutputFormatText),
-		fmt.Sprintf("--%s=%s", flags.FlagKeyType, hd.Secp256k1Type),
+		fmt.Sprintf("--%s=%s", flags.FlagKeyType, hd.TaprootType),
 		fmt.Sprintf("--%s=%s", flags.FlagKeyringBackend, keyring.BackendFile),
 		fmt.Sprintf("--%s", flagRecover),
 	})

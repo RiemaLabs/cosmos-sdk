@@ -49,7 +49,9 @@ const (
 
 	// FullFundraiserPath is the parts of the BIP44 HD path that are fixed by
 	// what we used during the ATOM fundraiser.
-	FullFundraiserPath = "m/44'/118'/0'/0/0"
+	// @nubit: We use the BIP86 path for the fundraiser.
+	// It is the default path for Taproot addresses.
+	FullFundraiserPath = "m/86'/0'/0'/0/0"
 
 	// PrefixAccount is the prefix for account keys
 	PrefixAccount = "acc"
