@@ -55,7 +55,7 @@ func Test_runExportCmd(t *testing.T) {
 			extraArgs:             []string{"--unsafe", "--unarmored-hex", "--yes"},
 			userInput:             "",
 			mustFail:              false,
-			expectedOutputContain: "2485e33678db4175dc0ecef2d6e1fc493d4a0d7f7ce83324b6ed70afe77f3485\n",
+			expectedOutputContain: "84c9dcac18a66f5ebab545b2dc647e242330abb3baa7ff1f4ed6a63df7267892\n",
 		},
 		{
 			name:                  "--unsafe --unarmored-hex success",
@@ -63,7 +63,7 @@ func Test_runExportCmd(t *testing.T) {
 			extraArgs:             []string{"--unsafe", "--unarmored-hex"},
 			userInput:             "y\n",
 			mustFail:              false,
-			expectedOutputContain: "2485e33678db4175dc0ecef2d6e1fc493d4a0d7f7ce83324b6ed70afe77f3485\n",
+			expectedOutputContain: "84c9dcac18a66f5ebab545b2dc647e242330abb3baa7ff1f4ed6a63df7267892\n",
 		},
 		{
 			name:           "file keyring backend properly read password and user confirmation",
@@ -72,7 +72,7 @@ func Test_runExportCmd(t *testing.T) {
 			// first 2 pass for creating the key, then unsafe export confirmation, then unlock keyring pass
 			userInput:      "12345678\n12345678\ny\n12345678\n",
 			mustFail:       false,
-			expectedOutput: "2485e33678db4175dc0ecef2d6e1fc493d4a0d7f7ce83324b6ed70afe77f3485\n",
+			expectedOutput: "84c9dcac18a66f5ebab545b2dc647e242330abb3baa7ff1f4ed6a63df7267892\n",
 		},
 	}
 
@@ -100,7 +100,7 @@ func Test_runExportCmd(t *testing.T) {
 			t.Cleanup(cleanupKeys(t, kb, "keyname1"))
 
 			path := sdk.GetConfig().GetFullBIP44Path()
-			_, err = kb.NewAccount("keyname1", testdata.TestMnemonic, "", path, hd.Secp256k1)
+			_, err = kb.NewAccount("keyname1", testdata.TestMnemonic, "", path, hd.Taproot)
 			require.NoError(t, err)
 
 			clientCtx := client.Context{}.

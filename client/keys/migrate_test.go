@@ -14,7 +14,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/codec"
 	"github.com/cosmos/cosmos-sdk/crypto/keyring"
 	"github.com/cosmos/cosmos-sdk/crypto/keys/multisig"
-	"github.com/cosmos/cosmos-sdk/crypto/keys/secp256k1"
+	"github.com/cosmos/cosmos-sdk/crypto/keys/taproot"
 	cryptotypes "github.com/cosmos/cosmos-sdk/crypto/types"
 	"github.com/cosmos/cosmos-sdk/testutil"
 	moduletestutil "github.com/cosmos/cosmos-sdk/types/module/testutil"
@@ -38,7 +38,7 @@ func (s *MigrateTestSuite) SetupSuite() {
 	s.dir = s.T().TempDir()
 	s.cdc = moduletestutil.MakeTestEncodingConfig().Codec
 	s.appName = "cosmos"
-	s.priv = cryptotypes.PrivKey(secp256k1.GenPrivKey())
+	s.priv = cryptotypes.PrivKey(taproot.GenPrivKey())
 	s.pub = s.priv.PubKey()
 }
 
