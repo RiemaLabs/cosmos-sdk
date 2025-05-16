@@ -1,6 +1,5 @@
+//go:toolchain go1.24.3
 go 1.23.6
-
-toolchain go1.24.3
 
 module github.com/cosmos/cosmos-sdk
 
