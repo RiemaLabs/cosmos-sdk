@@ -211,6 +211,10 @@ func AccAddressFromBech32(address string) (addr AccAddress, err error) {
 
 // The actual implementation of AccAddressFromTaprootAddress.
 func accAddressFromTaproot(address string) (addr AccAddress, err error) {
+	if address == "" {
+		return nil, errors.New("empty address string is not allowed")
+	}
+
 	parsedAddress, err := btcutil.DecodeAddress(address, &BitcoinNetParams)
 	if err != nil {
 		return nil, err
