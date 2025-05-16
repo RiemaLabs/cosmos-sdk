@@ -25,8 +25,6 @@ import (
 	groupkeeper "github.com/cosmos/cosmos-sdk/x/group/keeper"
 	"github.com/cosmos/cosmos-sdk/x/group/module"
 	grouptestutil "github.com/cosmos/cosmos-sdk/x/group/testutil"
-
-	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
 type fixture struct {
