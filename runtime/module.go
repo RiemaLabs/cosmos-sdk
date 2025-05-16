@@ -316,7 +316,7 @@ func ProvideAddressCodec(in AddressCodecInputs) (address.Codec, ValidatorAddress
 		in.StakingConfig.Bech32PrefixConsensus = fmt.Sprintf("%svalcons", in.AuthConfig.Bech32Prefix)
 	}
 
-	// @nubit: change the default codec to taproot.
+	// @nubit: We change the default codec to taproot.
 	return addresscodec.NewTaprootCodec(&types.BitcoinNetParams),
 		addresscodec.NewBech32Codec(in.StakingConfig.Bech32PrefixValidator),
 		addresscodec.NewBech32Codec(in.StakingConfig.Bech32PrefixConsensus)
