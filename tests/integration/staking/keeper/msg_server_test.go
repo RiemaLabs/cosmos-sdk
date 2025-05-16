@@ -56,7 +56,7 @@ func TestCancelUnbondingDelegation(t *testing.T) {
 		ctx.BlockTime().Add(time.Minute*10),
 		unbondingAmount.Amount,
 		0,
-		address.NewBech32Codec("cosmosvaloper"), address.NewBech32Codec("cosmos"),
+		address.NewBech32Codec("cosmosvaloper"), address.NewTaprootCodec(&sdk.BitcoinNetParams),
 	)
 
 	// set and retrieve a record

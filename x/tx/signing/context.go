@@ -326,6 +326,7 @@ func (c *Context) getAddressCodec(field protoreflect.FieldDescriptor) address.Co
 	addrCdc := c.addressCodec
 	if scalarOpt != nil {
 		if scalarOpt.(string) == "cosmos.ValidatorAddressString" {
+			fmt.Println("triggering validator address codec")
 			addrCdc = c.validatorAddressCodec
 		}
 	}

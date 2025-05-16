@@ -31,7 +31,7 @@ func (suite *KeeperTestSuite) TestFundCommunityPool() {
 			},
 			preRun: func() {
 				suite.authKeeper.EXPECT().AddressCodec().
-					Return(address.NewBech32Codec("cosmos")).AnyTimes()
+					Return(address.NewTaprootCodec(&sdk.BitcoinNetParams)).AnyTimes()
 			},
 			expErr:    true,
 			expErrMsg: "invalid depositor address:",
@@ -44,7 +44,7 @@ func (suite *KeeperTestSuite) TestFundCommunityPool() {
 			},
 			preRun: func() {
 				suite.authKeeper.EXPECT().AddressCodec().
-					Return(address.NewBech32Codec("cosmos")).AnyTimes()
+					Return(address.NewTaprootCodec(&sdk.BitcoinNetParams)).AnyTimes()
 			},
 			expErr:    true,
 			expErrMsg: "-1stake: invalid coins",
@@ -57,7 +57,7 @@ func (suite *KeeperTestSuite) TestFundCommunityPool() {
 			},
 			preRun: func() {
 				suite.authKeeper.EXPECT().AddressCodec().
-					Return(address.NewBech32Codec("cosmos")).AnyTimes()
+					Return(address.NewTaprootCodec(&sdk.BitcoinNetParams)).AnyTimes()
 				suite.bankKeeper.EXPECT().SendCoinsFromAccountToModule(gomock.Any(), validDepositor, types.ModuleName, validAmount).Return(nil).Times(1)
 			},
 			expErr: false,
@@ -113,7 +113,7 @@ func (suite *KeeperTestSuite) TestCommunityPoolSpend() {
 			},
 			preRun: func() {
 				suite.authKeeper.EXPECT().AddressCodec().
-					Return(address.NewBech32Codec("cosmos")).AnyTimes()
+					Return(address.NewTaprootCodec(&sdk.BitcoinNetParams)).AnyTimes()
 			},
 			expErr:    true,
 			expErrMsg: "-1stake: invalid coins",
@@ -127,7 +127,7 @@ func (suite *KeeperTestSuite) TestCommunityPoolSpend() {
 			},
 			preRun: func() {
 				suite.authKeeper.EXPECT().AddressCodec().
-					Return(address.NewBech32Codec("cosmos")).AnyTimes()
+					Return(address.NewTaprootCodec(&sdk.BitcoinNetParams)).AnyTimes()
 			},
 			expErr:    true,
 			expErrMsg: "decoding bech32 failed",
@@ -141,7 +141,7 @@ func (suite *KeeperTestSuite) TestCommunityPoolSpend() {
 			},
 			preRun: func() {
 				suite.authKeeper.EXPECT().AddressCodec().
-					Return(address.NewBech32Codec("cosmos")).AnyTimes()
+					Return(address.NewTaprootCodec(&sdk.BitcoinNetParams)).AnyTimes()
 				suite.bankKeeper.EXPECT().SendCoinsFromModuleToAccount(gomock.Any(), types.ModuleName, validRecipient, validAmount).Return(nil).Times(1)
 			},
 			expErr: false,
@@ -201,7 +201,7 @@ func (suite *KeeperTestSuite) TestCreateContinuousFund() {
 			},
 			preRun: func() {
 				suite.authKeeper.EXPECT().AddressCodec().
-					Return(address.NewBech32Codec("cosmos")).AnyTimes()
+					Return(address.NewTaprootCodec(&sdk.BitcoinNetParams)).AnyTimes()
 			},
 			expErr:    true,
 			expErrMsg: "decoding bech32 failed",
@@ -216,7 +216,7 @@ func (suite *KeeperTestSuite) TestCreateContinuousFund() {
 			},
 			preRun: func() {
 				suite.authKeeper.EXPECT().AddressCodec().
-					Return(address.NewBech32Codec("cosmos")).AnyTimes()
+					Return(address.NewTaprootCodec(&sdk.BitcoinNetParams)).AnyTimes()
 				suite.bankKeeper.EXPECT().BlockedAddr(validRecipient).Return(false).Times(1)
 				// Pre-create a continuous fund.
 				err := suite.poolKeeper.ContinuousFunds.Set(suite.ctx, validRecipient, types.ContinuousFund{
@@ -239,7 +239,7 @@ func (suite *KeeperTestSuite) TestCreateContinuousFund() {
 			},
 			preRun: func() {
 				suite.authKeeper.EXPECT().AddressCodec().
-					Return(address.NewBech32Codec("cosmos")).AnyTimes()
+					Return(address.NewTaprootCodec(&sdk.BitcoinNetParams)).AnyTimes()
 				suite.bankKeeper.EXPECT().BlockedAddr(validRecipient).Return(false).Times(1)
 			},
 			expErr:    true,
@@ -256,7 +256,7 @@ func (suite *KeeperTestSuite) TestCreateContinuousFund() {
 			},
 			preRun: func() {
 				suite.authKeeper.EXPECT().AddressCodec().
-					Return(address.NewBech32Codec("cosmos")).AnyTimes()
+					Return(address.NewTaprootCodec(&sdk.BitcoinNetParams)).AnyTimes()
 				suite.bankKeeper.EXPECT().BlockedAddr(validRecipient).Return(false).Times(1)
 
 				existingRecipient := recipientAddr2
@@ -280,7 +280,7 @@ func (suite *KeeperTestSuite) TestCreateContinuousFund() {
 			},
 			preRun: func() {
 				suite.authKeeper.EXPECT().AddressCodec().
-					Return(address.NewBech32Codec("cosmos")).AnyTimes()
+					Return(address.NewTaprootCodec(&sdk.BitcoinNetParams)).AnyTimes()
 				suite.bankKeeper.EXPECT().BlockedAddr(validRecipient).Return(true).Times(1)
 
 				// Ensure any existing fund for validRecipient is removed.
@@ -299,7 +299,7 @@ func (suite *KeeperTestSuite) TestCreateContinuousFund() {
 			},
 			preRun: func() {
 				suite.authKeeper.EXPECT().AddressCodec().
-					Return(address.NewBech32Codec("cosmos")).AnyTimes()
+					Return(address.NewTaprootCodec(&sdk.BitcoinNetParams)).AnyTimes()
 				suite.bankKeeper.EXPECT().BlockedAddr(validRecipient).Return(false).Times(1)
 				// Ensure any existing fund for validRecipient is removed.
 				_ = suite.poolKeeper.ContinuousFunds.Remove(suite.ctx, validRecipient)
@@ -360,7 +360,7 @@ func (suite *KeeperTestSuite) TestCancelContinuousFund() {
 			},
 			preRun: func() {
 				suite.authKeeper.EXPECT().AddressCodec().
-					Return(address.NewBech32Codec("cosmos")).AnyTimes()
+					Return(address.NewTaprootCodec(&sdk.BitcoinNetParams)).AnyTimes()
 			},
 			expErr:    true,
 			expErrMsg: "decoding bech32 failed:",
@@ -373,7 +373,7 @@ func (suite *KeeperTestSuite) TestCancelContinuousFund() {
 			},
 			preRun: func() {
 				suite.authKeeper.EXPECT().AddressCodec().
-					Return(address.NewBech32Codec("cosmos")).AnyTimes()
+					Return(address.NewTaprootCodec(&sdk.BitcoinNetParams)).AnyTimes()
 				// Ensure the continuous fund is not set so that Remove fails.
 				_ = suite.poolKeeper.ContinuousFunds.Remove(suite.ctx, validRecipient)
 			},
@@ -387,7 +387,7 @@ func (suite *KeeperTestSuite) TestCancelContinuousFund() {
 			},
 			preRun: func() {
 				suite.authKeeper.EXPECT().AddressCodec().
-					Return(address.NewBech32Codec("cosmos")).AnyTimes()
+					Return(address.NewTaprootCodec(&sdk.BitcoinNetParams)).AnyTimes()
 				fund := types.ContinuousFund{
 					Recipient:  validRecipient.String(),
 					Percentage: math.LegacyMustNewDecFromStr("0.3"),
