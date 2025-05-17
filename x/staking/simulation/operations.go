@@ -121,7 +121,7 @@ func SimulateMsgCreateValidator(
 		msgType := sdk.MsgTypeURL(&types.MsgCreateValidator{})
 
 		simAccount, _ := simtypes.RandomAcc(r, accs)
-		address := sdk.ValAddress(simAccount.Address)
+		address := simAccount.ValAddress
 
 		// ensure the validator doesn't exist already
 		_, err := k.GetValidator(ctx, address)
