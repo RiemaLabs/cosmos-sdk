@@ -44,8 +44,8 @@ func NewTxCmd(valAddrCodec, ac address.Codec) *cobra.Command {
 	}
 
 	stakingTxCmd.AddCommand(
-		NewCreateValidatorCmd(valAddrCodec),
-		NewEditValidatorCmd(valAddrCodec),
+		NewCreateValidatorCmd(valAddrCodec, ac),
+		NewEditValidatorCmd(valAddrCodec, ac),
 		NewDelegateCmd(valAddrCodec, ac),
 		NewRedelegateCmd(valAddrCodec, ac),
 		NewUnbondCmd(valAddrCodec, ac),
@@ -56,7 +56,7 @@ func NewTxCmd(valAddrCodec, ac address.Codec) *cobra.Command {
 }
 
 // NewCreateValidatorCmd returns a CLI command handler for creating a MsgCreateValidator transaction.
-func NewCreateValidatorCmd(ac address.Codec) *cobra.Command {
+func NewCreateValidatorCmd(valAddrCodec, ac address.Codec) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "create-validator [path/to/validator.json]",
 		Short: "create new validator initialized with a self-delegation to it",
@@ -100,7 +100,7 @@ where we can get the pubkey using "%s tendermint show-validator"
 				return err
 			}
 
-			txf, msg, err := newBuildCreateValidatorMsg(clientCtx, txf, cmd.Flags(), validator, ac)
+			txf, msg, err := newBuildCreateValidatorMsg(clientCtx, txf, cmd.Flags(), validator, valAddrCodec, ac)
 			if err != nil {
 				return err
 			}
@@ -117,7 +117,7 @@ where we can get the pubkey using "%s tendermint show-validator"
 }
 
 // NewEditValidatorCmd returns a CLI command handler for creating a MsgEditValidator transaction.
-func NewEditValidatorCmd(ac address.Codec) *cobra.Command {
+func NewEditValidatorCmd(valAddrCodec, ac address.Codec) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "edit-validator",
 		Short: "edit an existing validator account",
@@ -158,12 +158,17 @@ func NewEditValidatorCmd(ac address.Codec) *cobra.Command {
 				newMinSelfDelegation = &msb
 			}
 
-			valAddr, err := ac.BytesToString(clientCtx.GetFromAddress())
+			addr, err := ac.BytesToString(clientCtx.GetFromAddress())
 			if err != nil {
 				return err
 			}
 
-			msg := types.NewMsgEditValidator(valAddr, description, newRate, newMinSelfDelegation)
+			valAddr, err := valAddrCodec.BytesToString(clientCtx.GetFromAddress())
+			if err != nil {
+				return err
+			}
+
+			msg := types.NewMsgEditValidator(valAddr, addr, description, newRate, newMinSelfDelegation)
 
 			return tx.GenerateOrBroadcastTxCLI(clientCtx, cmd.Flags(), msg)
 		},
@@ -377,7 +382,7 @@ $ %s tx staking cancel-unbond %s1gghjut3ccd8ay0zduzj64hwre2fxs9ldmqhffj 100stake
 	return cmd
 }
 
-func newBuildCreateValidatorMsg(clientCtx client.Context, txf tx.Factory, fs *flag.FlagSet, val validator, valAc address.Codec) (tx.Factory, *types.MsgCreateValidator, error) {
+func newBuildCreateValidatorMsg(clientCtx client.Context, txf tx.Factory, fs *flag.FlagSet, val validator, valAc, ac address.Codec) (tx.Factory, *types.MsgCreateValidator, error) {
 	valAddr := clientCtx.GetFromAddress()
 
 	description := types.NewDescription(
@@ -389,16 +394,17 @@ func newBuildCreateValidatorMsg(clientCtx client.Context, txf tx.Factory, fs *fl
 	)
 
 	valStr, err := valAc.BytesToString(sdk.ValAddress(valAddr))
+	delStr, err := ac.BytesToString(valAddr)
 	if err != nil {
 		return txf, nil, err
 	}
 	msg, err := types.NewMsgCreateValidator(
-		valStr, val.PubKey, val.Amount, description, val.CommissionRates, val.MinSelfDelegation,
+		valStr, delStr, val.PubKey, val.Amount, description, val.CommissionRates, val.MinSelfDelegation,
 	)
 	if err != nil {
 		return txf, nil, err
 	}
-	if err := msg.Validate(valAc); err != nil {
+	if err := msg.Validate(valAc, ac); err != nil {
 		return txf, nil, err
 	}
 
@@ -568,7 +574,7 @@ func PrepareConfigForTxCreateValidator(flagSet *flag.FlagSet, moniker, nodeID, c
 }
 
 // BuildCreateValidatorMsg makes a new MsgCreateValidator.
-func BuildCreateValidatorMsg(clientCtx client.Context, config TxCreateValidatorConfig, txBldr tx.Factory, generateOnly bool, valCodec address.Codec) (tx.Factory, sdk.Msg, error) {
+func BuildCreateValidatorMsg(clientCtx client.Context, config TxCreateValidatorConfig, txBldr tx.Factory, generateOnly bool, valCodec, ac address.Codec) (tx.Factory, sdk.Msg, error) {
 	amounstStr := config.Amount
 	amount, err := sdk.ParseCoinNormalized(amounstStr)
 	if err != nil {
@@ -606,8 +612,14 @@ func BuildCreateValidatorMsg(clientCtx client.Context, config TxCreateValidatorC
 		return txBldr, nil, err
 	}
 
+	delStr, err := ac.BytesToString(valAddr)
+	if err != nil {
+		return txBldr, nil, err
+	}
+
 	msg, err := types.NewMsgCreateValidator(
 		valStr,
+		delStr,
 		config.PubKey,
 		amount,
 		description,

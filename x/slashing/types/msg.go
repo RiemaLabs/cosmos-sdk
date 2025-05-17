@@ -11,8 +11,9 @@ var (
 )
 
 // NewMsgUnjail creates a new MsgUnjail instance
-func NewMsgUnjail(validatorAddr string) *MsgUnjail {
+func NewMsgUnjail(validatorAddr string, delegatorAddr string) *MsgUnjail {
 	return &MsgUnjail{
 		ValidatorAddr: validatorAddr,
+		DelegatorAddr: delegatorAddr,
 	}
 }

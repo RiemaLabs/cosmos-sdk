@@ -156,6 +156,7 @@ func (s *KeeperTestSuite) TestUnjail() {
 			malleate: func() *slashingtypes.MsgUnjail {
 				return &slashingtypes.MsgUnjail{
 					ValidatorAddr: "invalid",
+					DelegatorAddr: "invalid",
 				}
 			},
 			expErr:    true,
@@ -174,6 +175,7 @@ func (s *KeeperTestSuite) TestUnjail() {
 
 				return &slashingtypes.MsgUnjail{
 					ValidatorAddr: sdk.ValAddress(addr).String(),
+					DelegatorAddr: addr.String(),
 				}
 			},
 			expErr:    true,
@@ -189,6 +191,7 @@ func (s *KeeperTestSuite) TestUnjail() {
 
 				return &slashingtypes.MsgUnjail{
 					ValidatorAddr: valAddr.String(),
+					DelegatorAddr: addr.String(),
 				}
 			},
 			expErr:    true,
@@ -219,6 +222,7 @@ func (s *KeeperTestSuite) TestUnjail() {
 
 				return &slashingtypes.MsgUnjail{
 					ValidatorAddr: sdk.ValAddress(addr).String(),
+					DelegatorAddr: addr.String(),
 				}
 			},
 			expErr:    true,
@@ -249,6 +253,7 @@ func (s *KeeperTestSuite) TestUnjail() {
 
 				return &slashingtypes.MsgUnjail{
 					ValidatorAddr: sdk.ValAddress(addr).String(),
+					DelegatorAddr: addr.String(),
 				}
 			},
 			expErr:    true,
@@ -279,6 +284,7 @@ func (s *KeeperTestSuite) TestUnjail() {
 
 				return &slashingtypes.MsgUnjail{
 					ValidatorAddr: sdk.ValAddress(addr).String(),
+					DelegatorAddr: addr.String(),
 				}
 			},
 			expErr:    true,
@@ -310,6 +316,7 @@ func (s *KeeperTestSuite) TestUnjail() {
 
 				return &slashingtypes.MsgUnjail{
 					ValidatorAddr: sdk.ValAddress(addr).String(),
+					DelegatorAddr: addr.String(),
 				}
 			},
 			expErr: false,

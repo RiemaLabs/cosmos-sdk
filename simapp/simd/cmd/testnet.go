@@ -346,6 +346,7 @@ func initTestnetFiles(
 		valTokens := sdk.TokensFromConsensusPower(100, sdk.DefaultPowerReduction)
 		createValMsg, err := stakingtypes.NewMsgCreateValidator(
 			valStr,
+			addr.String(),
 			valPubKeys[i],
 			sdk.NewCoin(args.bondTokenDenom, valTokens),
 			stakingtypes.NewDescription(nodeDirName, "", "", "", ""),

@@ -62,7 +62,7 @@ func (s *CLITestSuite) SetupSuite() {
 
 	s.addrs = make([]sdk.AccAddress, 0)
 	for range 3 {
-		k, _, err := s.clientCtx.Keyring.NewMnemonic("NewValidator", keyring.English, sdk.FullFundraiserPath, keyring.DefaultBIP39Passphrase, hd.Secp256k1)
+		k, _, err := s.clientCtx.Keyring.NewMnemonic("NewValidator", keyring.English, sdk.FullFundraiserPath, keyring.DefaultBIP39Passphrase, hd.Taproot)
 		s.Require().NoError(err)
 
 		pub, err := k.GetPubKey()
@@ -161,7 +161,7 @@ func (s *CLITestSuite) TestPrepareConfigForTxCreateValidator() {
 
 func (s *CLITestSuite) TestNewCreateValidatorCmd() {
 	require := s.Require()
-	cmd := cli.NewCreateValidatorCmd(addresscodec.NewBech32Codec("cosmosvaloper"))
+	cmd := cli.NewCreateValidatorCmd(addresscodec.NewBech32Codec("cosmosvaloper"), addresscodec.NewTaprootCodec(&sdk.BitcoinNetParams))
 
 	validJSON := fmt.Sprintf(`
 	{
@@ -307,7 +307,7 @@ func (s *CLITestSuite) TestNewCreateValidatorCmd() {
 }
 
 func (s *CLITestSuite) TestNewEditValidatorCmd() {
-	cmd := cli.NewEditValidatorCmd(addresscodec.NewBech32Codec("cosmos"))
+	cmd := cli.NewEditValidatorCmd(addresscodec.NewBech32Codec("cosmos"), addresscodec.NewTaprootCodec(&sdk.BitcoinNetParams))
 
 	moniker := "testing"
 	details := "bio"

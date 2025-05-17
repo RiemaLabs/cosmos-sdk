@@ -26,7 +26,6 @@ message PubKey {
   option (amino.message_encoding)     = "key_field";
   option (gogoproto.goproto_stringer) = false;
 
-  // key is the 32-byte x-only public key as specified in BIP-340
   bytes key = 1;
 }
 
