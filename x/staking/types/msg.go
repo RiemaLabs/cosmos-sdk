@@ -25,7 +25,9 @@ var (
 // NewMsgCreateValidator creates a new MsgCreateValidator instance.
 // Delegator address and validator address are the same.
 func NewMsgCreateValidator(
-	valAddr string, pubKey cryptotypes.PubKey,
+	valAddr string,
+	delegatorAddr string,
+	pubKey cryptotypes.PubKey,
 	selfDelegation sdk.Coin, description Description, commission CommissionRates, minSelfDelegation math.Int,
 ) (*MsgCreateValidator, error) {
 	var pkAny *codectypes.Any
@@ -38,6 +40,7 @@ func NewMsgCreateValidator(
 	return &MsgCreateValidator{
 		Description:       description,
 		ValidatorAddress:  valAddr,
+		DelegatorAddress:  delegatorAddr,
 		Pubkey:            pkAny,
 		Value:             selfDelegation,
 		Commission:        commission,
@@ -46,11 +49,16 @@ func NewMsgCreateValidator(
 }
 
 // Validate validates the MsgCreateValidator sdk msg.
-func (msg MsgCreateValidator) Validate(ac address.Codec) error {
+func (msg MsgCreateValidator) Validate(valAc, ac address.Codec) error {
 	// note that unmarshaling from bech32 ensures both non-empty and valid
-	_, err := ac.StringToBytes(msg.ValidatorAddress)
+	_, err := valAc.StringToBytes(msg.ValidatorAddress)
 	if err != nil {
 		return sdkerrors.ErrInvalidAddress.Wrapf("invalid validator address: %s", err)
+	}
+
+	_, err = ac.StringToBytes(msg.DelegatorAddress)
+	if err != nil {
+		return sdkerrors.ErrInvalidAddress.Wrapf("invalid delegator address: %s", err)
 	}
 
 	if msg.Pubkey == nil {
@@ -94,11 +102,12 @@ func (msg MsgCreateValidator) UnpackInterfaces(unpacker codectypes.AnyUnpacker) 
 }
 
 // NewMsgEditValidator creates a new MsgEditValidator instance
-func NewMsgEditValidator(valAddr string, description Description, newRate *math.LegacyDec, newMinSelfDelegation *math.Int) *MsgEditValidator {
+func NewMsgEditValidator(valAddr string, delegatorAddr string, description Description, newRate *math.LegacyDec, newMinSelfDelegation *math.Int) *MsgEditValidator {
 	return &MsgEditValidator{
 		Description:       description,
 		CommissionRate:    newRate,
 		ValidatorAddress:  valAddr,
+		DelegatorAddress:  delegatorAddr,
 		MinSelfDelegation: newMinSelfDelegation,
 	}
 }

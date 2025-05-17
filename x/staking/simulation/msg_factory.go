@@ -55,8 +55,9 @@ func MsgCreateValidatorFactory(k *keeper.Keeper) simsx.SimMsgFactoryFn[*types.Ms
 			r.DecN(maxCommission),
 		)
 
-		addr := must(k.ValidatorAddressCodec().BytesToString(valOper.Address))
-		msg, err := types.NewMsgCreateValidator(addr, newPubKey, selfDelegation, description, commission, math.OneInt())
+		valAddr := must(k.ValidatorAddressCodec().BytesToString(valOper.Address))
+		addr := must(k.AuthKeeper().AddressCodec().BytesToString(valOper.Address))
+		msg, err := types.NewMsgCreateValidator(valAddr, addr, newPubKey, selfDelegation, description, commission, math.OneInt())
 		if err != nil {
 			reporter.Skip(err.Error())
 			return nil, nil
@@ -141,7 +142,7 @@ func MsgEditValidatorFactory(k *keeper.Keeper) simsx.SimMsgFactoryFn[*types.MsgE
 		valOper := testData.GetAccountbyAccAddr(reporter, valOpAddrBz)
 		d := types.NewDescription(r.StringN(10), r.StringN(10), r.StringN(10), r.StringN(10), r.StringN(10))
 
-		msg := types.NewMsgEditValidator(val.GetOperator(), d, &newCommissionRate, nil)
+		msg := types.NewMsgEditValidator(val.GetOperator(), valOper.Address.String(), d, &newCommissionRate, nil)
 		return []simsx.SimAccount{valOper}, msg
 	}
 }

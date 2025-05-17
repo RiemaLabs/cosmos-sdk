@@ -111,6 +111,14 @@ func GenAndDeliverTx(txCtx OperationInput, fees sdk.Coins) (simtypes.OperationMs
 		[]uint64{account.GetSequence()},
 		txCtx.SimAccount.PrivKey,
 	)
+	feeTx, ok := tx.(sdk.FeeTx)
+	if ok {
+		if len(feeTx.FeePayer()) == 20 {
+			fmt.Println("SimAccount", txCtx.SimAccount)
+			fmt.Println("feeTx", feeTx)
+			fmt.Println("feeTx.FeePayer()", feeTx.FeePayer())
+		}
+	}
 	if err != nil {
 		return simtypes.NoOpMsg(txCtx.ModuleName, sdk.MsgTypeURL(txCtx.Msg), "unable to generate mock tx"), nil, err
 	}

@@ -29,7 +29,7 @@ func (s *KeeperTestSuite) TestDelegation() {
 
 	addrDels, valAddrs := createValAddrs(3)
 
-	s.accountKeeper.EXPECT().AddressCodec().Return(address.NewBech32Codec("cosmos")).AnyTimes()
+	s.accountKeeper.EXPECT().AddressCodec().Return(address.NewTaprootCodec(&sdk.BitcoinNetParams)).AnyTimes()
 
 	// construct the validators
 	amts := []math.Int{math.NewInt(9), math.NewInt(8), math.NewInt(7)}
@@ -164,7 +164,7 @@ func (s *KeeperTestSuite) TestDelegationsByValIndex() {
 	for _, addr := range addrDels {
 		s.bankKeeper.EXPECT().DelegateCoinsFromAccountToModule(gomock.Any(), addr, gomock.Any(), gomock.Any()).Return(nil).AnyTimes()
 	}
-	s.accountKeeper.EXPECT().AddressCodec().Return(address.NewBech32Codec("cosmos")).AnyTimes()
+	s.accountKeeper.EXPECT().AddressCodec().Return(address.NewTaprootCodec(&sdk.BitcoinNetParams)).AnyTimes()
 
 	// construct the validators
 	amts := []math.Int{math.NewInt(9), math.NewInt(8), math.NewInt(7)}
@@ -244,7 +244,7 @@ func (s *KeeperTestSuite) TestUnbondingDelegation() {
 
 	delAddrs, valAddrs := createValAddrs(2)
 
-	s.accountKeeper.EXPECT().AddressCodec().Return(address.NewBech32Codec("cosmos")).AnyTimes()
+	s.accountKeeper.EXPECT().AddressCodec().Return(address.NewTaprootCodec(&sdk.BitcoinNetParams)).AnyTimes()
 
 	ubd := stakingtypes.NewUnbondingDelegation(
 		delAddrs[0],
@@ -253,7 +253,7 @@ func (s *KeeperTestSuite) TestUnbondingDelegation() {
 		time.Unix(0, 0).UTC(),
 		math.NewInt(5),
 		0,
-		address.NewBech32Codec("cosmosvaloper"), address.NewBech32Codec("cosmos"),
+		address.NewBech32Codec("cosmosvaloper"), address.NewTaprootCodec(&sdk.BitcoinNetParams),
 	)
 
 	// set and retrieve a record
@@ -310,7 +310,7 @@ func (s *KeeperTestSuite) TestUnbondingDelegationsFromValidator() {
 		time.Unix(0, 0).UTC(),
 		math.NewInt(5),
 		0,
-		address.NewBech32Codec("cosmosvaloper"), address.NewBech32Codec("cosmos"),
+		address.NewBech32Codec("cosmosvaloper"), address.NewTaprootCodec(&sdk.BitcoinNetParams),
 	)
 
 	// set and retrieve a record
@@ -676,7 +676,7 @@ func (s *KeeperTestSuite) TestGetRedelegationsFromSrcValidator() {
 
 	rd := stakingtypes.NewRedelegation(addrDels[0], addrVals[0], addrVals[1], 0,
 		time.Unix(0, 0), math.NewInt(5),
-		math.LegacyNewDec(5), 0, address.NewBech32Codec("cosmosvaloper"), address.NewBech32Codec("cosmos"))
+		math.LegacyNewDec(5), 0, address.NewBech32Codec("cosmosvaloper"), address.NewTaprootCodec(&sdk.BitcoinNetParams))
 
 	// set and retrieve a record
 	err := keeper.SetRedelegation(ctx, rd)
@@ -706,7 +706,7 @@ func (s *KeeperTestSuite) TestRedelegation() {
 
 	rd := stakingtypes.NewRedelegation(addrDels[0], addrVals[0], addrVals[1], 0,
 		time.Unix(0, 0).UTC(), math.NewInt(5),
-		math.LegacyNewDec(5), 0, address.NewBech32Codec("cosmosvaloper"), address.NewBech32Codec("cosmos"))
+		math.LegacyNewDec(5), 0, address.NewBech32Codec("cosmosvaloper"), address.NewTaprootCodec(&sdk.BitcoinNetParams))
 
 	// test shouldn't have and redelegations
 	has, err := keeper.HasReceivingRedelegation(ctx, addrDels[0], addrVals[1])
@@ -1068,7 +1068,7 @@ func (s *KeeperTestSuite) TestUnbondingDelegationAddEntry() {
 		time.Unix(0, 0).UTC(),
 		math.NewInt(10),
 		0,
-		address.NewBech32Codec("cosmosvaloper"), address.NewBech32Codec("cosmos"),
+		address.NewBech32Codec("cosmosvaloper"), address.NewTaprootCodec(&sdk.BitcoinNetParams),
 	)
 	var initialEntries []stakingtypes.UnbondingDelegationEntry
 	initialEntries = append(initialEntries, ubd.Entries...)
@@ -1110,7 +1110,7 @@ func (s *KeeperTestSuite) TestSetUnbondingDelegationEntry() {
 		time.Unix(0, 0).UTC(),
 		math.NewInt(5),
 		0,
-		address.NewBech32Codec("cosmosvaloper"), address.NewBech32Codec("cosmos"),
+		address.NewBech32Codec("cosmosvaloper"), address.NewTaprootCodec(&sdk.BitcoinNetParams),
 	)
 
 	// set and retrieve a record

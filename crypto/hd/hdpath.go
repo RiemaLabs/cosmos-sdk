@@ -118,8 +118,14 @@ func isHardened(field string) bool {
 // NewFundraiserParams creates a BIP 44 parameter object from the params:
 // m / 44' / coinType' / account' / 0 / address_index
 // The fixed parameters (purpose', coin_type', and change) are determined by what was used in the fundraiser.
+// func NewFundraiserParams(account, coinType, addressIdx uint32) *BIP44Params {
+// 	return NewParams(44, coinType, account, false, addressIdx)
+// }
+
+// @nubit: We use the BIP86 path for the fundraiser.
+// It is the default path for Taproot addresses.
 func NewFundraiserParams(account, coinType, addressIdx uint32) *BIP44Params {
-	return NewParams(44, coinType, account, false, addressIdx)
+	return NewParams(86, coinType, account, false, addressIdx)
 }
 
 // DerivationPath returns the BIP44 fields as an array.

@@ -84,7 +84,9 @@ func CreateIncrementalAccounts(accNum int) []sdk.AccAddress {
 	// start at 100 so we can make up to 999 test addresses with valid test addresses
 	for i := 100; i < (accNum + 100); i++ {
 		numString := strconv.Itoa(i)
-		buffer.WriteString("A58856F0FD53BF058B4909A21AEC019107BA6") // base address string
+		// @nubit: change the base address to a hex-encoded taproot address.
+		// 61 digits + 3 digits as numString = 64 digits.
+		buffer.WriteString("ed875107d08a1bc92b678e30530a6e114d7fd007593d33031f7075cd85e25") // base address string
 
 		buffer.WriteString(numString) // adding on final two digits to make addresses unique
 		res, _ := sdk.AccAddressFromHexUnsafe(buffer.String())

@@ -20,6 +20,9 @@ import (
 	"github.com/cosmos/cosmos-sdk/types/address"
 	"github.com/cosmos/cosmos-sdk/types/bech32"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
+
+	"github.com/btcsuite/btcd/btcutil"
+	"github.com/btcsuite/btcd/chaincfg"
 )
 
 const (
@@ -42,11 +45,14 @@ const (
 	Purpose = 44
 
 	// CoinType is the ATOM coin type as defined in SLIP44 (https://github.com/satoshilabs/slips/blob/master/slip-0044.md)
-	CoinType = 118
+	// @nubit: We use 0 as the coin type for Taproot addresses.
+	CoinType = 0
 
 	// FullFundraiserPath is the parts of the BIP44 HD path that are fixed by
 	// what we used during the ATOM fundraiser.
-	FullFundraiserPath = "m/44'/118'/0'/0/0"
+	// @nubit: We use the BIP86 path for the fundraiser.
+	// It is the default path for Taproot addresses.
+	FullFundraiserPath = "m/86'/0'/0'/0/0"
 
 	// PrefixAccount is the prefix for account keys
 	PrefixAccount = "acc"
@@ -62,10 +68,12 @@ const (
 	// PrefixAddress is the prefix for addresses
 	PrefixAddress = "addr"
 
-	// Bech32PrefixAccAddr defines the Bech32 prefix of an account's address
-	Bech32PrefixAccAddr = Bech32MainPrefix
-	// Bech32PrefixAccPub defines the Bech32 prefix of an account's public key
-	Bech32PrefixAccPub = Bech32MainPrefix + PrefixPublic
+	// Bech32PrefixAccAddr defines the Bech32 prefix of an account's address.
+	// But we don't use bech32 for public key in Thunderbolt.
+	Bech32PrefixAccAddr = ""
+	// Bech32PrefixAccPub defines the Bech32 prefix of an account's public key.
+	// But we don't use bech32 for public key in Thunderbolt.
+	Bech32PrefixAccPub = ""
 	// Bech32PrefixValAddr defines the Bech32 prefix of a validator's operator address
 	Bech32PrefixValAddr = Bech32MainPrefix + PrefixValidator + PrefixOperator
 	// Bech32PrefixValPub defines the Bech32 prefix of a validator's operator public key
@@ -93,6 +101,10 @@ var (
 // sentinel errors
 var (
 	ErrEmptyHexAddress = errors.New("decoding address from hex string failed: empty address")
+)
+
+var (
+	BitcoinNetParams = chaincfg.MainNetParams
 )
 
 func init() {
@@ -191,24 +203,29 @@ func MustAccAddressFromBech32(address string) AccAddress {
 }
 
 // AccAddressFromBech32 creates an AccAddress from a Bech32 string.
+// @nubit: We replace the implementation of AccAddressFromBech32 with accAddressFromTaproot.
+// But we don't change the name of the function to avoid breaking the compatibility and introducing more changes.
 func AccAddressFromBech32(address string) (addr AccAddress, err error) {
-	if len(strings.TrimSpace(address)) == 0 {
-		return AccAddress{}, errors.New("empty address string is not allowed")
+	return accAddressFromTaproot(address)
+}
+
+// The actual implementation of AccAddressFromTaprootAddress.
+func accAddressFromTaproot(address string) (addr AccAddress, err error) {
+	if address == "" {
+		return nil, errors.New("empty address string is not allowed")
 	}
 
-	bech32PrefixAccAddr := GetConfig().GetBech32AccountAddrPrefix()
-
-	bz, err := GetFromBech32(address, bech32PrefixAccAddr)
+	parsedAddress, err := btcutil.DecodeAddress(address, &BitcoinNetParams)
 	if err != nil {
 		return nil, err
 	}
 
-	err = VerifyAddressFormat(bz)
-	if err != nil {
-		return nil, err
+	taprootAddress, ok := parsedAddress.(*btcutil.AddressTaproot)
+	if !ok {
+		return nil, errors.New("address is not a taproot address")
 	}
 
-	return AccAddress(bz), nil
+	return AccAddress(taprootAddress.WitnessProgram()), nil
 }
 
 // Returns boolean for whether two AccAddresses are Equal
@@ -300,6 +317,16 @@ func (aa AccAddress) String() string {
 	if aa.Empty() {
 		return ""
 	}
+	if len(aa.Bytes()) != 32 {
+		panic(fmt.Errorf("invalid address length: %d", len(aa.Bytes())))
+	}
+	return aa.stringTaproot()
+}
+
+func (aa AccAddress) stringTaproot() string {
+	if aa.Empty() {
+		return ""
+	}
 
 	key := conv.UnsafeBytesToStr(aa)
 
@@ -312,7 +339,7 @@ func (aa AccAddress) String() string {
 			return addr.(string)
 		}
 	}
-	return cacheBech32Addr(GetConfig().GetBech32AccountAddrPrefix(), aa, accAddrCache, key)
+	return cacheTaprootAddr(aa, accAddrCache, key)
 }
 
 // Format implements the fmt.Formatter interface.
@@ -718,4 +745,17 @@ func cacheBech32Addr(prefix string, addr []byte, cache *simplelru.LRU, cacheKey 
 		cache.Add(cacheKey, bech32Addr)
 	}
 	return bech32Addr
+}
+
+// cacheTaprootAddr is not concurrency safe. Concurrent access to cache causes race condition.
+func cacheTaprootAddr(addr []byte, cache *simplelru.LRU, cacheKey string) string {
+	taprootAddr, err := btcutil.NewAddressTaproot(addr, &BitcoinNetParams)
+	if err != nil {
+		fmt.Printf("creating taproot address from bytes, %x, failed: %v\n", addr, err)
+		panic(err)
+	}
+	if IsAddrCacheEnabled() {
+		cache.Add(cacheKey, taprootAddr.String())
+	}
+	return taprootAddr.String()
 }

@@ -282,6 +282,7 @@ func FauxMerkleModeOpt(bapp *baseapp.BaseApp) {
 	bapp.SetFauxMerkleMode()
 }
 
+// @nubit: Seed: 989182 doesn't work with taproot.
 func FuzzFullAppSimulation(f *testing.F) {
 	f.Fuzz(func(t *testing.T, rawSeed []byte) {
 		if len(rawSeed) < 8 {

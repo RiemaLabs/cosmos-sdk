@@ -50,7 +50,7 @@ func (s *CLITestSuite) SetupSuite() {
 
 func (s *CLITestSuite) TestSendTxCmd() {
 	accounts := testutil.CreateKeyringAccounts(s.T(), s.kr, 1)
-	cmd := cli.NewSendTxCmd(address.NewBech32Codec("cosmos"))
+	cmd := cli.NewSendTxCmd(address.NewTaprootCodec(&sdk.BitcoinNetParams))
 	cmd.SetOut(io.Discard)
 
 	extraArgs := []string{
@@ -135,7 +135,7 @@ func (s *CLITestSuite) TestSendTxCmd() {
 func (s *CLITestSuite) TestMultiSendTxCmd() {
 	accounts := testutil.CreateKeyringAccounts(s.T(), s.kr, 3)
 
-	cmd := cli.NewMultiSendTxCmd(address.NewBech32Codec("cosmos"))
+	cmd := cli.NewMultiSendTxCmd(address.NewTaprootCodec(&sdk.BitcoinNetParams))
 	cmd.SetOut(io.Discard)
 
 	extraArgs := []string{

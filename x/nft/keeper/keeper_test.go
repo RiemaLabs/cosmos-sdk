@@ -63,7 +63,7 @@ func (s *TestSuite) SetupTest() {
 	accountKeeper := nfttestutil.NewMockAccountKeeper(ctrl)
 	bankKeeper := nfttestutil.NewMockBankKeeper(ctrl)
 	accountKeeper.EXPECT().GetModuleAddress("nft").Return(s.addrs[0]).AnyTimes()
-	accountKeeper.EXPECT().AddressCodec().Return(address.NewBech32Codec("cosmos")).AnyTimes()
+	accountKeeper.EXPECT().AddressCodec().Return(address.NewTaprootCodec(&sdk.BitcoinNetParams)).AnyTimes()
 
 	for _, addr := range s.addrs {
 		st, err := accountKeeper.AddressCodec().BytesToString(addr.Bytes())

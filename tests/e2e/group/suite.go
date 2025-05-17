@@ -73,7 +73,7 @@ func (s *E2ETestSuite) SetupSuite() {
 		val.Address,
 		account,
 		sdk.NewCoins(sdk.NewCoin(s.cfg.BondDenom, math.NewInt(2000))),
-		address.NewBech32Codec("cosmos"),
+		address.NewTaprootCodec(&sdk.BitcoinNetParams),
 		fmt.Sprintf("--%s=true", flags.FlagSkipConfirmation),
 		fmt.Sprintf("--%s=%s", flags.FlagBroadcastMode, flags.BroadcastSync),
 		fmt.Sprintf("--%s=%s", flags.FlagFees, sdk.NewCoins(sdk.NewCoin(s.cfg.BondDenom, math.NewInt(10))).String()),
@@ -271,7 +271,7 @@ func (s *E2ETestSuite) createGroupThresholdPolicyWithBalance(adminAddress, group
 	s.Require().NoError(err)
 	_, err = clitestutil.MsgSendExec(clientCtx, val.Address, addr,
 		sdk.NewCoins(sdk.NewCoin(s.cfg.BondDenom, math.NewInt(tokens))),
-		address.NewBech32Codec("cosmos"),
+		address.NewTaprootCodec(&sdk.BitcoinNetParams),
 		s.commonFlags...,
 	)
 	s.Require().NoError(err)

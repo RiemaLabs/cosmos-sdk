@@ -121,10 +121,11 @@ func SimulateMsgCreateValidator(
 		msgType := sdk.MsgTypeURL(&types.MsgCreateValidator{})
 
 		simAccount, _ := simtypes.RandomAcc(r, accs)
-		address := sdk.ValAddress(simAccount.Address)
+		valAddr := simAccount.ValAddress
+		addr := simAccount.Address
 
 		// ensure the validator doesn't exist already
-		_, err := k.GetValidator(ctx, address)
+		_, err := k.GetValidator(ctx, valAddr)
 		if err == nil {
 			return simtypes.NoOpMsg(types.ModuleName, msgType, "validator already exists"), nil, nil
 		}
@@ -174,7 +175,7 @@ func SimulateMsgCreateValidator(
 			simtypes.RandomDecAmount(r, maxCommission),
 		)
 
-		msg, err := types.NewMsgCreateValidator(address.String(), simAccount.ConsKey.PubKey(), selfDelegation, description, commission, math.OneInt())
+		msg, err := types.NewMsgCreateValidator(valAddr.String(), addr.String(), simAccount.ConsKey.PubKey(), selfDelegation, description, commission, math.OneInt())
 		if err != nil {
 			return simtypes.NoOpMsg(types.ModuleName, sdk.MsgTypeURL(msg), "unable to create CreateValidator message"), nil, err
 		}
@@ -251,7 +252,7 @@ func SimulateMsgEditValidator(
 			simtypes.RandStringOfLength(r, 10),
 		)
 
-		msg := types.NewMsgEditValidator(address, description, &newCommissionRate, nil)
+		msg := types.NewMsgEditValidator(address, simAccount.Address.String(), description, &newCommissionRate, nil)
 
 		txCtx := simulation.OperationInput{
 			R:               r,

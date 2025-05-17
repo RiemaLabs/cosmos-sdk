@@ -73,7 +73,7 @@ func initFixture(t *testing.T) *fixture {
 		Builder: flag.Builder{
 			TypeResolver:          protoregistry.GlobalTypes,
 			FileResolver:          protoregistry.GlobalFiles,
-			AddressCodec:          addresscodec.NewBech32Codec("cosmos"),
+			AddressCodec:          addresscodec.NewTaprootCodec(&sdk.BitcoinNetParams),
 			ValidatorAddressCodec: addresscodec.NewBech32Codec("cosmosvaloper"),
 			ConsensusAddressCodec: addresscodec.NewBech32Codec("cosmosvalcons"),
 		},

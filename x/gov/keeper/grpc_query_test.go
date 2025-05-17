@@ -734,7 +734,7 @@ func (suite *KeeperTestSuite) TestGRPCQueryVotes() {
 					{ProposalId: proposal.Id, Voter: addrs[1].String(), Options: v1.NewNonSplitVoteOption(v1.OptionYes)},
 				}
 
-				codec := address.NewBech32Codec("cosmos")
+				codec := address.NewTaprootCodec(&sdk.BitcoinNetParams)
 				accAddr1, err1 := codec.StringToBytes(votes[0].Voter)
 				accAddr2, err2 := codec.StringToBytes(votes[1].Voter)
 				suite.Require().NoError(err1)
@@ -837,7 +837,7 @@ func (suite *KeeperTestSuite) TestLegacyGRPCQueryVotes() {
 					{ProposalId: proposal.Id, Voter: addrs[0].String(), Options: v1beta1.NewNonSplitVoteOption(v1beta1.OptionAbstain)},
 					{ProposalId: proposal.Id, Voter: addrs[1].String(), Options: v1beta1.NewNonSplitVoteOption(v1beta1.OptionYes)},
 				}
-				codec := address.NewBech32Codec("cosmos")
+				codec := address.NewTaprootCodec(&sdk.BitcoinNetParams)
 
 				accAddr1, err1 := codec.StringToBytes(votes[0].Voter)
 				accAddr2, err2 := codec.StringToBytes(votes[1].Voter)

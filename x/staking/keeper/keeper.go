@@ -172,3 +172,7 @@ func (k Keeper) GetValidatorUpdates(ctx context.Context) ([]abci.ValidatorUpdate
 
 	return valUpdates.Updates, nil
 }
+
+func (k Keeper) AuthKeeper() types.AccountKeeper {
+	return k.authKeeper
+}

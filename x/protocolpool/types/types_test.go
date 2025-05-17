@@ -22,7 +22,7 @@ func TestRegisterInterfaces(t *testing.T) {
 
 func TestNewMsgFundCommunityPool(t *testing.T) {
 	amount := sdk.NewCoins(sdk.NewCoin("stake", math.NewInt(100)))
-	depositor := "cosmos1qypq2q2l8z4wz2z2l8z4wz2z2l8z4wz2z2l8z4"
+	depositor := "bc1pv3qgmvlr0gztdwn77a743cf4vu5s9nkyjsytf3vgezyan0lkaqjs0qz3z8"
 	msg := NewMsgFundCommunityPool(amount, depositor)
 	require.Equal(t, amount, msg.Amount)
 	require.Equal(t, depositor, msg.Depositor)
@@ -30,7 +30,7 @@ func TestNewMsgFundCommunityPool(t *testing.T) {
 
 func TestNewMsgCommunityPoolSpend(t *testing.T) {
 	amount := sdk.NewCoins(sdk.NewCoin("stake", math.NewInt(100)))
-	authority := "cosmos1qypq2q2l8z4wz2z2l8z4wz2z2l8z4wz2z2l8z4"
+	authority := "bc1pv3qgmvlr0gztdwn77a743cf4vu5s9nkyjsytf3vgezyan0lkaqjs0qz3z8"
 	recipient := "cosmos1qypq2q2l8z4wz2z2l8z4wz2z2l8z4wz2z2l8z5"
 	msg := NewMsgCommunityPoolSpend(amount, authority, recipient)
 	require.Equal(t, amount, msg.Amount)
@@ -47,7 +47,7 @@ func TestValidateContinuousFund(t *testing.T) {
 		{
 			"valid continuous fund",
 			ContinuousFund{
-				Recipient:  "cosmos1qypq2q2l8z4wz2z2l8z4wz2z2l8z4wz2z2l8z4",
+				Recipient:  "bc1pv3qgmvlr0gztdwn77a743cf4vu5s9nkyjsytf3vgezyan0lkaqjs0qz3z8",
 				Percentage: math.LegacyMustNewDecFromStr("0.1"),
 				Expiry:     nil,
 			},
@@ -63,7 +63,7 @@ func TestValidateContinuousFund(t *testing.T) {
 		{
 			"zero percentage",
 			ContinuousFund{
-				Recipient:  "cosmos1qypq2q2l8z4wz2z2l8z4wz2z2l8z4wz2z2l8z4",
+				Recipient:  "bc1pv3qgmvlr0gztdwn77a743cf4vu5s9nkyjsytf3vgezyan0lkaqjs0qz3z8",
 				Percentage: math.LegacyZeroDec(),
 			},
 			"percentage cannot be zero or empty",
@@ -71,7 +71,7 @@ func TestValidateContinuousFund(t *testing.T) {
 		{
 			"nil percentage",
 			ContinuousFund{
-				Recipient:  "cosmos1qypq2q2l8z4wz2z2l8z4wz2z2l8z4wz2z2l8z4",
+				Recipient:  "bc1pv3qgmvlr0gztdwn77a743cf4vu5s9nkyjsytf3vgezyan0lkaqjs0qz3z8",
 				Percentage: math.LegacyDec{},
 			},
 			"percentage cannot be zero or empty",
@@ -79,7 +79,7 @@ func TestValidateContinuousFund(t *testing.T) {
 		{
 			"negative percentage",
 			ContinuousFund{
-				Recipient:  "cosmos1qypq2q2l8z4wz2z2l8z4wz2z2l8z4wz2z2l8z4",
+				Recipient:  "bc1pv3qgmvlr0gztdwn77a743cf4vu5s9nkyjsytf3vgezyan0lkaqjs0qz3z8",
 				Percentage: math.LegacyMustNewDecFromStr("-0.1"),
 			},
 			"percentage cannot be negative",
@@ -87,7 +87,7 @@ func TestValidateContinuousFund(t *testing.T) {
 		{
 			"percentage exceeds 100%",
 			ContinuousFund{
-				Recipient:  "cosmos1qypq2q2l8z4wz2z2l8z4wz2z2l8z4wz2z2l8z4",
+				Recipient:  "bc1pv3qgmvlr0gztdwn77a743cf4vu5s9nkyjsytf3vgezyan0lkaqjs0qz3z8",
 				Percentage: math.LegacyMustNewDecFromStr("1.1"),
 			},
 			"percentage cannot be greater than one",

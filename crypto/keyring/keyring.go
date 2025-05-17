@@ -210,8 +210,8 @@ func newKeystore(kr keyring.Keyring, cdc codec.Codec, backend string, opts ...Op
 	// Default options for keybase, these can be overwritten using the
 	// Option function
 	options := Options{
-		SupportedAlgos:       SigningAlgoList{hd.Secp256k1},
-		SupportedAlgosLedger: SigningAlgoList{hd.Secp256k1},
+		SupportedAlgos:       SigningAlgoList{hd.Secp256k1, hd.Taproot},
+		SupportedAlgosLedger: SigningAlgoList{hd.Secp256k1, hd.Taproot},
 	}
 
 	for _, optionFn := range opts {

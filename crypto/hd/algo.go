@@ -4,6 +4,7 @@ import (
 	"github.com/cosmos/go-bip39"
 
 	"github.com/cosmos/cosmos-sdk/crypto/keys/secp256k1"
+	"github.com/cosmos/cosmos-sdk/crypto/keys/taproot"
 	"github.com/cosmos/cosmos-sdk/crypto/types"
 )
 
@@ -20,6 +21,8 @@ const (
 	Ed25519Type = PubKeyType("ed25519")
 	// Sr25519Type represents the Sr25519Type signature system.
 	Sr25519Type = PubKeyType("sr25519")
+	// TaprootType uses the Bitcoin taproot ECDSA parameters.
+	TaprootType = PubKeyType("taproot")
 )
 
 // Secp256k1 uses the Bitcoin secp256k1 ECDSA parameters.
@@ -68,3 +71,39 @@ func (s secp256k1Algo) Generate() GenerateFn {
 		return &secp256k1.PrivKey{Key: bzArr}
 	}
 }
+
+// Keep the same implementation as secp256k1Algo.
+// The difference is that the private key is a taproot.PrivKey.
+type taprootAlgo struct{}
+
+func (t taprootAlgo) Name() PubKeyType {
+	return TaprootType
+}
+
+func (t taprootAlgo) Derive() DeriveFn {
+	return func(mnemonic, bip39Passphrase, hdPath string) ([]byte, error) {
+		seed, err := bip39.NewSeedWithErrorChecking(mnemonic, bip39Passphrase)
+		if err != nil {
+			return nil, err
+		}
+
+		masterPriv, ch := ComputeMastersFromSeed(seed)
+		if len(hdPath) == 0 {
+			return masterPriv[:], nil
+		}
+		derivedKey, err := DerivePrivateKeyForPath(masterPriv, ch, hdPath)
+
+		return derivedKey, err
+	}
+}
+
+func (t taprootAlgo) Generate() GenerateFn {
+	return func(bz []byte) types.PrivKey {
+		bzArr := make([]byte, secp256k1.PrivKeySize)
+		copy(bzArr, bz)
+
+		return &taproot.PrivKey{Key: bzArr}
+	}
+}
+
+var Taproot = taprootAlgo{}

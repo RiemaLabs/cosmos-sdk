@@ -40,7 +40,7 @@ func (k msgServer) CreateValidator(ctx context.Context, msg *types.MsgCreateVali
 		return nil, sdkerrors.ErrInvalidAddress.Wrapf("invalid validator address: %s", err)
 	}
 
-	if err := msg.Validate(k.validatorAddressCodec); err != nil {
+	if err := msg.Validate(k.validatorAddressCodec, k.authKeeper.AddressCodec()); err != nil {
 		return nil, err
 	}
 

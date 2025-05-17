@@ -104,7 +104,7 @@ func AddBulkGenesisAccountCmd(defaultNodeHome string, addressCodec address.Codec
 where accounts.json is:
 [
     {
-        "address": "cosmos139f7kncmglres2nf3h4hc4tade85ekfr8sulz5",
+        "address": "bc1p0xlxvlhemja6c4dqv22uapctqupfhlxm9h8z3k2e72q4k9hcz7vqzk5jj0",
         "coins": [
             { "denom": "umuon", "amount": "100000000" },
             { "denom": "stake", "amount": "200000000" }

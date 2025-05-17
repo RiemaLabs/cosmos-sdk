@@ -68,7 +68,7 @@ func MsgUnjailFactory(k keeper.Keeper, sk types.StakingKeeper) simsx.SimMsgFacto
 				return nil
 			}
 		}
-		return []simsx.SimAccount{valOper}, types.NewMsgUnjail(validator.GetOperator()), handler
+		return []simsx.SimAccount{valOper}, types.NewMsgUnjail(validator.GetOperator(), valOper.Address.String()), handler
 	})
 }
 

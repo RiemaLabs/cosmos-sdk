@@ -4,18 +4,17 @@ import (
 	"testing"
 	"time"
 
-	"github.com/cometbft/cometbft/crypto"
 	"github.com/stretchr/testify/require"
 
 	"cosmossdk.io/simapp"
 
-	"github.com/cosmos/cosmos-sdk/crypto/keys/secp256k1"
+	"github.com/cosmos/cosmos-sdk/crypto/keys/taproot"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
 )
 
 func TestSimGenesisAccountValidate(t *testing.T) {
-	pubkey := secp256k1.GenPrivKey().PubKey()
+	pubkey := taproot.GenPrivKey().PubKey()
 	addr := sdk.AccAddress(pubkey.Address())
 
 	vestingStart := time.Now().UTC()
@@ -38,14 +37,14 @@ func TestSimGenesisAccountValidate(t *testing.T) {
 		{
 			"invalid basic account with mismatching address/pubkey",
 			simapp.SimGenesisAccount{
-				BaseAccount: authtypes.NewBaseAccount(addr, secp256k1.GenPrivKey().PubKey(), 0, 0),
+				BaseAccount: authtypes.NewBaseAccount(addr, taproot.GenPrivKey().PubKey(), 0, 0),
 			},
 			true,
 		},
 		{
 			"valid basic account with module name",
 			simapp.SimGenesisAccount{
-				BaseAccount: authtypes.NewBaseAccount(sdk.AccAddress(crypto.AddressHash([]byte("testmod"))), nil, 0, 0),
+				BaseAccount: authtypes.NewBaseAccount(authtypes.NewModuleAddress("testmod"), nil, 0, 0),
 				ModuleName:  "testmod",
 			},
 			false,

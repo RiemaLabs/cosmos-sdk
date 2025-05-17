@@ -11,14 +11,14 @@ import (
 )
 
 func TestMsgUnjailGetSignBytes(t *testing.T) {
-	addr := sdk.AccAddress("abcd")
-	msg := NewMsgUnjail(sdk.ValAddress(addr).String())
+	addr := sdk.AccAddress("12345678901234567890123456789012")
+	msg := NewMsgUnjail(sdk.ValAddress(addr).String(), addr.String())
 	pc := codec.NewProtoCodec(types.NewInterfaceRegistry())
 	bytes, err := pc.MarshalAminoJSON(msg)
 	require.NoError(t, err)
 	require.Equal(
 		t,
-		`{"type":"cosmos-sdk/MsgUnjail","value":{"address":"cosmosvaloper1v93xxeqhg9nn6"}}`,
+		`{"type":"cosmos-sdk/MsgUnjail","value":{"address":"cosmosvaloper1xyerxdp4xcmnswfsxyerxdp4xcmnswfsxyerxdp4xcmnswfsxyeqvtyqsq","delegator_addr":"bc1pxyerxdp4xcmnswfsxyerxdp4xcmnswfsxyerxdp4xcmnswfsxyeqytq8pz"}}`,
 		string(bytes),
 	)
 }

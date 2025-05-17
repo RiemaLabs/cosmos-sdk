@@ -49,7 +49,7 @@ func txConfig() client.TxConfig {
 	ir := must(codectypes.NewInterfaceRegistryWithOptions(codectypes.InterfaceRegistryOptions{
 		ProtoFiles: proto.HybridResolver,
 		SigningOptions: signing.Options{
-			AddressCodec:          address.NewBech32Codec("cosmos"),
+			AddressCodec:          address.NewTaprootCodec(&sdk.BitcoinNetParams),
 			ValidatorAddressCodec: address.NewBech32Codec("cosmosvaloper"),
 		},
 	}))

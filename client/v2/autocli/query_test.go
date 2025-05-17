@@ -361,7 +361,7 @@ func TestEverything(t *testing.T) {
 		"--str", "def",
 		"--timestamp", "2019-01-02T00:01:02Z",
 		"--a-coin", "100000foo",
-		"--an-address", "cosmos1y74p8wyy4enfhfn342njve6cjmj5c8dtl6emdk",
+		"--an-address", "bc1pcqx3f8qg4w3mrvmq3ndcx225tng2tgqgpw0dquc3eyyef5y55nnqecqml7",
 		"--a-validator-address", "cosmosvaloper1tnh2q55v8wyygtt9srz5safamzdengsn9dsd7z",
 		"--a-consensus-address", "cosmosvalcons16vm0nx49eam4q0xasdnwdzsdl6ymgyjt757sgr",
 		"--bz", "c2RncXdlZndkZ3NkZw==",
@@ -416,7 +416,7 @@ func TestEverything(t *testing.T) {
 				Amount: "100000",
 				Denom:  "foo",
 			},
-			AnAddress:         "cosmos1y74p8wyy4enfhfn342njve6cjmj5c8dtl6emdk",
+			AnAddress:         "bc1pcqx3f8qg4w3mrvmq3ndcx225tng2tgqgpw0dquc3eyyef5y55nnqecqml7",
 			AValidatorAddress: "cosmosvaloper1tnh2q55v8wyygtt9srz5safamzdengsn9dsd7z",
 			AConsensusAddress: "cosmosvalcons16vm0nx49eam4q0xasdnwdzsdl6ymgyjt757sgr",
 			Bz:                []byte("sdgqwefwdgsdg"),
@@ -582,7 +582,7 @@ func TestAddressValidation(t *testing.T) {
 	_, err := runCmd(fixture, buildModuleQueryCommand,
 		"echo",
 		"1", "abc", "1foo",
-		"--an-address", "cosmos1y74p8wyy4enfhfn342njve6cjmj5c8dtl6emdk",
+		"--an-address", "bc1pcqx3f8qg4w3mrvmq3ndcx225tng2tgqgpw0dquc3eyyef5y55nnqecqml7",
 	)
 	assert.NilError(t, err)
 

@@ -60,7 +60,7 @@ func (suite *KeeperTestSuite) SetupTest() {
 	accountKeeper := pooltestutil.NewMockAccountKeeper(ctrl)
 	accountKeeper.EXPECT().GetModuleAddress(types.ModuleName).Return(poolAcc.GetAddress()).AnyTimes()
 	accountKeeper.EXPECT().GetModuleAddress(types.ProtocolPoolEscrowAccount).Return(poolDistrAcc.GetAddress()).AnyTimes()
-	accountKeeper.EXPECT().AddressCodec().Return(address.NewBech32Codec("cosmos")).AnyTimes()
+	accountKeeper.EXPECT().AddressCodec().Return(address.NewTaprootCodec(&sdk.BitcoinNetParams)).AnyTimes()
 	suite.authKeeper = accountKeeper
 
 	bankKeeper := pooltestutil.NewMockBankKeeper(ctrl)

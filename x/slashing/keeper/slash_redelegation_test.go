@@ -12,7 +12,7 @@ import (
 	"cosmossdk.io/log"
 	"cosmossdk.io/math"
 
-	"github.com/cosmos/cosmos-sdk/crypto/keys/secp256k1"
+	"github.com/cosmos/cosmos-sdk/crypto/keys/taproot"
 	simtestutil "github.com/cosmos/cosmos-sdk/testutil/sims"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	bankkeeper "github.com/cosmos/cosmos-sdk/x/bank/keeper"
@@ -44,8 +44,8 @@ func TestSlashRedelegation(t *testing.T) {
 	require.NoError(t, err)
 
 	// evilVal will be slashed, goodVal won't be slashed
-	evilValPubKey := secp256k1.GenPrivKey().PubKey()
-	goodValPubKey := secp256k1.GenPrivKey().PubKey()
+	evilValPubKey := taproot.GenPrivKey().PubKey()
+	goodValPubKey := taproot.GenPrivKey().PubKey()
 
 	// both test acc 1 and 2 delegated to evil val, both acc should be slashed when evil val is slashed
 	// test acc 1 use the "undelegation after redelegation" trick (redelegate to good val and then undelegate) to avoid slashing
@@ -69,7 +69,7 @@ func TestSlashRedelegation(t *testing.T) {
 	evilValAddr := sdk.ValAddress(evilValPubKey.Address())
 	require.NoError(t, banktestutil.FundAccount(ctx, bankKeeper, sdk.AccAddress(evilValAddr), testCoins))
 	createValMsg1, _ := stakingtypes.NewMsgCreateValidator(
-		evilValAddr.String(), evilValPubKey, testCoins[0], stakingtypes.Description{Details: "test"}, stakingtypes.NewCommissionRates(math.LegacyNewDecWithPrec(5, 1), math.LegacyNewDecWithPrec(5, 1), math.LegacyNewDec(0)), math.OneInt())
+		evilValAddr.String(), evilValPubKey.Address().String(), evilValPubKey, testCoins[0], stakingtypes.Description{Details: "test"}, stakingtypes.NewCommissionRates(math.LegacyNewDecWithPrec(5, 1), math.LegacyNewDecWithPrec(5, 1), math.LegacyNewDec(0)), math.OneInt())
 	_, err = stakingMsgServer.CreateValidator(ctx, createValMsg1)
 	require.NoError(t, err)
 
@@ -77,7 +77,7 @@ func TestSlashRedelegation(t *testing.T) {
 	goodValAddr := sdk.ValAddress(goodValPubKey.Address())
 	require.NoError(t, banktestutil.FundAccount(ctx, bankKeeper, sdk.AccAddress(goodValAddr), testCoins))
 	createValMsg2, _ := stakingtypes.NewMsgCreateValidator(
-		goodValAddr.String(), goodValPubKey, testCoins[0], stakingtypes.Description{Details: "test"}, stakingtypes.NewCommissionRates(math.LegacyNewDecWithPrec(5, 1), math.LegacyNewDecWithPrec(5, 1), math.LegacyNewDec(0)), math.OneInt())
+		goodValAddr.String(), goodValPubKey.Address().String(), goodValPubKey, testCoins[0], stakingtypes.Description{Details: "test"}, stakingtypes.NewCommissionRates(math.LegacyNewDecWithPrec(5, 1), math.LegacyNewDecWithPrec(5, 1), math.LegacyNewDec(0)), math.OneInt())
 	_, err = stakingMsgServer.CreateValidator(ctx, createValMsg2)
 	require.NoError(t, err)
 

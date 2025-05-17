@@ -66,7 +66,7 @@ func (s *IntegrationTestSuite) SetupTest() {
 
 	s.addrs = simtestutil.AddTestAddrsIncremental(s.bankKeeper, s.stakingKeeper, ctx, 4, math.NewInt(30000000))
 
-	s.addressCodec = codecaddress.NewBech32Codec("cosmos")
+	s.addressCodec = codecaddress.NewTaprootCodec(&sdk.BitcoinNetParams)
 }
 
 func (s *IntegrationTestSuite) TestEndBlockerPruning() {

@@ -104,7 +104,7 @@ func (suite *KeeperTestSuite) SetupTest() {
 		storeService,
 		stakingKeeper,
 		slashingKeeper,
-		address.NewBech32Codec("cosmos"),
+		address.NewTaprootCodec(&sdk.BitcoinNetParams),
 		&evidencetestutil.MockCometinfo{},
 	)
 

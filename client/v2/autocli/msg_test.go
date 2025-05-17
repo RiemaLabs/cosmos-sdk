@@ -52,7 +52,7 @@ var bankAutoCLI = &autocliv1.ServiceCommandDescriptor{
 func TestMsg(t *testing.T) {
 	fixture := initFixture(t)
 	out, err := runCmd(fixture, buildModuleMsgCommand, "send",
-		"cosmos1y74p8wyy4enfhfn342njve6cjmj5c8dtl6emdk", "cosmos1y74p8wyy4enfhfn342njve6cjmj5c8dtl6emdk", "1foo",
+		"bc1pcqx3f8qg4w3mrvmq3ndcx225tng2tgqgpw0dquc3eyyef5y55nnqecqml7", "bc1pcqx3f8qg4w3mrvmq3ndcx225tng2tgqgpw0dquc3eyyef5y55nnqecqml7", "1foo",
 		"--generate-only",
 		"--output", "json",
 		"--chain-id", "test-chain",
@@ -72,7 +72,7 @@ func TestMsg(t *testing.T) {
 		},
 		EnhanceCustomCommand: true,
 	}), "send",
-		"cosmos1y74p8wyy4enfhfn342njve6cjmj5c8dtl6emdk", "cosmos1y74p8wyy4enfhfn342njve6cjmj5c8dtl6emdk", "1foo",
+		"bc1pcqx3f8qg4w3mrvmq3ndcx225tng2tgqgpw0dquc3eyyef5y55nnqecqml7", "bc1pcqx3f8qg4w3mrvmq3ndcx225tng2tgqgpw0dquc3eyyef5y55nnqecqml7", "1foo",
 		"--generate-only",
 		"--output", "json",
 	)
@@ -92,8 +92,8 @@ func TestMsg(t *testing.T) {
 		},
 		EnhanceCustomCommand: true,
 	}), "send",
-		"cosmos1y74p8wyy4enfhfn342njve6cjmj5c8dtl6emdk", "1foo",
-		"--from", "cosmos1y74p8wyy4enfhfn342njve6cjmj5c8dtl6emdk",
+		"bc1pcqx3f8qg4w3mrvmq3ndcx225tng2tgqgpw0dquc3eyyef5y55nnqecqml7", "1foo",
+		"--from", "bc1pcqx3f8qg4w3mrvmq3ndcx225tng2tgqgpw0dquc3eyyef5y55nnqecqml7",
 		"--generate-only",
 		"--output", "json",
 	)
@@ -115,8 +115,8 @@ func TestMsg(t *testing.T) {
 		},
 		EnhanceCustomCommand: true,
 	}), "send",
-		"cosmos1y74p8wyy4enfhfn342njve6cjmj5c8dtl6emdk", "1foo",
-		"--sender", "cosmos1y74p8wyy4enfhfn342njve6cjmj5c8dtl6emdk",
+		"bc1pcqx3f8qg4w3mrvmq3ndcx225tng2tgqgpw0dquc3eyyef5y55nnqecqml7", "1foo",
+		"--sender", "bc1pcqx3f8qg4w3mrvmq3ndcx225tng2tgqgpw0dquc3eyyef5y55nnqecqml7",
 		"--generate-only",
 		"--output", "json",
 	)
@@ -142,7 +142,7 @@ func TestMsgWithFlattenFields(t *testing.T) {
 		},
 		EnhanceCustomCommand: true,
 	}), "update-params",
-		"cosmos1y74p8wyy4enfhfn342njve6cjmj5c8dtl6emdk", "stake", "true", "true",
+		"bc1pcqx3f8qg4w3mrvmq3ndcx225tng2tgqgpw0dquc3eyyef5y55nnqecqml7", "stake", "true", "true",
 		"--generate-only",
 		"--output", "json",
 		"--chain-id", "test-chain",

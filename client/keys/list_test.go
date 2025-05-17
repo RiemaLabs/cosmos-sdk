@@ -99,5 +99,5 @@ func Test_runListKeyTypeCmd(t *testing.T) {
 
 	out, err := clitestutil.ExecTestCLICmd(clientCtx, cmd, []string{})
 	assert.NilError(t, err)
-	assert.Assert(t, strings.Contains(out.String(), string(hd.Secp256k1Type)))
+	assert.Assert(t, strings.Contains(out.String(), string(hd.TaprootType)))
 }

@@ -12,7 +12,7 @@ import (
 	"cosmossdk.io/math"
 
 	"github.com/cosmos/cosmos-sdk/crypto/keys/ed25519"
-	"github.com/cosmos/cosmos-sdk/crypto/keys/secp256k1"
+	"github.com/cosmos/cosmos-sdk/crypto/keys/taproot"
 	simtestutil "github.com/cosmos/cosmos-sdk/testutil/sims"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	moduletestutil "github.com/cosmos/cosmos-sdk/types/module/testutil"
@@ -24,9 +24,9 @@ import (
 )
 
 var (
-	priv1 = secp256k1.GenPrivKey()
+	priv1 = taproot.GenPrivKey()
 	addr1 = sdk.AccAddress(priv1.PubKey().Address())
-	priv2 = secp256k1.GenPrivKey()
+	priv2 = taproot.GenPrivKey()
 	addr2 = sdk.AccAddress(priv2.PubKey().Address())
 
 	valKey          = ed25519.GenPrivKey()
@@ -69,7 +69,7 @@ func TestStakingMsgs(t *testing.T) {
 	// create validator
 	description := types.NewDescription("foo_moniker", "", "", "", "")
 	createValidatorMsg, err := types.NewMsgCreateValidator(
-		sdk.ValAddress(addr1).String(), valKey.PubKey(), bondCoin, description, commissionRates, math.OneInt(),
+		sdk.ValAddress(addr1).String(), addr1.String(), valKey.PubKey(), bondCoin, description, commissionRates, math.OneInt(),
 	)
 	require.NoError(t, err)
 
@@ -94,7 +94,7 @@ func TestStakingMsgs(t *testing.T) {
 
 	// edit the validator
 	description = types.NewDescription("bar_moniker", "", "", "", "")
-	editValidatorMsg := types.NewMsgEditValidator(sdk.ValAddress(addr1).String(), description, nil, nil)
+	editValidatorMsg := types.NewMsgEditValidator(sdk.ValAddress(addr1).String(), addr1.String(), description, nil, nil)
 
 	header = cmtproto.Header{Height: app.LastBlockHeight() + 1}
 	_, _, err = simtestutil.SignCheckDeliver(t, txConfig, app.BaseApp, header, []sdk.Msg{editValidatorMsg}, "", []uint64{0}, []uint64{1}, true, true, priv1)

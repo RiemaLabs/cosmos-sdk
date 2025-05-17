@@ -6,6 +6,7 @@ import (
 
 	"github.com/cosmos/cosmos-sdk/crypto/keys/ed25519"
 	"github.com/cosmos/cosmos-sdk/crypto/keys/secp256k1"
+	"github.com/cosmos/cosmos-sdk/crypto/keys/taproot"
 	cryptotypes "github.com/cosmos/cosmos-sdk/crypto/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
@@ -17,6 +18,7 @@ type Account struct {
 	PrivKey       cryptotypes.PrivKey
 	PubKey        cryptotypes.PubKey
 	Address       sdk.AccAddress
+	ValAddress    sdk.ValAddress
 	ConsKey       cryptotypes.PrivKey
 	AddressBech32 string
 }
@@ -43,15 +45,20 @@ func RandomAccounts(r *rand.Rand, n int) []Account {
 		if _, err := r.Read(privkeySeed); err != nil {
 			panic(err)
 		}
-		privKey := secp256k1.GenPrivKeyFromSecret(privkeySeed)
+		privKey := taproot.GenPrivKeyFromSecret(privkeySeed)
 		pubKey := privKey.PubKey()
 		addr := sdk.AccAddress(pubKey.Address())
+
+		valPrivKey := secp256k1.GenPrivKeyFromSecret(privkeySeed)
+		valPubKey := valPrivKey.PubKey()
+		valAddr := sdk.ValAddress(valPubKey.Address())
 		if _, exists := idx[string(addr.Bytes())]; exists {
 			continue
 		}
 		idx[string(addr.Bytes())] = struct{}{}
 		accs[i] = Account{
 			Address:       addr,
+			ValAddress:    valAddr,
 			PrivKey:       privKey,
 			PubKey:        pubKey,
 			ConsKey:       ed25519.GenPrivKeyFromSecret(privkeySeed),

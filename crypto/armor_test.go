@@ -23,6 +23,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/crypto/keyring"
 	"github.com/cosmos/cosmos-sdk/crypto/keys/bcrypt"
 	"github.com/cosmos/cosmos-sdk/crypto/keys/secp256k1"
+	"github.com/cosmos/cosmos-sdk/crypto/keys/taproot"
 	cryptotypes "github.com/cosmos/cosmos-sdk/crypto/types"
 	"github.com/cosmos/cosmos-sdk/crypto/xsalsa20symmetric"
 	"github.com/cosmos/cosmos-sdk/runtime"
@@ -31,13 +32,13 @@ import (
 )
 
 func TestArmorUnarmorPrivKey(t *testing.T) {
-	priv := secp256k1.GenPrivKey()
+	priv := taproot.GenPrivKey()
 	armored := crypto.EncryptArmorPrivKey(priv, "passphrase", "")
 	_, _, err := crypto.UnarmorDecryptPrivKey(armored, "wrongpassphrase")
 	require.Error(t, err)
 	decrypted, algo, err := crypto.UnarmorDecryptPrivKey(armored, "passphrase")
 	require.NoError(t, err)
-	require.Equal(t, string(hd.Secp256k1Type), algo)
+	require.Equal(t, string(hd.TaprootType), algo)
 	require.True(t, priv.Equals(decrypted))
 
 	// empty string
@@ -102,7 +103,7 @@ func TestArmorUnarmorPubKey(t *testing.T) {
 	require.NoError(t, err)
 	pub, err := legacy.PubKeyFromBytes(pubBytes)
 	require.NoError(t, err)
-	require.Equal(t, string(hd.Secp256k1Type), algo)
+	require.Equal(t, string(hd.TaprootType), algo)
 	require.True(t, pub.Equals(key))
 
 	armored = crypto.ArmorPubKeyBytes(legacy.Cdc.Amino.MustMarshalBinaryBare(key), "unknown")

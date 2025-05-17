@@ -18,7 +18,7 @@ import (
 )
 
 func TestGrant(t *testing.T) {
-	addressCodec := codecaddress.NewBech32Codec("cosmos")
+	addressCodec := codecaddress.NewTaprootCodec(&sdk.BitcoinNetParams)
 	key := storetypes.NewKVStoreKey(feegrant.StoreKey)
 	testCtx := testutil.DefaultContextWithDB(t, key, storetypes.NewTransientStoreKey("transient_test"))
 	encCfg := moduletestutil.MakeTestEncodingConfig(module.AppModuleBasic{})

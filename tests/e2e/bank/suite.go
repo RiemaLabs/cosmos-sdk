@@ -254,7 +254,7 @@ func (s *E2ETestSuite) TestNewSendTxCmd() {
 
 func (s *E2ETestSuite) TestNewMultiSendTxCmd() {
 	val := s.network.Validators[0]
-	testAddr := sdk.AccAddress("cosmos139f7kncmglres2nf3h4hc4tade85ekfr8sulz5")
+	testAddr := sdk.AccAddress("bc1p0xlxvlhemja6c4dqv22uapctqupfhlxm9h8z3k2e72q4k9hcz7vqzk5jj0")
 
 	testCases := []struct {
 		name         string
