@@ -22,7 +22,6 @@ import (
 	"github.com/cosmos/cosmos-sdk/crypto/hd"
 	"github.com/cosmos/cosmos-sdk/crypto/keyring"
 	"github.com/cosmos/cosmos-sdk/crypto/keys/bcrypt"
-	"github.com/cosmos/cosmos-sdk/crypto/keys/secp256k1"
 	"github.com/cosmos/cosmos-sdk/crypto/keys/taproot"
 	cryptotypes "github.com/cosmos/cosmos-sdk/crypto/types"
 	"github.com/cosmos/cosmos-sdk/crypto/xsalsa20symmetric"
@@ -209,7 +208,7 @@ func TestArmor(t *testing.T) {
 }
 
 func TestBcryptLegacyEncryption(t *testing.T) {
-	privKey := secp256k1.GenPrivKey()
+	privKey := taproot.GenPrivKey()
 	saltBytes := cmtcrypto.CRandBytes(16)
 	passphrase := "passphrase"
 	privKeyBytes := legacy.Cdc.MustMarshal(privKey)

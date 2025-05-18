@@ -19,7 +19,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/codec/address"
 	cryptocodec "github.com/cosmos/cosmos-sdk/crypto/codec"
-	"github.com/cosmos/cosmos-sdk/crypto/keys/secp256k1"
+	"github.com/cosmos/cosmos-sdk/crypto/keys/taproot"
 	"github.com/cosmos/cosmos-sdk/runtime"
 	simtestutil "github.com/cosmos/cosmos-sdk/testutil/sims"
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -62,7 +62,7 @@ func (s *SimTestSuite) SetupTest() {
 	accounts := simtypes.RandomAccounts(s.r, 4)
 
 	// create genesis accounts
-	senderPrivKey := secp256k1.GenPrivKey()
+	senderPrivKey := taproot.GenPrivKey()
 	acc := authtypes.NewBaseAccount(senderPrivKey.PubKey().Address().Bytes(), senderPrivKey.PubKey(), 0, 0)
 	accs := []simtestutil.GenesisAccount{
 		{GenesisAccount: acc, Coins: sdk.NewCoins(sdk.NewCoin(sdk.DefaultBondDenom, math.NewInt(100000000000000)))},
@@ -176,9 +176,7 @@ func (s *SimTestSuite) TestSimulateMsgCreateValidator() {
 	require.NoError(err)
 	require.True(operationMsg.OK)
 	require.Equal(sdk.MsgTypeURL(&types.MsgCreateValidator{}), sdk.MsgTypeURL(&msg))
-	valaddr, err := sdk.ValAddressFromBech32(msg.ValidatorAddress)
-	require.NoError(err)
-	require.Equal("cosmos1p8wcgrjr4pjju90xg6u9cgq55dxwq8j7u4x9a0", sdk.AccAddress(valaddr).String())
+	require.Equal("bc1ptv9830e5ecllsn4u9h5mkd37u47zjsqswt75lf3jtsxr3mgkcucqd7gw3j", msg.DelegatorAddress)
 	require.Equal("cosmosvaloper1p8wcgrjr4pjju90xg6u9cgq55dxwq8j7epjs3u", msg.ValidatorAddress)
 	require.Len(futureOperations, 0)
 }

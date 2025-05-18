@@ -39,7 +39,7 @@ func RandomAccounts(r *rand.Rand, n int) []Account {
 	var i int
 	for i < n {
 		// don't need that much entropy for simulation
-		privkeySeed := make([]byte, 15)
+		privkeySeed := make([]byte, 32)
 		if _, err := r.Read(privkeySeed); err != nil {
 			panic(err)
 		}

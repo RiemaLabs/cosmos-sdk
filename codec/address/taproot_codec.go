@@ -36,7 +36,7 @@ func (bc TaprootCodec) StringToBytes(text string) ([]byte, error) {
 	}
 
 	if address.ScriptAddress() == nil {
-		return nil, errors.New("invalid taproot address")
+		return nil, errors.New("invalid taproot address with nil script address")
 	}
 
 	return address.ScriptAddress(), nil
@@ -49,7 +49,7 @@ func (bc TaprootCodec) BytesToString(bz []byte) (string, error) {
 	}
 
 	if len(bz) != 32 {
-		return "", errors.New("invalid taproot address")
+		return "", errors.New("invalid taproot address with invalid length")
 	}
 
 	addr, err := originBtcutil.NewAddressTaproot(bz, bc.btcNetworkParams)

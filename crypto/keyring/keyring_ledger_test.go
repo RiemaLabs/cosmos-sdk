@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 
 	"github.com/cosmos/cosmos-sdk/crypto/hd"
-	"github.com/cosmos/cosmos-sdk/crypto/keys/secp256k1"
+	"github.com/cosmos/cosmos-sdk/crypto/keys/taproot"
 	"github.com/cosmos/cosmos-sdk/crypto/ledger"
 	cryptotypes "github.com/cosmos/cosmos-sdk/crypto/types"
 	"github.com/cosmos/cosmos-sdk/types"
@@ -151,7 +151,7 @@ func TestSignWithLedger(t *testing.T) {
 
 	pathB := hd.NewFundraiserParams(0, types.CoinType, 1)
 	// privB won't be added to the Ledger because it doesn't use ledger.NewPrivKeySecp256k1
-	privB := secp256k1.GenPrivKey()
+	privB := taproot.GenPrivKey()
 	recordB, err := NewLedgerRecord("ledgerB", privB.PubKey(), pathB)
 	require.NoError(t, err)
 	pubB, err := recordB.GetPubKey()

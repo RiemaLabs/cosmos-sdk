@@ -26,7 +26,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/baseapp/testutil/mock"
 	"github.com/cosmos/cosmos-sdk/client"
 	codectestutil "github.com/cosmos/cosmos-sdk/codec/testutil"
-	"github.com/cosmos/cosmos-sdk/crypto/keys/secp256k1"
+	"github.com/cosmos/cosmos-sdk/crypto/keys/taproot"
 	"github.com/cosmos/cosmos-sdk/testutil/testdata"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/mempool"
@@ -722,7 +722,7 @@ func buildMsg(t *testing.T, txConfig client.TxConfig, value []byte, secrets [][]
 	signatures := make([]signingtypes.SignatureV2, 0)
 	for index, secret := range secrets {
 		nonce := nonces[index]
-		privKey := secp256k1.GenPrivKeyFromSecret(secret)
+		privKey := taproot.GenPrivKeyFromSecret(secret)
 		pubKey := privKey.PubKey()
 		signatures = append(signatures, signingtypes.SignatureV2{
 			PubKey:   pubKey,

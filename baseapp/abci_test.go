@@ -15,7 +15,6 @@ import (
 	"time"
 
 	abci "github.com/cometbft/cometbft/abci/types"
-	"github.com/cometbft/cometbft/crypto/secp256k1"
 	cmtprotocrypto "github.com/cometbft/cometbft/proto/tendermint/crypto"
 	cmtproto "github.com/cometbft/cometbft/proto/tendermint/types"
 	dbm "github.com/cosmos/cosmos-db"
@@ -35,6 +34,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/baseapp"
 	baseapptestutil "github.com/cosmos/cosmos-sdk/baseapp/testutil"
 	"github.com/cosmos/cosmos-sdk/baseapp/testutil/mock"
+	"github.com/cosmos/cosmos-sdk/crypto/keys/taproot"
 	"github.com/cosmos/cosmos-sdk/testutil"
 	"github.com/cosmos/cosmos-sdk/testutil/testdata"
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -1800,7 +1800,7 @@ func TestABCI_PrepareProposal_VoteExtensions(t *testing.T) {
 	// set up mocks
 	ctrl := gomock.NewController(t)
 	valStore := mock.NewMockValidatorStore(ctrl)
-	privkey := secp256k1.GenPrivKey()
+	privkey := taproot.GenPrivKey()
 	pubkey := privkey.PubKey()
 	addr := sdk.AccAddress(pubkey.Address())
 	tmPk := cmtprotocrypto.PublicKey{
@@ -2090,10 +2090,10 @@ func TestBaseApp_VoteExtensions(t *testing.T) {
 
 	// 10 good vote extensions, 2 bad ones from 12 total validators
 	numVals := 12
-	privKeys := make([]secp256k1.PrivKey, numVals)
+	privKeys := make([]*taproot.PrivKey, numVals)
 	vals := make([]sdk.ConsAddress, numVals)
 	for i := range numVals {
-		privKey := secp256k1.GenPrivKey()
+		privKey := taproot.GenPrivKey()
 		privKeys[i] = privKey
 
 		pubKey := privKey.PubKey()
