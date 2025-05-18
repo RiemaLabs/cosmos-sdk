@@ -2,5 +2,6 @@ package v1
 
 const (
 	ModuleName = "auth"
-	AddrLen    = 20
+	ValAddrLen = 20
+	AddrLen    = 32
 )

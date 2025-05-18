@@ -47,7 +47,7 @@ func ValidatorSigningInfoKey(v sdk.ConsAddress) []byte {
 func ValidatorSigningInfoAddress(key []byte) (v sdk.ConsAddress) {
 	kv.AssertKeyAtLeastLength(key, 2)
 	addr := key[1:]
-	kv.AssertKeyLength(addr, v1auth.AddrLen)
+	kv.AssertKeyLength(addr, v1auth.ValAddrLen)
 	return sdk.ConsAddress(addr)
 }
 

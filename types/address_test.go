@@ -13,8 +13,7 @@ import (
 	"github.com/stretchr/testify/suite"
 	"sigs.k8s.io/yaml"
 
-	"github.com/cosmos/cosmos-sdk/crypto/keys/ed25519"
-	"github.com/cosmos/cosmos-sdk/crypto/keys/secp256k1"
+	"github.com/cosmos/cosmos-sdk/crypto/keys/taproot"
 	cryptotypes "github.com/cosmos/cosmos-sdk/crypto/types"
 	"github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/bech32/legacybech32" //nolint:staticcheck // SA1019: legacybech32 is deprecated: use the bech32 package instead.
@@ -74,7 +73,7 @@ func (s *addressTestSuite) TestEmptyAddresses() {
 }
 
 func (s *addressTestSuite) TestYAMLMarshalers() {
-	addr := secp256k1.GenPrivKey().PubKey().Address()
+	addr := taproot.GenPrivKey().PubKey().Address()
 
 	acc := types.AccAddress(addr)
 	val := types.ValAddress(addr)
@@ -91,8 +90,8 @@ func (s *addressTestSuite) TestYAMLMarshalers() {
 }
 
 func (s *addressTestSuite) TestRandBech32AccAddrConsistency() {
-	pubBz := make([]byte, ed25519.PubKeySize)
-	pub := &ed25519.PubKey{Key: pubBz}
+	pubBz := make([]byte, taproot.PubKeySize)
+	pub := &taproot.PubKey{Key: pubBz}
 
 	for range 1000 {
 		_, err := rand.Read(pub.Key)
@@ -117,6 +116,7 @@ func (s *addressTestSuite) TestRandBech32AccAddrConsistency() {
 
 	for _, str := range invalidStrs {
 		_, err := types.AccAddressFromHexUnsafe(str)
+		println(str, err)
 		s.Require().NotNil(err)
 
 		_, err = types.AccAddressFromBech32(str)
@@ -135,8 +135,8 @@ func (s *addressTestSuite) TestRandBech32AccAddrConsistency() {
 // See https://github.com/cosmos/cosmos-sdk/issues/15317.
 func (s *addressTestSuite) TestAddrCache() {
 	// Use a random key
-	pubBz := make([]byte, ed25519.PubKeySize)
-	pub := &ed25519.PubKey{Key: pubBz}
+	pubBz := make([]byte, taproot.PubKeySize)
+	pub := &taproot.PubKey{Key: pubBz}
 	_, err := rand.Read(pub.Key)
 	s.Require().NoError(err)
 
@@ -173,8 +173,8 @@ func (s *addressTestSuite) TestAddrCacheDisabled() {
 	types.SetAddrCacheEnabled(false)
 
 	// Use a random key
-	pubBz := make([]byte, ed25519.PubKeySize)
-	pub := &ed25519.PubKey{Key: pubBz}
+	pubBz := make([]byte, taproot.PubKeySize)
+	pub := &taproot.PubKey{Key: pubBz}
 	_, err := rand.Read(pub.Key)
 	s.Require().NoError(err)
 
@@ -204,8 +204,8 @@ func (s *addressTestSuite) TestAddrCacheDisabled() {
 }
 
 func (s *addressTestSuite) TestValAddr() {
-	pubBz := make([]byte, ed25519.PubKeySize)
-	pub := &ed25519.PubKey{Key: pubBz}
+	pubBz := make([]byte, taproot.PubKeySize)
+	pub := &taproot.PubKey{Key: pubBz}
 
 	for range 20 {
 		_, err := rand.Read(pub.Key)
@@ -246,8 +246,8 @@ func (s *addressTestSuite) TestValAddr() {
 }
 
 func (s *addressTestSuite) TestConsAddress() {
-	pubBz := make([]byte, ed25519.PubKeySize)
-	pub := &ed25519.PubKey{Key: pubBz}
+	pubBz := make([]byte, taproot.PubKeySize)
+	pub := &taproot.PubKey{Key: pubBz}
 
 	for range 20 {
 		_, err := rand.Read(pub.Key)
@@ -297,8 +297,8 @@ func RandString(n int) string {
 }
 
 func (s *addressTestSuite) TestConfiguredPrefix() {
-	pubBz := make([]byte, ed25519.PubKeySize)
-	pub := &ed25519.PubKey{Key: pubBz}
+	pubBz := make([]byte, taproot.PubKeySize)
+	pub := &taproot.PubKey{Key: pubBz}
 	for length := 1; length < 10; length++ {
 		for times := 1; times < 20; times++ {
 			_, err := rand.Read(pub.Key[:])
@@ -354,8 +354,8 @@ func (s *addressTestSuite) TestConfiguredPrefix() {
 }
 
 func (s *addressTestSuite) TestAddressInterface() {
-	pubBz := make([]byte, ed25519.PubKeySize)
-	pub := &ed25519.PubKey{Key: pubBz}
+	pubBz := make([]byte, taproot.PubKeySize)
+	pub := &taproot.PubKey{Key: pubBz}
 	_, err := rand.Read(pub.Key)
 	s.Require().NoError(err)
 
@@ -506,12 +506,12 @@ func (s *addressTestSuite) TestMustBech32ifyAddressBytes() {
 }
 
 func (s *addressTestSuite) TestAddressTypesEquals() {
-	addr1 := secp256k1.GenPrivKey().PubKey().Address()
+	addr1 := taproot.GenPrivKey().PubKey().Address()
 	accAddr1 := types.AccAddress(addr1)
 	consAddr1 := types.ConsAddress(addr1)
 	valAddr1 := types.ValAddress(addr1)
 
-	addr2 := secp256k1.GenPrivKey().PubKey().Address()
+	addr2 := taproot.GenPrivKey().PubKey().Address()
 	accAddr2 := types.AccAddress(addr2)
 	consAddr2 := types.ConsAddress(addr2)
 	valAddr2 := types.ValAddress(addr2)
@@ -552,7 +552,7 @@ func (s *addressTestSuite) TestNilAddressTypesEmpty() {
 }
 
 func (s *addressTestSuite) TestGetConsAddress() {
-	pk := secp256k1.GenPrivKey().PubKey()
+	pk := taproot.GenPrivKey().PubKey()
 	s.Require().NotEqual(types.GetConsAddress(pk), pk.Address())
 	s.Require().True(bytes.Equal(types.GetConsAddress(pk).Bytes(), pk.Address().Bytes()))
 	s.Require().Panics(func() { types.GetConsAddress(cryptotypes.PubKey(nil)) })

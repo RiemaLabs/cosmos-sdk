@@ -16,7 +16,6 @@ import (
 	"github.com/cosmos/cosmos-sdk/baseapp"
 	"github.com/cosmos/cosmos-sdk/codec"
 	codectypes "github.com/cosmos/cosmos-sdk/codec/types"
-	"github.com/cosmos/cosmos-sdk/crypto/keys/secp256k1"
 	"github.com/cosmos/cosmos-sdk/crypto/keys/taproot"
 	"github.com/cosmos/cosmos-sdk/runtime"
 	"github.com/cosmos/cosmos-sdk/testutil/configurator"
@@ -227,7 +226,7 @@ func (s *paginationTestSuite) TestReversePagination() {
 	}
 
 	balances = balances.Sort()
-	addr1 := sdk.AccAddress(secp256k1.GenPrivKey().PubKey().Address())
+	addr1 := sdk.AccAddress(taproot.GenPrivKey().PubKey().Address())
 	acc1 := s.accountKeeper.NewAccountWithAddress(s.ctx, addr1)
 	s.accountKeeper.SetAccount(s.ctx, acc1)
 	s.Require().NoError(testutil.FundAccount(s.ctx, s.bankKeeper, addr1, balances))

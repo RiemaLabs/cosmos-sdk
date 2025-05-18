@@ -85,7 +85,7 @@ var (
 )
 
 func NewTx(key, value string, accAddress sdk.AccAddress) *KVStoreTx {
-	bytes := fmt.Sprintf("%s=%s=%s", key, value, accAddress)
+	bytes := fmt.Sprintf("%s=%s=%s", key, value, accAddress.Bytes())
 	return &KVStoreTx{
 		key:     []byte(key),
 		value:   []byte(value),

@@ -309,7 +309,7 @@ func GetREDKey(delAddr sdk.AccAddress, valSrcAddr, valDstAddr sdk.ValAddress) []
 	// key is of the form GetREDsKey || valSrcAddrLen (1 byte) || valSrcAddr || valDstAddrLen (1 byte) || valDstAddr
 	key := make([]byte, 1+3+len(delAddr)+len(valSrcAddr)+len(valDstAddr))
 
-	copy(key[0:2+len(delAddr)], GetREDsKey(delAddr.Bytes()))
+	copy(key[0:1+len(delAddr)], GetREDsKey(delAddr.Bytes()))
 	key[2+len(delAddr)] = byte(len(valSrcAddr))
 	copy(key[3+len(delAddr):3+len(delAddr)+len(valSrcAddr)], valSrcAddr.Bytes())
 	key[3+len(delAddr)+len(valSrcAddr)] = byte(len(valDstAddr))

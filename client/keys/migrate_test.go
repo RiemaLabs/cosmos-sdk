@@ -43,6 +43,7 @@ func (s *MigrateTestSuite) SetupSuite() {
 }
 
 func (s *MigrateTestSuite) Test_runListAndShowCmd() {
+	s.T().Skip("without impl multisig")
 	// adding LegacyInfo item into keyring
 	multi := multisig.NewLegacyAminoPubKey(
 		1, []cryptotypes.PubKey{

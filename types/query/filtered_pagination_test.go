@@ -226,6 +226,12 @@ func execFilterPaginate(store storetypes.KVStore, pageReq *query.PageRequest, ap
 	balancesStore := prefix.NewStore(store, types.BalancesPrefix)
 	accountStore := prefix.NewStore(balancesStore, address.MustLengthPrefix(addr1))
 
+	iterator := storetypes.KVStorePrefixIterator(accountStore, nil)
+	for ; iterator.Valid(); iterator.Next() {
+		fmt.Printf("key: %x\n", iterator.Key())
+	}
+	iterator.Close()
+
 	var balResult sdk.Coins
 	res, err = query.FilteredPaginate(accountStore, pageReq, func(key, value []byte, accumulate bool) (bool, error) {
 		var amount math.Int

@@ -32,7 +32,7 @@ func TestStoreMigration(t *testing.T) {
 	valAddr2 := sdk.ValAddress(addr2)
 	_, _, addr3 := testdata.KeyTestPubAddrSecp256R1(t)
 	consAddr := sdk.ConsAddress(addr3.String())
-	_, _, addr4 := testdata.KeyTestPubAddrSecp256R1(t)
+	_, _, addr4 := testdata.KeyTestPubAddr()
 	now := time.Now()
 	// Use dummy value for all keys.
 	value := []byte("foo")
@@ -134,6 +134,7 @@ func TestStoreMigration(t *testing.T) {
 			if !bytes.Equal(tc.oldKey, tc.newKey) {
 				require.Nil(t, store.Get(tc.oldKey))
 			}
+			println(tc.name, store.Get(tc.newKey), value)
 			require.Equal(t, value, store.Get(tc.newKey))
 		})
 	}

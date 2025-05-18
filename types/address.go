@@ -42,7 +42,7 @@ const (
 	Bech32MainPrefix = "cosmos"
 
 	// Purpose is the ATOM purpose as defined in SLIP44 (https://github.com/satoshilabs/slips/blob/master/slip-0044.md)
-	Purpose = 44
+	Purpose = 86
 
 	// CoinType is the ATOM coin type as defined in SLIP44 (https://github.com/satoshilabs/slips/blob/master/slip-0044.md)
 	// @nubit: We use 0 as the coin type for Taproot addresses.

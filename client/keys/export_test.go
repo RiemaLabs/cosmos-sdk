@@ -55,7 +55,7 @@ func Test_runExportCmd(t *testing.T) {
 			extraArgs:             []string{"--unsafe", "--unarmored-hex", "--yes"},
 			userInput:             "",
 			mustFail:              false,
-			expectedOutputContain: "84c9dcac18a66f5ebab545b2dc647e242330abb3baa7ff1f4ed6a63df7267892\n",
+			expectedOutputContain: "95aa9eb800ae6dab6072d10b5ae10df0c541c09147c7001546828eb1d68b90f5\n",
 		},
 		{
 			name:                  "--unsafe --unarmored-hex success",
@@ -63,7 +63,7 @@ func Test_runExportCmd(t *testing.T) {
 			extraArgs:             []string{"--unsafe", "--unarmored-hex"},
 			userInput:             "y\n",
 			mustFail:              false,
-			expectedOutputContain: "84c9dcac18a66f5ebab545b2dc647e242330abb3baa7ff1f4ed6a63df7267892\n",
+			expectedOutputContain: "95aa9eb800ae6dab6072d10b5ae10df0c541c09147c7001546828eb1d68b90f5\n",
 		},
 		{
 			name:           "file keyring backend properly read password and user confirmation",
@@ -72,7 +72,7 @@ func Test_runExportCmd(t *testing.T) {
 			// first 2 pass for creating the key, then unsafe export confirmation, then unlock keyring pass
 			userInput:      "12345678\n12345678\ny\n12345678\n",
 			mustFail:       false,
-			expectedOutput: "84c9dcac18a66f5ebab545b2dc647e242330abb3baa7ff1f4ed6a63df7267892\n",
+			expectedOutput: "95aa9eb800ae6dab6072d10b5ae10df0c541c09147c7001546828eb1d68b90f5\n",
 		},
 	}
 

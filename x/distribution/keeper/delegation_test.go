@@ -3,6 +3,7 @@ package keeper_test
 import (
 	"testing"
 
+	"github.com/btcsuite/btcd/chaincfg"
 	cmtproto "github.com/cometbft/cometbft/proto/tendermint/types"
 	"github.com/stretchr/testify/require"
 	"go.uber.org/mock/gomock"
@@ -973,7 +974,7 @@ func Test100PercentCommissionReward(t *testing.T) {
 
 	accountKeeper.EXPECT().GetModuleAddress("distribution").Return(distrAcc.GetAddress())
 	stakingKeeper.EXPECT().ValidatorAddressCodec().Return(address.NewBech32Codec(sdk.Bech32PrefixValAddr)).AnyTimes()
-	accountKeeper.EXPECT().AddressCodec().Return(address.NewBech32Codec(sdk.Bech32MainPrefix)).AnyTimes()
+	accountKeeper.EXPECT().AddressCodec().Return(address.NewTaprootCodec(&chaincfg.MainNetParams)).AnyTimes()
 
 	distrKeeper := keeper.NewKeeper(
 		encCfg.Codec,

@@ -29,6 +29,7 @@ func MigratePrefixAddress(store storetypes.KVStore, prefixBz []byte) {
 	}
 }
 
+// TODO: check how these function use.
 // MigratePrefixAddressBytes is a helper function that migrates all keys of format:
 // prefix_bytes | address_bytes | arbitrary_bytes
 // into format:

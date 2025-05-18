@@ -12,6 +12,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/x/staking/types"
 )
 
+// TODO: check this function used.
 // migratePrefixAddressAddressAddress is a helper function that migrates all keys of format:
 // prefix_bytes | address_1_bytes | address_2_bytes | address_3_bytes
 // into format:
@@ -23,9 +24,9 @@ func migratePrefixAddressAddressAddress(store storetypes.KVStore, prefixBz []byt
 	defer oldStoreIter.Close()
 
 	for ; oldStoreIter.Valid(); oldStoreIter.Next() {
-		addr1 := oldStoreIter.Key()[:v1auth.AddrLen]
-		addr2 := oldStoreIter.Key()[v1auth.AddrLen : 2*v1auth.AddrLen]
-		addr3 := oldStoreIter.Key()[2*v1auth.AddrLen:]
+		addr1 := oldStoreIter.Key()[:v1auth.ValAddrLen]
+		addr2 := oldStoreIter.Key()[v1auth.ValAddrLen : 2*v1auth.ValAddrLen]
+		addr3 := oldStoreIter.Key()[2*v1auth.ValAddrLen:]
 		newStoreKey := append(append(append(
 			prefixBz,
 			address.MustLengthPrefix(addr1)...), address.MustLengthPrefix(addr2)...), address.MustLengthPrefix(addr3)...,

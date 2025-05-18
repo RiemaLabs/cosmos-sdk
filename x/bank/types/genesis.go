@@ -23,7 +23,6 @@ func (gs GenesisState) Validate() error {
 	seenSendEnabled := make(map[string]bool)
 	seenBalances := make(map[string]bool)
 	seenMetadatas := make(map[string]bool)
-
 	totalSupply := sdk.Coins{}
 
 	for _, p := range gs.GetAllSendEnabled() {
@@ -68,7 +67,6 @@ func (gs GenesisState) Validate() error {
 		if err != nil {
 			return err
 		}
-
 		if !gs.Supply.Equal(totalSupply) {
 			return fmt.Errorf("genesis supply is incorrect, expected %v, got %v", gs.Supply, totalSupply)
 		}

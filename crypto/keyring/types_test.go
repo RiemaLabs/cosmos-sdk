@@ -8,7 +8,7 @@ import (
 	"github.com/stretchr/testify/require"
 
 	"github.com/cosmos/cosmos-sdk/crypto/hd"
-	"github.com/cosmos/cosmos-sdk/crypto/keys/secp256k1"
+	"github.com/cosmos/cosmos-sdk/crypto/keys/taproot"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
@@ -26,13 +26,13 @@ func Test_writeReadLedgerInfo(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.hexPK, func(t *testing.T) {
-			tmpKey := make([]byte, secp256k1.PubKeySize)
+			tmpKey := make([]byte, taproot.PubKeySize)
 			hexPK := tt.hexPK
 			bz, err := hex.DecodeString(hexPK)
 			require.NoError(t, err)
 			copy(tmpKey, bz)
 
-			pk := &secp256k1.PubKey{Key: tmpKey}
+			pk := &taproot.PubKey{Key: tmpKey}
 			path := hd.NewFundraiserParams(5, sdk.CoinType, 1)
 			k, err := NewLedgerRecord(tt.recordName, pk, path)
 			require.NoError(t, err)
@@ -44,7 +44,7 @@ func Test_writeReadLedgerInfo(t *testing.T) {
 			pubKey, err := k.GetPubKey()
 			require.NoError(t, err)
 			require.Equal(t,
-				fmt.Sprintf("PubKeySecp256k1{%s}", hexPK),
+				fmt.Sprintf("PubKeyTaproot{%s}", hexPK),
 				pubKey.String())
 
 			// Serialize and restore

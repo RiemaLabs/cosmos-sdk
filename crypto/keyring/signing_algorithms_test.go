@@ -104,9 +104,9 @@ func (n notSupportedAlgo) Name() hd.PubKeyType {
 }
 
 func (n notSupportedAlgo) Derive() hd.DeriveFn {
-	return hd.Secp256k1.Derive()
+	return hd.Taproot.Derive()
 }
 
 func (n notSupportedAlgo) Generate() hd.GenerateFn {
-	return hd.Secp256k1.Generate()
+	return hd.Taproot.Generate()
 }
