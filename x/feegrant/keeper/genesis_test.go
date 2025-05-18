@@ -16,7 +16,7 @@ import (
 
 	"github.com/cosmos/cosmos-sdk/codec/address"
 	codectypes "github.com/cosmos/cosmos-sdk/codec/types"
-	"github.com/cosmos/cosmos-sdk/crypto/keys/secp256k1"
+	"github.com/cosmos/cosmos-sdk/crypto/keys/taproot"
 	"github.com/cosmos/cosmos-sdk/runtime"
 	"github.com/cosmos/cosmos-sdk/testutil"
 	"github.com/cosmos/cosmos-sdk/testutil/testdata"
@@ -26,8 +26,8 @@ import (
 )
 
 var (
-	granteePub  = secp256k1.GenPrivKey().PubKey()
-	granterPub  = secp256k1.GenPrivKey().PubKey()
+	granteePub  = taproot.GenPrivKey().PubKey()
+	granterPub  = taproot.GenPrivKey().PubKey()
 	granteeAddr = sdk.AccAddress(granteePub.Address())
 	granterAddr = sdk.AccAddress(granterPub.Address())
 )
@@ -138,7 +138,7 @@ func TestInitGenesis(t *testing.T) {
 				err := f.feegrantKeeper.InitGenesis(f.ctx, &feegrant.GenesisState{Allowances: tc.feeAllowances})
 				assert.ErrorContains(t, err, "failed to get allowance: no allowance")
 			} else {
-				expectedErr := errors.New("decoding bech32 failed")
+				expectedErr := errors.New("decoded address is of unknown format")
 				err := f.feegrantKeeper.InitGenesis(f.ctx, &feegrant.GenesisState{Allowances: tc.feeAllowances})
 				assert.ErrorContains(t, err, expectedErr.Error())
 			}

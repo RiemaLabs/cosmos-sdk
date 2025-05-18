@@ -41,7 +41,7 @@ func TestBech32KeysOutput(t *testing.T) {
 	out, err := MkAccKeyOutput(k)
 	require.NoError(t, err)
 	require.Equal(t, expectedOutput, out)
-	require.Equal(t, "{Name:multisig Type:multi Address:cosmos1nf8lf6n4wa43rzmdzwe6hkrnw5guekhqt595cw PubKey:{\"@type\":\"/cosmos.crypto.multisig.LegacyAminoPubKey\",\"threshold\":1,\"public_keys\":[{\"@type\":\"/cosmos.crypto.taproot.PubKey\",\"key\":\"AurroA7jvfPd1AadmmOvWM2rJSwipXfRf8yD6pLbA2DJ\"}]} Mnemonic:}", fmt.Sprintf("%+v", out))
+	require.Equal(t, "{Name:multisig Type:multi Address:bc1p7kew0ddnesw44pcpelwr4gf0yk2uefnjq4huxmc5897xpjup3ymskwygt9 PubKey:{\"@type\":\"/cosmos.crypto.multisig.LegacyAminoPubKey\",\"threshold\":1,\"public_keys\":[{\"@type\":\"/cosmos.crypto.taproot.PubKey\",\"key\":\"AtrIwisUb+IS5d3DqXyH108MR58SXY2CgJIAXK6yGUXT\"}]} Mnemonic:}", fmt.Sprintf("%+v", out))
 }
 
 // TestBech32KeysOutputNestedMsig tests that the output of a nested multisig key is correct
@@ -65,7 +65,7 @@ func TestBech32KeysOutputNestedMsig(t *testing.T) {
 	require.NoError(t, err)
 
 	require.Equal(t, expectedOutput, out)
-	require.Equal(t, "{Name:multisig Type:multi Address:cosmos1nffp6v2j7wva4y4975exlrv8x5vh39axxt3swz PubKey:{\"@type\":\"/cosmos.crypto.multisig.LegacyAminoPubKey\",\"threshold\":2,\"public_keys\":[{\"@type\":\"/cosmos.crypto.taproot.PubKey\",\"key\":\"AurroA7jvfPd1AadmmOvWM2rJSwipXfRf8yD6pLbA2DJ\"},{\"@type\":\"/cosmos.crypto.multisig.LegacyAminoPubKey\",\"threshold\":1,\"public_keys\":[{\"@type\":\"/cosmos.crypto.taproot.PubKey\",\"key\":\"AurroA7jvfPd1AadmmOvWM2rJSwipXfRf8yD6pLbA2DJ\"}]}]} Mnemonic:}", fmt.Sprintf("%+v", out))
+	require.Equal(t, "{Name:multisig Type:multi Address:bc1p826r4yycqr2kw2kgf0lq5qf0l0fvvcndxyk3zdxqk8h8jfu6vy8qg6y8fn PubKey:{\"@type\":\"/cosmos.crypto.multisig.LegacyAminoPubKey\",\"threshold\":2,\"public_keys\":[{\"@type\":\"/cosmos.crypto.taproot.PubKey\",\"key\":\"AtrIwisUb+IS5d3DqXyH108MR58SXY2CgJIAXK6yGUXT\"},{\"@type\":\"/cosmos.crypto.multisig.LegacyAminoPubKey\",\"threshold\":1,\"public_keys\":[{\"@type\":\"/cosmos.crypto.taproot.PubKey\",\"key\":\"AtrIwisUb+IS5d3DqXyH108MR58SXY2CgJIAXK6yGUXT\"}]}]} Mnemonic:}", fmt.Sprintf("%+v", out))
 }
 
 func TestProtoMarshalJSON(t *testing.T) {

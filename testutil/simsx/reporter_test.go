@@ -13,7 +13,7 @@ import (
 
 func TestSimulationReporterToLegacy(t *testing.T) {
 	myErr := errors.New("my-error")
-	myMsg := testdata.NewTestMsg([]byte{1})
+	myMsg := testdata.NewTestMsg([]byte{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 1, 2, 3, 4})
 
 	specs := map[string]struct {
 		setup  func() SimulationReporter

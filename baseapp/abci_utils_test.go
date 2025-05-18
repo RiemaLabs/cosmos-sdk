@@ -491,10 +491,10 @@ func (s *ABCIUtilsTestSuite) TestDefaultProposalHandler_NoOpMempoolTxSelection()
 	tx := builder.GetTx()
 	txBz, err := txConfig.TxEncoder()(tx)
 	s.Require().NoError(err)
-	s.Require().Len(txBz, 152)
+	s.Require().Len(txBz, 167)
 
 	txDataSize := int(cmttypes.ComputeProtoSizeForTxs([]cmttypes.Tx{txBz}))
-	s.Require().Equal(txDataSize, 155)
+	s.Require().Equal(txDataSize, 170)
 
 	testCases := map[string]struct {
 		ctx         sdk.Context
@@ -527,7 +527,7 @@ func (s *ABCIUtilsTestSuite) TestDefaultProposalHandler_NoOpMempoolTxSelection()
 				Txs:        [][]byte{txBz, txBz, txBz, txBz, txBz},
 				MaxTxBytes: 465,
 			},
-			expectedTxs: 3,
+			expectedTxs: 2,
 		},
 		"large max tx bytes len calculation": {
 			ctx: s.ctx,
@@ -613,15 +613,15 @@ func (s *ABCIUtilsTestSuite) TestDefaultProposalHandler_PriorityNonceMempoolTxSe
 		testTxs[i].size = int(cmttypes.ComputeProtoSizeForTxs([]cmttypes.Tx{bz}))
 	}
 
-	s.Require().Equal(testTxs[0].size, 111)
-	s.Require().Equal(testTxs[1].size, 121)
-	s.Require().Equal(testTxs[2].size, 112)
-	s.Require().Equal(testTxs[3].size, 112)
-	s.Require().Equal(testTxs[4].size, 195)
-	s.Require().Equal(testTxs[5].size, 205)
-	s.Require().Equal(testTxs[6].size, 196)
-	s.Require().Equal(testTxs[7].size, 196)
-	s.Require().Equal(testTxs[8].size, 196)
+	s.Require().Equal(testTxs[0].size, 109)
+	s.Require().Equal(testTxs[1].size, 119)
+	s.Require().Equal(testTxs[2].size, 110)
+	s.Require().Equal(testTxs[3].size, 110)
+	s.Require().Equal(testTxs[4].size, 191)
+	s.Require().Equal(testTxs[5].size, 201)
+	s.Require().Equal(testTxs[6].size, 192)
+	s.Require().Equal(testTxs[7].size, 192)
+	s.Require().Equal(testTxs[8].size, 192)
 
 	testCases := map[string]struct {
 		ctx         sdk.Context

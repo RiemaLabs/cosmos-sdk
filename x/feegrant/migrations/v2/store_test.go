@@ -12,7 +12,7 @@ import (
 	v2 "cosmossdk.io/x/feegrant/migrations/v2"
 	"cosmossdk.io/x/feegrant/module"
 
-	"github.com/cosmos/cosmos-sdk/crypto/keys/ed25519"
+	"github.com/cosmos/cosmos-sdk/crypto/keys/taproot"
 	"github.com/cosmos/cosmos-sdk/runtime"
 	"github.com/cosmos/cosmos-sdk/testutil"
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -25,10 +25,10 @@ func TestMigration(t *testing.T) {
 
 	feegrantKey := storetypes.NewKVStoreKey(v2.ModuleName)
 	ctx := testutil.DefaultContext(feegrantKey, storetypes.NewTransientStoreKey("transient_test"))
-	granter1 := sdk.AccAddress(ed25519.GenPrivKey().PubKey().Address())
-	grantee1 := sdk.AccAddress(ed25519.GenPrivKey().PubKey().Address())
-	granter2 := sdk.AccAddress(ed25519.GenPrivKey().PubKey().Address())
-	grantee2 := sdk.AccAddress(ed25519.GenPrivKey().PubKey().Address())
+	granter1 := sdk.AccAddress(taproot.GenPrivKey().PubKey().Address())
+	grantee1 := sdk.AccAddress(taproot.GenPrivKey().PubKey().Address())
+	granter2 := sdk.AccAddress(taproot.GenPrivKey().PubKey().Address())
+	grantee2 := sdk.AccAddress(taproot.GenPrivKey().PubKey().Address())
 
 	spendLimit := sdk.NewCoins(sdk.NewCoin("stake", sdkmath.NewInt(1000)))
 	now := ctx.BlockTime()

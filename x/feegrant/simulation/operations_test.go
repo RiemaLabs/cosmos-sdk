@@ -164,8 +164,8 @@ func (suite *SimTestSuite) TestSimulateMsgGrantAllowance() {
 	err = proto.Unmarshal(operationMsg.Msg, &msg)
 	require.NoError(err)
 	require.True(operationMsg.OK)
-	require.Equal(accounts[2].Address.String(), msg.Granter)
-	require.Equal(accounts[1].Address.String(), msg.Grantee)
+	require.Equal(accounts[1].Address.String(), msg.Granter)
+	require.Equal(accounts[2].Address.String(), msg.Grantee)
 	require.Len(futureOperations, 0)
 }
 

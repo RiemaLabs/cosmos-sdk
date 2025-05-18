@@ -120,11 +120,11 @@ func TestBuildSimTx(t *testing.T) {
 	require.NoError(t, err)
 
 	path := hd.CreateHDPath(118, 0, 0).String()
-	_, _, err = kb.NewMnemonic("test_key1", keyring.English, path, keyring.DefaultBIP39Passphrase, hd.Secp256k1)
+	_, _, err = kb.NewMnemonic("test_key1", keyring.English, path, keyring.DefaultBIP39Passphrase, hd.Taproot)
 	require.NoError(t, err)
 
 	txf := mockTxFactory(txCfg).WithSignMode(defaultSignMode).WithKeybase(kb)
-	msg := banktypes.NewMsgSend(sdk.AccAddress("from"), sdk.AccAddress("to"), nil)
+	msg := banktypes.NewMsgSend(sdk.AccAddress("12530b4633dc2ee11a66ee97976d9d89"), sdk.AccAddress("115eb49fc24cae1aaba6f36b7e7863fd"), nil)
 	bz, err := txf.BuildSimTx(msg)
 	require.NoError(t, err)
 	require.NotNil(t, bz)
@@ -137,10 +137,10 @@ func TestBuildUnsignedTx(t *testing.T) {
 
 	path := hd.CreateHDPath(118, 0, 0).String()
 
-	_, _, err = kb.NewMnemonic("test_key1", keyring.English, path, keyring.DefaultBIP39Passphrase, hd.Secp256k1)
+	_, _, err = kb.NewMnemonic("test_key1", keyring.English, path, keyring.DefaultBIP39Passphrase, hd.Taproot)
 	require.NoError(t, err)
 	txf := mockTxFactory(txConfig).WithKeybase(kb)
-	msg := banktypes.NewMsgSend(sdk.AccAddress("from"), sdk.AccAddress("to"), nil)
+	msg := banktypes.NewMsgSend(sdk.AccAddress("12530b4633dc2ee11a66ee97976d9d89"), sdk.AccAddress("115eb49fc24cae1aaba6f36b7e7863fd"), nil)
 	tx, err := txf.BuildUnsignedTx(msg)
 	require.NoError(t, err)
 	require.NotNil(t, tx)
@@ -159,7 +159,7 @@ func TestBuildUnsignedTxWithWithExtensionOptions(t *testing.T) {
 		},
 	}
 	txf := mockTxFactory(txCfg).WithExtensionOptions(extOpts...)
-	msg := banktypes.NewMsgSend(sdk.AccAddress("from"), sdk.AccAddress("to"), nil)
+	msg := banktypes.NewMsgSend(sdk.AccAddress("12530b4633dc2ee11a66ee97976d9d89"), sdk.AccAddress("115eb49fc24cae1aaba6f36b7e7863fd"), nil)
 	tx, err := txf.BuildUnsignedTx(msg)
 	require.NoError(t, err)
 	require.NotNil(t, tx)
@@ -174,7 +174,7 @@ func TestMnemonicInMemo(t *testing.T) {
 
 	path := hd.CreateHDPath(118, 0, 0).String()
 
-	_, seed, err := kb.NewMnemonic("test_key1", keyring.English, path, keyring.DefaultBIP39Passphrase, hd.Secp256k1)
+	_, seed, err := kb.NewMnemonic("test_key1", keyring.English, path, keyring.DefaultBIP39Passphrase, hd.Taproot)
 	require.NoError(t, err)
 
 	testCases := []struct {
@@ -202,7 +202,7 @@ func TestMnemonicInMemo(t *testing.T) {
 				WithChainID("test-chain").
 				WithKeybase(kb)
 
-			msg := banktypes.NewMsgSend(sdk.AccAddress("from"), sdk.AccAddress("to"), nil)
+			msg := banktypes.NewMsgSend(sdk.AccAddress("12530b4633dc2ee11a66ee97976d9d89"), sdk.AccAddress("115eb49fc24cae1aaba6f36b7e7863fd"), nil)
 			tx, err := txf.BuildUnsignedTx(msg)
 			if tc.error {
 				require.Error(t, err)
@@ -227,13 +227,13 @@ func TestSign(t *testing.T) {
 	from2 := "test_key2"
 
 	// create a new key using a mnemonic generator and test if we can reuse seed to recreate that account
-	_, seed, err := kb.NewMnemonic(from1, keyring.English, path, keyring.DefaultBIP39Passphrase, hd.Secp256k1)
+	_, seed, err := kb.NewMnemonic(from1, keyring.English, path, keyring.DefaultBIP39Passphrase, hd.Taproot)
 	requireT.NoError(err)
 	requireT.NoError(kb.Delete(from1))
-	k1, _, err := kb.NewMnemonic(from1, keyring.English, path, keyring.DefaultBIP39Passphrase, hd.Secp256k1)
+	k1, _, err := kb.NewMnemonic(from1, keyring.English, path, keyring.DefaultBIP39Passphrase, hd.Taproot)
 	requireT.NoError(err)
 
-	k2, err := kb.NewAccount(from2, seed, "", path, hd.Secp256k1)
+	k2, err := kb.NewAccount(from2, seed, "", path, hd.Taproot)
 	requireT.NoError(err)
 
 	pubKey1, err := k1.GetPubKey()
@@ -253,8 +253,8 @@ func TestSign(t *testing.T) {
 	requireT.NoError(err)
 	addr2, err := k2.GetAddress()
 	requireT.NoError(err)
-	msg1 := banktypes.NewMsgSend(addr1, sdk.AccAddress("to"), nil)
-	msg2 := banktypes.NewMsgSend(addr2, sdk.AccAddress("to"), nil)
+	msg1 := banktypes.NewMsgSend(addr1, sdk.AccAddress("115eb49fc24cae1aaba6f36b7e7863fd"), nil)
+	msg2 := banktypes.NewMsgSend(addr2, sdk.AccAddress("115eb49fc24cae1aaba6f36b7e7863fd"), nil)
 	txb, err := txfNoKeybase.BuildUnsignedTx(msg1, msg2)
 	requireT.NoError(err)
 	txb2, err := txfNoKeybase.BuildUnsignedTx(msg1, msg2)
@@ -376,7 +376,7 @@ func TestPreprocessHook(t *testing.T) {
 	requireT.NoError(err)
 
 	from := "test_key"
-	kr, _, err := kb.NewMnemonic(from, keyring.English, path, keyring.DefaultBIP39Passphrase, hd.Secp256k1)
+	kr, _, err := kb.NewMnemonic(from, keyring.English, path, keyring.DefaultBIP39Passphrase, hd.Taproot)
 	requireT.NoError(err)
 
 	extVal := &testdata.Cat{
@@ -403,8 +403,8 @@ func TestPreprocessHook(t *testing.T) {
 
 	addr1, err := kr.GetAddress()
 	requireT.NoError(err)
-	msg1 := banktypes.NewMsgSend(addr1, sdk.AccAddress("to"), nil)
-	msg2 := banktypes.NewMsgSend(addr2, sdk.AccAddress("to"), nil)
+	msg1 := banktypes.NewMsgSend(addr1, sdk.AccAddress("115eb49fc24cae1aaba6f36b7e7863fd"), nil)
+	msg2 := banktypes.NewMsgSend(addr2, sdk.AccAddress("115eb49fc24cae1aaba6f36b7e7863fd"), nil)
 	txb, err := txfDirect.BuildUnsignedTx(msg1, msg2)
 	requireT.NoError(err)
 

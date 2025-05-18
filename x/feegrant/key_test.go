@@ -14,9 +14,9 @@ import (
 
 func TestMarshalAndUnmarshalFeegrantKey(t *testing.T) {
 	addressCodec := codecaddress.NewTaprootCodec(&sdk.BitcoinNetParams)
-	grantee, err := addressCodec.StringToBytes("cosmos1qk93t4j0yyzgqgt6k5qf8deh8fq6smpn3ntu3x")
+	grantee, err := addressCodec.StringToBytes("bc1py5rep5v282sd4uvcpf6trg06n0fnllj9tu28wxpja0qfqkfs6dkqdrfwtq")
 	require.NoError(t, err)
-	granter, err := addressCodec.StringToBytes("cosmos1p9qh4ldfd6n0qehujsal4k7g0e37kel90rc4ts")
+	granter, err := addressCodec.StringToBytes("bc1pvnz2gf2adpuvfh6qp0y7tpffuemgn2slqdnplqxlx9343s6gjvgswtj3c6")
 	require.NoError(t, err)
 
 	key := feegrant.FeeAllowanceKey(granter, grantee)
@@ -30,9 +30,9 @@ func TestMarshalAndUnmarshalFeegrantKey(t *testing.T) {
 
 func TestMarshalAndUnmarshalFeegrantKeyQueueKey(t *testing.T) {
 	addressCodec := codecaddress.NewTaprootCodec(&sdk.BitcoinNetParams)
-	grantee, err := addressCodec.StringToBytes("cosmos1qk93t4j0yyzgqgt6k5qf8deh8fq6smpn3ntu3x")
+	grantee, err := addressCodec.StringToBytes("bc1py5rep5v282sd4uvcpf6trg06n0fnllj9tu28wxpja0qfqkfs6dkqdrfwtq")
 	require.NoError(t, err)
-	granter, err := addressCodec.StringToBytes("cosmos1p9qh4ldfd6n0qehujsal4k7g0e37kel90rc4ts")
+	granter, err := addressCodec.StringToBytes("bc1pvnz2gf2adpuvfh6qp0y7tpffuemgn2slqdnplqxlx9343s6gjvgswtj3c6")
 	require.NoError(t, err)
 
 	exp := time.Now()

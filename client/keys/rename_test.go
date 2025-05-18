@@ -38,7 +38,7 @@ func Test_runRenameCmd(t *testing.T) {
 	require.NoError(t, err)
 
 	// put fakeKeyName1 in keyring
-	_, err = kb.NewAccount(fakeKeyName1, testdata.TestMnemonic, "", path, hd.Secp256k1)
+	_, err = kb.NewAccount(fakeKeyName1, testdata.TestMnemonic, "", path, hd.Taproot)
 	require.NoError(t, err)
 
 	clientCtx := client.Context{}.

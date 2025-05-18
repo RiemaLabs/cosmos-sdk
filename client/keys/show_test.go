@@ -33,11 +33,11 @@ func Test_multiSigKey_Properties(t *testing.T) {
 
 	pub, err := k.GetPubKey()
 	require.NoError(t, err)
-	require.Equal(t, "D3923267FA8A3DD367BB768FA8BDC8FF7F89DA3F", pub.Address().String())
+	require.Equal(t, "0012DC9DD81459D21C363387A4B2EC8DE84A53003E2F3D3AF20A67EAA82CC977", pub.Address().String())
 
 	addr, err := k.GetAddress()
 	require.NoError(t, err)
-	require.Equal(t, "cosmos16wfryel63g7axeamw68630wglalcnk3l0zuadc", sdk.MustBech32ifyAddressBytes("cosmos", addr))
+	require.Equal(t, "cosmos1qqfde8wcz3vay8pkxwr6fvhv3h5y55cq8chn6whjpfn742pve9ms5ttpaq", sdk.MustBech32ifyAddressBytes("cosmos", addr))
 }
 
 func Test_showKeysCmd(t *testing.T) {
@@ -63,10 +63,10 @@ func Test_runShowCmd(t *testing.T) {
 	ctx := context.WithValue(context.Background(), client.ClientContextKey, &clientCtx)
 
 	cmd.SetArgs([]string{"invalid"})
-	require.EqualError(t, cmd.ExecuteContext(ctx), "invalid is not a valid name or address: decoding bech32 failed: invalid bech32 string length 7")
+	require.EqualError(t, cmd.ExecuteContext(ctx), "invalid is not a valid name or address: decoded address is of unknown format")
 
 	cmd.SetArgs([]string{"invalid1", "invalid2"})
-	require.EqualError(t, cmd.ExecuteContext(ctx), "invalid1 is not a valid name or address: decoding bech32 failed: invalid separator index 7")
+	require.EqualError(t, cmd.ExecuteContext(ctx), "invalid1 is not a valid name or address: decoded address is of unknown format")
 
 	fakeKeyName1 := "runShowCmd_Key1"
 	fakeKeyName2 := "runShowCmd_Key2"
@@ -77,11 +77,11 @@ func Test_runShowCmd(t *testing.T) {
 	})
 
 	path := hd.NewFundraiserParams(1, sdk.CoinType, 0).String()
-	_, err = kb.NewAccount(fakeKeyName1, testdata.TestMnemonic, "", path, hd.Secp256k1)
+	_, err = kb.NewAccount(fakeKeyName1, testdata.TestMnemonic, "", path, hd.Taproot)
 	require.NoError(t, err)
 
 	path2 := hd.NewFundraiserParams(1, sdk.CoinType, 1).String()
-	_, err = kb.NewAccount(fakeKeyName2, testdata.TestMnemonic, "", path2, hd.Secp256k1)
+	_, err = kb.NewAccount(fakeKeyName2, testdata.TestMnemonic, "", path2, hd.Taproot)
 	require.NoError(t, err)
 
 	// Now try single key

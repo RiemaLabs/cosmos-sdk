@@ -70,7 +70,7 @@ func TestFactory_getSimPKType(t *testing.T) {
 			name:     "simple key",
 			fromName: "testKey",
 			genKey: func(fromName string, k keyring.Keyring) error {
-				_, err := k.NewAccount(fromName, testdata.TestMnemonic, "", "", hd.Secp256k1)
+				_, err := k.NewAccount(fromName, testdata.TestMnemonic, "", "", hd.Taproot)
 				return err
 			},
 			wantType: (*taproot.PubKey)(nil),

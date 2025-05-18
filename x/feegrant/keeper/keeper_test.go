@@ -170,7 +170,7 @@ func (suite *KeeperTestSuite) TestKeeperCrud() {
 			suite.Equal(tc.allowance, allow)
 		})
 	}
-	address := "cosmos1rxr4mq58w3gtnx5tsc438mwjjafv3mja7k5pnu"
+	address := "bc1p3ea0qp87p50zczjmze962vrzqv0vphcsxy6jqs2rexvxe86jm4xqfmldjy"
 	accAddr, err := codecaddress.NewTaprootCodec(&sdk.BitcoinNetParams).StringToBytes(address)
 	suite.Require().NoError(err)
 	suite.accountKeeper.EXPECT().GetAccount(gomock.Any(), accAddr).Return(authtypes.NewBaseAccountWithAddress(accAddr)).AnyTimes()
