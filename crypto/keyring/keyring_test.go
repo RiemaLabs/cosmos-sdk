@@ -1904,7 +1904,7 @@ func TestAltKeyring_SignByAddress(t *testing.T) {
 }
 
 func TestAltKeyring_ConstructorSupportedAlgos(t *testing.T) {
-	t.Skip("It is not working because taproot address limits the size of pubkey")
+	t.Skip("It is not working because taproot address limits the size of pubkey, but it is okay to skip")
 	cdc := getCodec()
 	tests := []struct {
 		name        string

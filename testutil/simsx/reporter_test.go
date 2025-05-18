@@ -13,7 +13,7 @@ import (
 
 func TestSimulationReporterToLegacy(t *testing.T) {
 	myErr := errors.New("my-error")
-	myMsg := testdata.NewTestMsg([]byte{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 1, 2, 3, 4})
+	myMsg := testdata.NewTestMsg([]byte{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 1, 2})
 
 	specs := map[string]struct {
 		setup  func() SimulationReporter
@@ -149,7 +149,7 @@ func TestSkipHook(t *testing.T) {
 	fn, myHookCalled = myHook()
 	r = NewBasicSimulationReporter(fn)
 	fn2, myOtherHookCalled := myHook()
-	r2 := r.WithScope(testdata.NewTestMsg([]byte{1}), fn2)
+	r2 := r.WithScope(testdata.NewTestMsg([]byte{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 1, 2}), fn2)
 	r2.Skipf("testing %d", 2)
 	assert.True(t, *myHookCalled)
 	assert.True(t, *myOtherHookCalled)
@@ -163,7 +163,7 @@ func TestReporterSummary(t *testing.T) {
 	}{
 		"skipped": {
 			do: func(t *testing.T, r SimulationReporter) { //nolint:thelper // not a helper
-				r2 := r.WithScope(testdata.NewTestMsg([]byte{1}))
+				r2 := r.WithScope(testdata.NewTestMsg([]byte{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 1, 2}))
 				r2.Skip("testing")
 				require.NoError(t, r2.Close())
 			},
@@ -172,7 +172,7 @@ func TestReporterSummary(t *testing.T) {
 		},
 		"success result": {
 			do: func(t *testing.T, r SimulationReporter) { //nolint:thelper // not a helper
-				msg := testdata.NewTestMsg([]byte{1})
+				msg := testdata.NewTestMsg([]byte{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 1, 4})
 				r2 := r.WithScope(msg)
 				r2.Success(msg)
 				require.NoError(t, r2.Close())
@@ -182,7 +182,7 @@ func TestReporterSummary(t *testing.T) {
 		},
 		"error result": {
 			do: func(t *testing.T, r SimulationReporter) { //nolint:thelper // not a helper
-				msg := testdata.NewTestMsg([]byte{1})
+				msg := testdata.NewTestMsg([]byte{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 1, 0})
 				r2 := r.WithScope(msg)
 				r2.Fail(errors.New("testing"))
 				require.Error(t, r2.Close())
@@ -192,10 +192,10 @@ func TestReporterSummary(t *testing.T) {
 		},
 		"multiple skipped": {
 			do: func(t *testing.T, r SimulationReporter) { //nolint:thelper // not a helper
-				r2 := r.WithScope(testdata.NewTestMsg([]byte{1}))
+				r2 := r.WithScope(testdata.NewTestMsg([]byte{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 1, 2}))
 				r2.Skip("testing1")
 				require.NoError(t, r2.Close())
-				r3 := r.WithScope(testdata.NewTestMsg([]byte{2}))
+				r3 := r.WithScope(testdata.NewTestMsg([]byte{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 1, 3}))
 				r3.Skip("testing2")
 				require.NoError(t, r3.Close())
 			},
