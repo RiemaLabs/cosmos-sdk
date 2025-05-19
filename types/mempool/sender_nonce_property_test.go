@@ -28,7 +28,7 @@ var (
 
 func AddressGenerator(t *rapid.T) *rapid.Generator[sdk.AccAddress] {
 	return rapid.Custom(func(t *rapid.T) sdk.AccAddress {
-		pkBz := rapid.SliceOfN(rapid.Byte(), 20, 20).Draw(t, "hex")
+		pkBz := rapid.SliceOfN(rapid.Byte(), 32, 32).Draw(t, "hex")
 		return sdk.AccAddress(pkBz)
 	})
 }
