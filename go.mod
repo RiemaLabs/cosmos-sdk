@@ -198,10 +198,11 @@ replace (
 	github.com/syndtr/goleveldb => github.com/syndtr/goleveldb v1.0.1-0.20210819022825-2ae1ddf74ef7
 )
 
+// @nubit: We replace the protobuf of those modules.
+// Thus, we need to replace the modules to local implementation.
 replace (
 	cosmossdk.io/api => ./api
 	cosmossdk.io/x/tx => ./x/tx
-	cosmossdk.io/x/tx/signing => ./x/tx/signing
 )
 
 retract (
