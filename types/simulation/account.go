@@ -5,7 +5,7 @@ import (
 	"math/rand"
 
 	"github.com/cosmos/cosmos-sdk/crypto/keys/ed25519"
-	"github.com/cosmos/cosmos-sdk/crypto/keys/secp256k1"
+	"github.com/cosmos/cosmos-sdk/crypto/keys/taproot"
 	cryptotypes "github.com/cosmos/cosmos-sdk/crypto/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
@@ -39,11 +39,11 @@ func RandomAccounts(r *rand.Rand, n int) []Account {
 	var i int
 	for i < n {
 		// don't need that much entropy for simulation
-		privkeySeed := make([]byte, 15)
+		privkeySeed := make([]byte, 32)
 		if _, err := r.Read(privkeySeed); err != nil {
 			panic(err)
 		}
-		privKey := secp256k1.GenPrivKeyFromSecret(privkeySeed)
+		privKey := taproot.GenPrivKeyFromSecret(privkeySeed)
 		pubKey := privKey.PubKey()
 		addr := sdk.AccAddress(pubKey.Address())
 		if _, exists := idx[string(addr.Bytes())]; exists {

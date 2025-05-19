@@ -15,7 +15,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/baseapp"
 	"github.com/cosmos/cosmos-sdk/codec"
 	"github.com/cosmos/cosmos-sdk/codec/address"
-	"github.com/cosmos/cosmos-sdk/crypto/keys/secp256k1"
+	"github.com/cosmos/cosmos-sdk/crypto/keys/taproot"
 	"github.com/cosmos/cosmos-sdk/testutil"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	moduletestutil "github.com/cosmos/cosmos-sdk/types/module/testutil"
@@ -41,8 +41,8 @@ func TestGenesisTestSuite(t *testing.T) {
 }
 
 var (
-	memberPub  = secp256k1.GenPrivKey().PubKey()
-	accPub     = secp256k1.GenPrivKey().PubKey()
+	memberPub  = taproot.GenPrivKey().PubKey()
+	accPub     = taproot.GenPrivKey().PubKey()
 	accAddr    = sdk.AccAddress(accPub.Address())
 	memberAddr = sdk.AccAddress(memberPub.Address())
 )
@@ -56,7 +56,7 @@ func (s *GenesisTestSuite) SetupTest() {
 	accountKeeper := grouptestutil.NewMockAccountKeeper(ctrl)
 	accountKeeper.EXPECT().GetAccount(gomock.Any(), accAddr).Return(authtypes.NewBaseAccountWithAddress(accAddr)).AnyTimes()
 	accountKeeper.EXPECT().GetAccount(gomock.Any(), memberAddr).Return(authtypes.NewBaseAccountWithAddress(memberAddr)).AnyTimes()
-	accountKeeper.EXPECT().AddressCodec().Return(address.NewBech32Codec("cosmos")).AnyTimes()
+	accountKeeper.EXPECT().AddressCodec().Return(address.NewTaprootCodec(&sdk.BitcoinNetParams)).AnyTimes()
 
 	bApp := baseapp.NewBaseApp(
 		"group",

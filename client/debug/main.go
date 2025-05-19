@@ -13,7 +13,7 @@ import (
 
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/crypto/keys/ed25519"
-	"github.com/cosmos/cosmos-sdk/crypto/keys/secp256k1"
+	"github.com/cosmos/cosmos-sdk/crypto/keys/taproot"
 	cryptotypes "github.com/cosmos/cosmos-sdk/crypto/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/bech32/legacybech32" //nolint:staticcheck // retain for debug purposes
@@ -107,7 +107,7 @@ func PubkeyCmd() *cobra.Command {
 		Long: fmt.Sprintf(`Decode a pubkey from proto JSON and display it's address.
 
 Example:
-$ %s debug pubkey '{"@type":"/cosmos.crypto.secp256k1.PubKey","key":"AurroA7jvfPd1AadmmOvWM2rJSwipXfRf8yD6pLbA2DJ"}'
+$ %s debug pubkey '{"@type":"/cosmos.crypto.taproot.PubKey","key":"AurroA7jvfPd1AadmmOvWM2rJSwipXfRf8yD6pLbA2DJ"}'
 			`, version.AppName),
 		Args: cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
@@ -130,8 +130,8 @@ func bytesToPubkey(bz []byte, keytype string) (cryptotypes.PubKey, bool) {
 		}
 	}
 
-	if len(bz) == secp256k1.PubKeySize {
-		return &secp256k1.PubKey{Key: bz}, true
+	if len(bz) == taproot.PubKeySize {
+		return &taproot.PubKey{Key: bz}, true
 	}
 	return nil, false
 }

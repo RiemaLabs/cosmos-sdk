@@ -38,7 +38,7 @@ func TestAddress(t *testing.T) {
 	pubKeys := generatePubKeys(5)
 	multisigKey := kmultisig.NewLegacyAminoPubKey(2, pubKeys)
 
-	require.Len(t, multisigKey.Address().Bytes(), 20)
+	require.Len(t, multisigKey.Address().Bytes(), 32)
 }
 
 func TestEquals(t *testing.T) {

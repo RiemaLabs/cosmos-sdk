@@ -86,15 +86,15 @@ func TestDerive(t *testing.T) {
 }
 
 func TestAltSigningAlgoList_Contains(t *testing.T) {
-	list := SigningAlgoList{hd.Secp256k1}
+	list := SigningAlgoList{hd.Taproot}
 
-	require.True(t, list.Contains(hd.Secp256k1))
+	require.True(t, list.Contains(hd.Taproot))
 	require.False(t, list.Contains(notSupportedAlgo{}))
 }
 
 func TestAltSigningAlgoList_String(t *testing.T) {
-	list := SigningAlgoList{hd.Secp256k1, notSupportedAlgo{}}
-	require.Equal(t, fmt.Sprintf("%s,notSupported", hd.Secp256k1Type), list.String())
+	list := SigningAlgoList{hd.Taproot, notSupportedAlgo{}}
+	require.Equal(t, fmt.Sprintf("%s,notSupported", hd.TaprootType), list.String())
 }
 
 type notSupportedAlgo struct{}

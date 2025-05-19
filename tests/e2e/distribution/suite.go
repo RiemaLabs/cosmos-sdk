@@ -194,7 +194,7 @@ func (s *E2ETestSuite) TestNewWithdrawRewardsCmd() {
 			_, _ = s.network.WaitForHeightWithTimeout(10, time.Minute)
 
 			ctx := svrcmd.CreateExecuteContext(context.Background())
-			cmd := cli.NewWithdrawRewardsCmd(address.NewBech32Codec("cosmosvaloper"), address.NewBech32Codec("cosmos"))
+			cmd := cli.NewWithdrawRewardsCmd(address.NewBech32Codec("cosmosvaloper"), address.NewTaprootCodec(&sdk.BitcoinNetParams))
 			cmd.SetContext(ctx)
 			cmd.SetArgs(args)
 			s.Require().NoError(client.SetCmdClientContextHandler(clientCtx, cmd))
@@ -280,7 +280,7 @@ func (s *E2ETestSuite) TestNewWithdrawAllRewardsCmd() {
 
 	for _, tc := range testCases {
 		s.Run(tc.name, func() {
-			cmd := cli.NewWithdrawAllRewardsCmd(address.NewBech32Codec("cosmosvaloper"), address.NewBech32Codec("cosmos"))
+			cmd := cli.NewWithdrawAllRewardsCmd(address.NewBech32Codec("cosmosvaloper"), address.NewTaprootCodec(&sdk.BitcoinNetParams))
 			clientCtx := val.ClientCtx
 
 			_, _ = s.network.WaitForHeightWithTimeout(10, time.Minute)
@@ -363,7 +363,7 @@ func (s *E2ETestSuite) TestNewSetWithdrawAddrCmd() {
 
 	for _, tc := range testCases {
 		s.Run(tc.name, func() {
-			cmd := cli.NewSetWithdrawAddrCmd(address.NewBech32Codec("cosmos"))
+			cmd := cli.NewSetWithdrawAddrCmd(address.NewTaprootCodec(&sdk.BitcoinNetParams))
 			clientCtx := val.ClientCtx
 
 			out, err := clitestutil.ExecTestCLICmd(clientCtx, cmd, tc.args)
@@ -416,7 +416,7 @@ func (s *E2ETestSuite) TestNewFundCommunityPoolCmd() {
 
 	for _, tc := range testCases {
 		s.Run(tc.name, func() {
-			cmd := cli.NewFundCommunityPoolCmd(address.NewBech32Codec("cosmos"))
+			cmd := cli.NewFundCommunityPoolCmd(address.NewTaprootCodec(&sdk.BitcoinNetParams))
 			clientCtx := val.ClientCtx
 
 			out, err := clitestutil.ExecTestCLICmd(clientCtx, cmd, tc.args)

@@ -1,9 +1,8 @@
 package multisig
 
 import (
+	"crypto/sha256"
 	fmt "fmt"
-
-	cmtcrypto "github.com/cometbft/cometbft/crypto"
 
 	"github.com/cosmos/cosmos-sdk/codec/types"
 	cryptotypes "github.com/cosmos/cosmos-sdk/crypto/types"
@@ -36,7 +35,8 @@ func NewLegacyAminoPubKey(threshold int, pubKeys []cryptotypes.PubKey) *LegacyAm
 
 // Address implements cryptotypes.PubKey Address method
 func (m *LegacyAminoPubKey) Address() cryptotypes.Address {
-	return cmtcrypto.AddressHash(m.Bytes())
+	hash := sha256.Sum256(m.Bytes())
+	return hash[:]
 }
 
 // Bytes returns the proto encoded version of the LegacyAminoPubKey

@@ -11,14 +11,14 @@ import (
 	"cosmossdk.io/x/feegrant/module"
 	"cosmossdk.io/x/feegrant/simulation"
 
-	"github.com/cosmos/cosmos-sdk/crypto/keys/ed25519"
+	"github.com/cosmos/cosmos-sdk/crypto/keys/taproot"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/kv"
 	moduletestutil "github.com/cosmos/cosmos-sdk/types/module/testutil"
 )
 
 var (
-	granterPk   = ed25519.GenPrivKey().PubKey()
+	granterPk   = taproot.GenPrivKey().PubKey()
 	granterAddr = sdk.AccAddress(granterPk.Address())
 	granteeAddr = sdk.AccAddress(granterPk.Address())
 )

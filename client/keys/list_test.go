@@ -47,7 +47,7 @@ func Test_runListCmd(t *testing.T) {
 	ctx := context.WithValue(context.Background(), client.ClientContextKey, &clientCtx)
 
 	path := "" // sdk.GetConfig().GetFullBIP44Path()
-	_, err = kb.NewAccount("something", testdata.TestMnemonic, "", path, hd.Secp256k1)
+	_, err = kb.NewAccount("something", testdata.TestMnemonic, "", path, hd.Taproot)
 	assert.NilError(t, err)
 
 	t.Cleanup(cleanupKeys(t, kb, "something"))
@@ -99,5 +99,5 @@ func Test_runListKeyTypeCmd(t *testing.T) {
 
 	out, err := clitestutil.ExecTestCLICmd(clientCtx, cmd, []string{})
 	assert.NilError(t, err)
-	assert.Assert(t, strings.Contains(out.String(), string(hd.Secp256k1Type)))
+	assert.Assert(t, strings.Contains(out.String(), string(hd.TaprootType)))
 }

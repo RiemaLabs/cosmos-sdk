@@ -12,7 +12,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/crypto/hd"
 	"github.com/cosmos/cosmos-sdk/crypto/keyring"
 	"github.com/cosmos/cosmos-sdk/crypto/keys/multisig"
-	"github.com/cosmos/cosmos-sdk/crypto/keys/secp256k1"
+	"github.com/cosmos/cosmos-sdk/crypto/keys/taproot"
 	"github.com/cosmos/cosmos-sdk/crypto/types"
 	"github.com/cosmos/cosmos-sdk/testutil/testdata"
 	"github.com/cosmos/cosmos-sdk/types/tx/signing"
@@ -70,10 +70,10 @@ func TestFactory_getSimPKType(t *testing.T) {
 			name:     "simple key",
 			fromName: "testKey",
 			genKey: func(fromName string, k keyring.Keyring) error {
-				_, err := k.NewAccount(fromName, testdata.TestMnemonic, "", "", hd.Secp256k1)
+				_, err := k.NewAccount(fromName, testdata.TestMnemonic, "", "", hd.Taproot)
 				return err
 			},
-			wantType: (*secp256k1.PubKey)(nil),
+			wantType: (*taproot.PubKey)(nil),
 		},
 		{
 			name:     "multisig key",
@@ -111,7 +111,7 @@ func TestFactory_getSimSignatureData(t *testing.T) {
 	}{
 		{
 			name:     "simple pubkey",
-			pk:       &secp256k1.PubKey{},
+			pk:       &taproot.PubKey{},
 			wantType: (*signing.SingleSignatureData)(nil),
 		},
 		{

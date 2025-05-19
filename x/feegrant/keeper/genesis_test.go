@@ -16,7 +16,7 @@ import (
 
 	"github.com/cosmos/cosmos-sdk/codec/address"
 	codectypes "github.com/cosmos/cosmos-sdk/codec/types"
-	"github.com/cosmos/cosmos-sdk/crypto/keys/secp256k1"
+	"github.com/cosmos/cosmos-sdk/crypto/keys/taproot"
 	"github.com/cosmos/cosmos-sdk/runtime"
 	"github.com/cosmos/cosmos-sdk/testutil"
 	"github.com/cosmos/cosmos-sdk/testutil/testdata"
@@ -26,8 +26,8 @@ import (
 )
 
 var (
-	granteePub  = secp256k1.GenPrivKey().PubKey()
-	granterPub  = secp256k1.GenPrivKey().PubKey()
+	granteePub  = taproot.GenPrivKey().PubKey()
+	granterPub  = taproot.GenPrivKey().PubKey()
 	granteeAddr = sdk.AccAddress(granteePub.Address())
 	granterAddr = sdk.AccAddress(granterPub.Address())
 )
@@ -47,7 +47,7 @@ func initFixture(t *testing.T) *genesisFixture {
 
 	ctrl := gomock.NewController(t)
 	accountKeeper := feegranttestutil.NewMockAccountKeeper(ctrl)
-	accountKeeper.EXPECT().AddressCodec().Return(address.NewBech32Codec("cosmos")).AnyTimes()
+	accountKeeper.EXPECT().AddressCodec().Return(address.NewTaprootCodec(&sdk.BitcoinNetParams)).AnyTimes()
 
 	return &genesisFixture{
 		ctx:            testCtx.Ctx,
@@ -60,7 +60,7 @@ func TestImportExportGenesis(t *testing.T) {
 	f := initFixture(t)
 
 	f.accountKeeper.EXPECT().GetAccount(gomock.Any(), granteeAddr).Return(authtypes.NewBaseAccountWithAddress(granteeAddr)).AnyTimes()
-	f.accountKeeper.EXPECT().AddressCodec().Return(address.NewBech32Codec("cosmos")).AnyTimes()
+	f.accountKeeper.EXPECT().AddressCodec().Return(address.NewTaprootCodec(&sdk.BitcoinNetParams)).AnyTimes()
 
 	coins := sdk.NewCoins(sdk.NewCoin("foo", math.NewInt(1_000)))
 	now := f.ctx.BlockHeader().Time
@@ -138,7 +138,7 @@ func TestInitGenesis(t *testing.T) {
 				err := f.feegrantKeeper.InitGenesis(f.ctx, &feegrant.GenesisState{Allowances: tc.feeAllowances})
 				assert.ErrorContains(t, err, "failed to get allowance: no allowance")
 			} else {
-				expectedErr := errors.New("decoding bech32 failed")
+				expectedErr := errors.New("decoded address is of unknown format")
 				err := f.feegrantKeeper.InitGenesis(f.ctx, &feegrant.GenesisState{Allowances: tc.feeAllowances})
 				assert.ErrorContains(t, err, expectedErr.Error())
 			}

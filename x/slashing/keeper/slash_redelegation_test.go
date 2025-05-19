@@ -12,7 +12,7 @@ import (
 	"cosmossdk.io/log"
 	"cosmossdk.io/math"
 
-	"github.com/cosmos/cosmos-sdk/crypto/keys/secp256k1"
+	"github.com/cosmos/cosmos-sdk/crypto/keys/taproot"
 	simtestutil "github.com/cosmos/cosmos-sdk/testutil/sims"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	bankkeeper "github.com/cosmos/cosmos-sdk/x/bank/keeper"
@@ -44,8 +44,8 @@ func TestSlashRedelegation(t *testing.T) {
 	require.NoError(t, err)
 
 	// evilVal will be slashed, goodVal won't be slashed
-	evilValPubKey := secp256k1.GenPrivKey().PubKey()
-	goodValPubKey := secp256k1.GenPrivKey().PubKey()
+	evilValPubKey := taproot.GenPrivKey().PubKey()
+	goodValPubKey := taproot.GenPrivKey().PubKey()
 
 	// both test acc 1 and 2 delegated to evil val, both acc should be slashed when evil val is slashed
 	// test acc 1 use the "undelegation after redelegation" trick (redelegate to good val and then undelegate) to avoid slashing

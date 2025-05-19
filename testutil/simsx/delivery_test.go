@@ -54,7 +54,7 @@ func TestDeliverSimsMsg(t *testing.T) {
 			}),
 			reporter:              func() SimulationReporter { return NewBasicSimulationReporter() },
 			deliveryResultHandler: noopResultHandler,
-			expOps:                simtypes.NewOperationMsgBasic("", "", "delivering tx with msgs: &testdata.TestMsg{Signers:[]string{\"cosmos1tnh2q55v8wyygtt9srz5safamzdengsnqeycj3\"}}", false, []byte{}),
+			expOps:                simtypes.NewOperationMsgBasic("", "", "delivering tx with msgs: &testdata.TestMsg{Signers:[]string{\"bc1pfh7r4m936549slz4c3adft00xzrf2r9xqddww7dls64td7utxteqtnre6v\"}}", false, []byte{}),
 		},
 		"error delivery handled": {
 			app: SimDeliverFn(func(_txEncoder sdk.TxEncoder, tx sdk.Tx) (sdk.GasInfo, *sdk.Result, error) {

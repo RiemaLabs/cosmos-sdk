@@ -106,7 +106,7 @@ func (suite *SimTestSuite) TestWeightedOperations() {
 	weightedOps := simulation.WeightedOperations(
 		suite.interfaceRegistry,
 		appParams, suite.cdc, suite.txConfig, suite.accountKeeper,
-		suite.bankKeeper, suite.feegrantKeeper, codecaddress.NewBech32Codec("cosmos"),
+		suite.bankKeeper, suite.feegrantKeeper, codecaddress.NewTaprootCodec(&sdk.BitcoinNetParams),
 	)
 
 	s := rand.NewSource(1)
@@ -164,8 +164,8 @@ func (suite *SimTestSuite) TestSimulateMsgGrantAllowance() {
 	err = proto.Unmarshal(operationMsg.Msg, &msg)
 	require.NoError(err)
 	require.True(operationMsg.OK)
-	require.Equal(accounts[2].Address.String(), msg.Granter)
-	require.Equal(accounts[1].Address.String(), msg.Grantee)
+	require.Equal(accounts[1].Address.String(), msg.Granter)
+	require.Equal(accounts[2].Address.String(), msg.Grantee)
 	require.Len(futureOperations, 0)
 }
 
@@ -199,7 +199,7 @@ func (suite *SimTestSuite) TestSimulateMsgRevokeAllowance() {
 	require.NoError(err)
 
 	// execute operation
-	op := simulation.SimulateMsgRevokeAllowance(codec.NewProtoCodec(suite.interfaceRegistry), suite.txConfig, suite.accountKeeper, suite.bankKeeper, suite.feegrantKeeper, codecaddress.NewBech32Codec("cosmos"))
+	op := simulation.SimulateMsgRevokeAllowance(codec.NewProtoCodec(suite.interfaceRegistry), suite.txConfig, suite.accountKeeper, suite.bankKeeper, suite.feegrantKeeper, codecaddress.NewTaprootCodec(&sdk.BitcoinNetParams))
 	operationMsg, futureOperations, err := op(r, app.BaseApp, ctx, accounts, "")
 	require.NoError(err)
 

@@ -8,6 +8,8 @@ import (
 	"github.com/cosmos/cosmos-sdk/codec"
 	"github.com/cosmos/cosmos-sdk/codec/address"
 	codectypes "github.com/cosmos/cosmos-sdk/codec/types"
+
+	"github.com/cosmos/cosmos-sdk/types"
 )
 
 // CodecOptions are options for creating a test codec.
@@ -31,7 +33,7 @@ func (o CodecOptions) NewInterfaceRegistry() codectypes.InterfaceRegistry {
 	ir, err := codectypes.NewInterfaceRegistryWithOptions(codectypes.InterfaceRegistryOptions{
 		ProtoFiles: proto.HybridResolver,
 		SigningOptions: signing.Options{
-			AddressCodec:          address.NewBech32Codec(accAddressPrefix),
+			AddressCodec:          address.NewTaprootCodec(&types.BitcoinNetParams),
 			ValidatorAddressCodec: address.NewBech32Codec(valAddressPrefix),
 		},
 	})

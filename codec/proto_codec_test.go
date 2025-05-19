@@ -187,9 +187,9 @@ func TestGetSigners(t *testing.T) {
 	})
 	require.NoError(t, err)
 	cdc := codec.NewProtoCodec(interfaceRegistry)
-	testAddr := sdk.AccAddress("test")
+	testAddr := sdk.AccAddress("12345678901234567890123456789012")
 	testAddrStr := testAddr.String()
-	testAddr2 := sdk.AccAddress("test2")
+	testAddr2 := sdk.AccAddress("12345678901234567890123456789034")
 	testAddrStr2 := testAddr2.String()
 
 	msgSendV1 := banktypes.NewMsgSend(testAddr, testAddr2, sdk.NewCoins(sdk.NewCoin("foo", sdkmath.NewInt(1))))

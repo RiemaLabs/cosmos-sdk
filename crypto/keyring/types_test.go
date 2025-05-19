@@ -21,7 +21,7 @@ func Test_writeReadLedgerInfo(t *testing.T) {
 		{
 			hexPK:        "035AD6810A47F073553FF30D2FCC7E0D3B1C0B74B61A1AAA2582344037151E143A",
 			recordName:   "test_record",
-			expectedPath: "m/44'/118'/5'/0/1",
+			expectedPath: "m/86'/0'/5'/0/1",
 		},
 	}
 	for _, tt := range tests {

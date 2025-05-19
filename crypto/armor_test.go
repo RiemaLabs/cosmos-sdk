@@ -22,7 +22,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/crypto/hd"
 	"github.com/cosmos/cosmos-sdk/crypto/keyring"
 	"github.com/cosmos/cosmos-sdk/crypto/keys/bcrypt"
-	"github.com/cosmos/cosmos-sdk/crypto/keys/secp256k1"
+	"github.com/cosmos/cosmos-sdk/crypto/keys/taproot"
 	cryptotypes "github.com/cosmos/cosmos-sdk/crypto/types"
 	"github.com/cosmos/cosmos-sdk/crypto/xsalsa20symmetric"
 	"github.com/cosmos/cosmos-sdk/runtime"
@@ -31,13 +31,13 @@ import (
 )
 
 func TestArmorUnarmorPrivKey(t *testing.T) {
-	priv := secp256k1.GenPrivKey()
+	priv := taproot.GenPrivKey()
 	armored := crypto.EncryptArmorPrivKey(priv, "passphrase", "")
 	_, _, err := crypto.UnarmorDecryptPrivKey(armored, "wrongpassphrase")
 	require.Error(t, err)
 	decrypted, algo, err := crypto.UnarmorDecryptPrivKey(armored, "passphrase")
 	require.NoError(t, err)
-	require.Equal(t, string(hd.Secp256k1Type), algo)
+	require.Equal(t, string(hd.TaprootType), algo)
 	require.True(t, priv.Equals(decrypted))
 
 	// empty string
@@ -83,7 +83,7 @@ func TestArmorUnarmorPubKey(t *testing.T) {
 	err := depinject.Inject(depinject.Configs(
 		configurator.NewAppConfig(),
 		depinject.Supply(log.NewNopLogger(),
-			func() address.Codec { return addresscodec.NewBech32Codec("cosmos") },
+			func() address.Codec { return addresscodec.NewTaprootCodec(&types.BitcoinNetParams) },
 			func() runtime.ValidatorAddressCodec { return addresscodec.NewBech32Codec("cosmosvaloper") },
 			func() runtime.ConsensusAddressCodec { return addresscodec.NewBech32Codec("cosmosvalcons") },
 		),
@@ -93,7 +93,7 @@ func TestArmorUnarmorPubKey(t *testing.T) {
 	cstore := keyring.NewInMemory(cdc)
 
 	// Add keys and see they return in alphabetical order
-	k, _, err := cstore.NewMnemonic("Bob", keyring.English, types.FullFundraiserPath, keyring.DefaultBIP39Passphrase, hd.Secp256k1)
+	k, _, err := cstore.NewMnemonic("Bob", keyring.English, types.FullFundraiserPath, keyring.DefaultBIP39Passphrase, hd.Taproot)
 	require.NoError(t, err)
 	key, err := k.GetPubKey()
 	require.NoError(t, err)
@@ -102,7 +102,7 @@ func TestArmorUnarmorPubKey(t *testing.T) {
 	require.NoError(t, err)
 	pub, err := legacy.PubKeyFromBytes(pubBytes)
 	require.NoError(t, err)
-	require.Equal(t, string(hd.Secp256k1Type), algo)
+	require.Equal(t, string(hd.TaprootType), algo)
 	require.True(t, pub.Equals(key))
 
 	armored = crypto.ArmorPubKeyBytes(legacy.Cdc.Amino.MustMarshalBinaryBare(key), "unknown")
@@ -128,7 +128,7 @@ func TestArmorUnarmorPubKey(t *testing.T) {
 	_, algo, err = crypto.UnarmorPubKeyBytes(armored)
 	require.NoError(t, err)
 	// return secp256k1 if version is 0.0.0
-	require.Equal(t, "secp256k1", algo)
+	require.Equal(t, "taproot", algo)
 
 	// missing version header
 	header = map[string]string{
@@ -208,7 +208,7 @@ func TestArmor(t *testing.T) {
 }
 
 func TestBcryptLegacyEncryption(t *testing.T) {
-	privKey := secp256k1.GenPrivKey()
+	privKey := taproot.GenPrivKey()
 	saltBytes := cmtcrypto.CRandBytes(16)
 	passphrase := "passphrase"
 	privKeyBytes := legacy.Cdc.MustMarshal(privKey)

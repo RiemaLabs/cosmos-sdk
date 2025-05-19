@@ -18,16 +18,16 @@ import (
 )
 
 func TestGrant(t *testing.T) {
-	addressCodec := codecaddress.NewBech32Codec("cosmos")
+	addressCodec := codecaddress.NewTaprootCodec(&sdk.BitcoinNetParams)
 	key := storetypes.NewKVStoreKey(feegrant.StoreKey)
 	testCtx := testutil.DefaultContextWithDB(t, key, storetypes.NewTransientStoreKey("transient_test"))
 	encCfg := moduletestutil.MakeTestEncodingConfig(module.AppModuleBasic{})
 
 	ctx := testCtx.Ctx.WithBlockHeader(cmtproto.Header{Time: time.Now()})
 
-	addr, err := addressCodec.StringToBytes("cosmos1qk93t4j0yyzgqgt6k5qf8deh8fq6smpn3ntu3x")
+	addr, err := addressCodec.StringToBytes("bc1pzmgv90s54p22fjx68yftj8awm4psf5x6u85ces806pcnpt5rna0s4p9d7m")
 	require.NoError(t, err)
-	addr2, err := addressCodec.StringToBytes("cosmos1p9qh4ldfd6n0qehujsal4k7g0e37kel90rc4ts")
+	addr2, err := addressCodec.StringToBytes("bc1pej4p7zzqnjxfp7ut73azesfktn89fv6uz8ace3kp3au3vtaxk3yse5t4e4")
 	require.NoError(t, err)
 	atom := sdk.NewCoins(sdk.NewInt64Coin("atom", 555))
 	now := ctx.BlockTime()

@@ -125,7 +125,7 @@ func (suite *KeeperTestSuite) TestContinuousFund() {
 			preRun: func() {
 				// Return a real codec; its StringToBytes will fail for an invalid address.
 				suite.authKeeper.EXPECT().AddressCodec().
-					Return(address.NewBech32Codec("cosmos")).AnyTimes()
+					Return(address.NewTaprootCodec(&sdk.BitcoinNetParams)).AnyTimes()
 			},
 			expErr:    true,
 			expErrMsg: "invalid address:",
@@ -137,7 +137,7 @@ func (suite *KeeperTestSuite) TestContinuousFund() {
 			},
 			preRun: func() {
 				suite.authKeeper.EXPECT().AddressCodec().
-					Return(address.NewBech32Codec("cosmos")).AnyTimes()
+					Return(address.NewTaprootCodec(&sdk.BitcoinNetParams)).AnyTimes()
 			},
 			expErr:    true,
 			expErrMsg: "not found",
@@ -150,7 +150,7 @@ func (suite *KeeperTestSuite) TestContinuousFund() {
 			preRun: func() {
 				// Use the real codec to convert the address.
 				suite.authKeeper.EXPECT().AddressCodec().
-					Return(address.NewBech32Codec("cosmos")).AnyTimes()
+					Return(address.NewTaprootCodec(&sdk.BitcoinNetParams)).AnyTimes()
 				// Insert a continuous fund directly into the pool keeper.
 				fund := types.ContinuousFund{
 					Recipient:  recipientAddr.String(),

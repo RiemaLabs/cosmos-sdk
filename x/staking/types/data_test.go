@@ -4,15 +4,15 @@ import (
 	"fmt"
 
 	codectypes "github.com/cosmos/cosmos-sdk/codec/types"
-	"github.com/cosmos/cosmos-sdk/crypto/keys/ed25519"
+	"github.com/cosmos/cosmos-sdk/crypto/keys/taproot"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
 var (
-	pk1      = ed25519.GenPrivKey().PubKey()
+	pk1      = taproot.GenPrivKey().PubKey()
 	pk1Any   *codectypes.Any
-	pk2      = ed25519.GenPrivKey().PubKey()
-	pk3      = ed25519.GenPrivKey().PubKey()
+	pk2      = taproot.GenPrivKey().PubKey()
+	pk3      = taproot.GenPrivKey().PubKey()
 	valAddr1 = sdk.ValAddress(pk1.Address())
 	valAddr2 = sdk.ValAddress(pk2.Address())
 	valAddr3 = sdk.ValAddress(pk3.Address())

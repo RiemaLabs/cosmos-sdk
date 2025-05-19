@@ -6,8 +6,6 @@ import (
 	"fmt"
 	"sort"
 
-	"github.com/cometbft/cometbft/crypto"
-
 	"cosmossdk.io/errors"
 
 	"github.com/cosmos/cosmos-sdk/internal/conv"
@@ -70,10 +68,29 @@ func Compose(typ string, subAddresses []Addressable) ([]byte, error) {
 // a x/dao module, and a new DAO object, it's address would be:
 //
 //	address.Module(dao.ModuleName, newDAO.ID)
+// func Module(moduleName string, derivationKeys ...[]byte) []byte {
+// 	mKey := []byte(moduleName)
+// 	if len(derivationKeys) == 0 { // fallback to the "traditional" ModuleAddress
+// 		return crypto.AddressHash(mKey)
+// 	}
+// 	// need to append zero byte to avoid potential clash between the module name and the first
+// 	// derivation key
+// 	mKey = append(mKey, 0)
+// 	addr := Hash("module", append(mKey, derivationKeys[0]...))
+// 	for _, k := range derivationKeys[1:] {
+// 		addr = Derive(addr, k)
+// 	}
+// 	return addr
+// }
+
 func Module(moduleName string, derivationKeys ...[]byte) []byte {
+	return moduleTaproot(moduleName, derivationKeys...)
+}
+
+func moduleTaproot(moduleName string, derivationKeys ...[]byte) []byte {
 	mKey := []byte(moduleName)
 	if len(derivationKeys) == 0 { // fallback to the "traditional" ModuleAddress
-		return crypto.AddressHash(mKey)
+		return Hash("module", mKey)
 	}
 	// need to append zero byte to avoid potential clash between the module name and the first
 	// derivation key

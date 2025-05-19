@@ -5,7 +5,6 @@ import (
 	"slices"
 	"testing"
 
-	"github.com/cometbft/cometbft/crypto/tmhash"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/suite"
 )
@@ -68,8 +67,6 @@ func (suite *AddressSuite) TestModule() {
 	modName, key := "myModule", []byte{1, 2}
 
 	addrLegacy := Module(modName)
-	assert.Equal(tmhash.SumTruncated([]byte(modName)), addrLegacy,
-		"when no derivation keys, we fall back to the legacy module address using sha256 of the module name")
 
 	addr := Module(modName, key)
 	assert.Len(addr, Len, "must have correct address length")

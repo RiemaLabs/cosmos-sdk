@@ -17,10 +17,10 @@ var (
 	coin100 = sdk.NewInt64Coin("steak", 100)
 	coin150 = sdk.NewInt64Coin("steak", 150)
 	coin50  = sdk.NewInt64Coin("steak", 50)
-	delAddr = sdk.AccAddress("_____delegator _____")
-	val1    = sdk.ValAddress("_____validator1_____")
-	val2    = sdk.ValAddress("_____validator2_____")
-	val3    = sdk.ValAddress("_____validator3_____")
+	delAddr = sdk.AccAddress("_____delegator _________________")
+	val1    = sdk.ValAddress("_____validator1_________________")
+	val2    = sdk.ValAddress("_____validator2_________________")
+	val3    = sdk.ValAddress("_____validator3________________")
 )
 
 func TestAuthzAuthorizations(t *testing.T) {

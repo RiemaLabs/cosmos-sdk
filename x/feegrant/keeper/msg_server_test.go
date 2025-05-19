@@ -9,6 +9,7 @@ import (
 
 	codecaddress "github.com/cosmos/cosmos-sdk/codec/address"
 	codectypes "github.com/cosmos/cosmos-sdk/codec/types"
+	sdk "github.com/cosmos/cosmos-sdk/types"
 	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
 )
 
@@ -17,7 +18,7 @@ func (suite *KeeperTestSuite) TestGrantAllowance() {
 	oneYear := ctx.BlockTime().AddDate(1, 0, 0)
 	yesterday := ctx.BlockTime().AddDate(0, 0, -1)
 
-	addressCodec := codecaddress.NewBech32Codec("cosmos")
+	addressCodec := codecaddress.NewTaprootCodec(&sdk.BitcoinNetParams)
 
 	testCases := []struct {
 		name      string
@@ -38,7 +39,7 @@ func (suite *KeeperTestSuite) TestGrantAllowance() {
 				}
 			},
 			true,
-			"decoding bech32 failed",
+			"decoded address is of unknown format",
 		},
 		{
 			"invalid grantee address",
@@ -53,12 +54,12 @@ func (suite *KeeperTestSuite) TestGrantAllowance() {
 				}
 			},
 			true,
-			"decoding bech32 failed",
+			"decoded address is of unknown format",
 		},
 		{
 			"valid: grantee account doesn't exist",
 			func() *feegrant.MsgGrantAllowance {
-				grantee := "cosmos139f7kncmglres2nf3h4hc4tade85ekfr8sulz5"
+				grantee := "bc1p0xlxvlhemja6c4dqv22uapctqupfhlxm9h8z3k2e72q4k9hcz7vqzk5jj0"
 				granteeAccAddr, err := addressCodec.StringToBytes(grantee)
 				suite.Require().NoError(err)
 				cdcAny, err := codectypes.NewAnyWithValue(&feegrant.BasicAllowance{
@@ -207,7 +208,7 @@ func (suite *KeeperTestSuite) TestRevokeAllowance() {
 			},
 			func() {},
 			true,
-			"decoding bech32 failed",
+			"decoded address is of unknown format",
 		},
 		{
 			"error: invalid grantee",
@@ -217,7 +218,7 @@ func (suite *KeeperTestSuite) TestRevokeAllowance() {
 			},
 			func() {},
 			true,
-			"decoding bech32 failed",
+			"decoded address is of unknown format",
 		},
 		{
 			"error: fee allowance not found",

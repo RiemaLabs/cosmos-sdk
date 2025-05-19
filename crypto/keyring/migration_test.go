@@ -12,7 +12,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/codec/legacy"
 	"github.com/cosmos/cosmos-sdk/crypto/hd"
 	"github.com/cosmos/cosmos-sdk/crypto/keys/multisig"
-	"github.com/cosmos/cosmos-sdk/crypto/keys/secp256k1"
+	"github.com/cosmos/cosmos-sdk/crypto/keys/taproot"
 	cryptotypes "github.com/cosmos/cosmos-sdk/crypto/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )
@@ -42,7 +42,7 @@ func (s *MigrationTestSuite) SetupSuite() {
 	s.kb = kb
 	s.ks = ks
 
-	s.priv = cryptotypes.PrivKey(secp256k1.GenPrivKey())
+	s.priv = cryptotypes.PrivKey(taproot.GenPrivKey())
 	s.pub = s.priv.PubKey()
 }
 

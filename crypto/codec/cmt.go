@@ -9,6 +9,7 @@ import (
 
 	"github.com/cosmos/cosmos-sdk/crypto/keys/ed25519"
 	"github.com/cosmos/cosmos-sdk/crypto/keys/secp256k1"
+	"github.com/cosmos/cosmos-sdk/crypto/keys/taproot"
 	cryptotypes "github.com/cosmos/cosmos-sdk/crypto/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )
@@ -39,6 +40,13 @@ func ToCmtProtoPublicKey(pk cryptotypes.PubKey) (cmtprotocrypto.PublicKey, error
 			},
 		}, nil
 	case *secp256k1.PubKey:
+		return cmtprotocrypto.PublicKey{
+			Sum: &cmtprotocrypto.PublicKey_Secp256K1{
+				Secp256K1: pk.Key,
+			},
+		}, nil
+	// @nubit: We use the secp256k1 key to represent the taproot key. (They are the same)
+	case *taproot.PubKey:
 		return cmtprotocrypto.PublicKey{
 			Sum: &cmtprotocrypto.PublicKey_Secp256K1{
 				Secp256K1: pk.Key,
