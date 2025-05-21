@@ -1613,7 +1613,7 @@ func TestABCI_PrepareProposal_ReachedMaxBytes(t *testing.T) {
 	}
 
 	reqPrepareProposal := abci.RequestPrepareProposal{
-		MaxTxBytes: 1596, // TODO: why 8 not divide 1596?
+		MaxTxBytes: 1500,
 		Height:     1,
 	}
 	resPrepareProposal, err := suite.baseApp.PrepareProposal(&reqPrepareProposal)
@@ -1808,7 +1808,7 @@ func TestABCI_PrepareProposal_VoteExtensions(t *testing.T) {
 		},
 	}
 
-	consAddr := sdk.ConsAddress(pubkey.Bytes()) // TODO: is this ok?
+	consAddr := sdk.ConsAddress(pubkey.Bytes())
 	valStore.EXPECT().GetPubKeyByConsAddr(gomock.Any(), consAddr.Bytes()).Return(tmPk, nil)
 
 	// set up baseapp
