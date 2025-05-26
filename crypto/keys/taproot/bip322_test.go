@@ -13,6 +13,7 @@ func TestSign(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
+	// Use the utf-8 bytes of a string message
 	msg := []byte("test")
 	net := &chaincfg.MainNetParams
 	signature, err := Bip322Sign(msg, privKey, net)
@@ -27,6 +28,7 @@ func TestSignAndVerify(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
+	// Use the utf-8 bytes of a string message
 	msg := []byte("test")
 	net := &chaincfg.MainNetParams
 	signature, err := Bip322Sign(msg, privKey, net)
